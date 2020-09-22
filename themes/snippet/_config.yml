@@ -1,0 +1,266 @@
+# ---------------------------------------------------------------
+#   Site Information And Theme Configuration Settings
+#   language: zh-CN
+# ---------------------------------------------------------------
+
+## menu
+menu:
+- page: home
+  url: /
+  icon:
+- page: Qml组件化编程
+  url: /categories/Qml组件化编程/
+  icon:
+- page: Qml特效
+  url: /categories/Qml特效/
+  icon:
+- page: Qt进阶之路
+  url: /categories/Qt进阶之路/
+  icon:
+- page: C++修炼之路
+  url: /categories/C-修炼之路/
+  icon:
+- page: 武威故事
+  url: /categories/武威故事/
+  icon:
+- page: 时间轴
+  url: /archives/
+  icon:
+
+## favicon
+favicon: /favicon.ico
+
+## Feed
+rss: /atom.xml
+
+## Carousel
+carousel:
+  img: './img/qz.png'
+  url: 'javascript:'
+
+# 各个小工具的设置
+
+## widgets
+widgets:
+  - search
+  - notification
+  - social
+  - category
+  - archive
+  - tagcloud
+  - friends
+
+
+## 搜索
+jsonContent:
+  searchLocal: true
+  searchGoogle: false
+  posts:
+    title: true
+    text: true
+    content: true
+    categories: false
+    tags: true
+
+## 网站公告设置
+notification: |-
+              <p>
+                  <p>涛哥的博客正式上线了</p>
+                  <P>博客网址<a href="https://jaredtao.github.io">https://jaredtao.github.io</a></p>
+                  <P>国内镜像<a href="https://jaredtao.gitee.io">https://jaredtao.gitee.io</a></p>
+                  <p>知乎专栏 <a href="https://zhuanlan.zhihu.com/TaoQt">Qt进阶之路</a> 同步更新</p>
+                  <p>高质量QQ交流群:734623697 <a href="https://jq.qq.com/?_wv=1027&k=5ZCbGXD">转到群</a></p>
+              </p>
+
+## 社交设置
+social:
+ - name: Github
+   icon: git
+   href: https://github.com/jaredtao
+ - name: Zhihu
+   icon: zhihu
+   href: "https://www.zhihu.com/people/wentao-jia"
+ - name: 邮箱
+   icon: envelope-o
+   href: mailto:jared2020@163.com
+ - name: QQ
+   icon: qq
+   href: "http://wpa.qq.com/msgrd?v=3&uin=759378563&site=qq&menu=yes"
+ - name: 微信
+   icon: weixin
+   href: "http://pqrbffxkg.bkt.clouddn.com/Tao/weixin_connect.jpg"
+ - name: QQ群
+   icon: users
+   href: "https://jq.qq.com/?_wv=1027&k=5ZCbGXD"
+ - name: RSS
+   icon: feed
+   href: /atom.xml
+
+## 文章分类设置
+cate_config:
+   show_count: true
+   show_current: true
+
+## 文章归档设置
+arch_config:
+   type: 'monthly'
+   format: 'YYYY年MM月'
+   show_count: true
+   order: -1
+
+## 标签云设置
+tagcloud:
+  tag3d: true
+  textColour: '#444'
+  outlineMethod: 'block'
+  outlineColour: '#FFDAB9'
+  interval: 30
+  freezeActive: true
+  frontSelect: true
+  reverse: true
+  wheelZoom: false
+
+## 友链设置
+links:
+  - Qt进阶之路-知乎专栏: https://zhuanlan.zhihu.com/TaoQt
+  - 寒山-居士的博客: https://www.heilqt.com
+  - 彩阳的萌梦社区: https://qtdream.com
+  - 麻菜的博客: https://yuriyoung.github.io
+  - 友情位预留: https://jaredtao.gitee.io
+  - 友情位预留: https://jaredtao.gitee.io
+
+# 主题自定义个性化配置
+
+## 网站宣传语
+branding: 传承工匠精神
+
+## 设置banner背景图片
+banner:
+    img: http://snippet.shenliyang.com/img/banner.jpg
+
+## 首页列表底部面板
+homePanel: true
+
+## 缩略图自定义随机图片
+defaultImgs:
+  -
+
+## 截取文章首页描述字数
+excerptLength: 120
+
+## 是否开启文章目录
+toc: true
+
+## 代码高亮配置
+highlightTheme:
+
+## bootstrap配置
+bootstrap:
+
+## ICON配置
+# fontAwesome: //cdn.bootcss.com/font-awesome/5.2.0/css/fontawesome.min.css
+
+## 文章过期提醒功能
+warning:
+  days: 300
+  text: '本文于%d天之前发表，文中内容可能已经过时。'
+
+## 文章内声明
+declaration:
+  enable: true
+  title: '转载声明'
+  tip: |-
+      文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+
+## 文章打赏
+reward:
+  alipay: /img/zhifubao.jpg
+  wepay: /img/weixin.jpg
+  tip: 赞赏是不耍流氓的鼓励
+
+## 主题评论
+
+## Valine评论
+valine:
+   enable: true
+   appId: qegD4552u6FU9HoNDvRsonko-gzGzoHsz
+   appKey: eitB2FV5n2qyMHcDM7x6EQpt
+   placeholder: 说点什么吧
+   notify: false
+   verify: false
+   avatar: mm
+   meta: nick,mail
+   pageSize: 10
+  
+### 畅言评论(需要ICP备案)
+changyan:
+  enable: false
+  appid:
+  conf:
+
+### 来必力
+livere:
+  enable: false
+  livere_uid: MTAyMC80NDAwMy8yMDUzOQ==
+
+## Gitalk评论
+gitalk:
+   enable: false
+   clientID: 
+   clientSecret: 
+   repo: 
+   owner: 
+   admin: 
+   perPage:
+   id:
+
+### Disqus评论
+disqus:
+  enable: false
+  shortname: snippet
+  count: false
+
+### gitment评论(长期不更新，不建议使用)
+gitment:
+  enable: false
+  owner:
+  repo:
+  client_id:
+  client_secret:
+  perPage: 10
+
+### 友言评论(服务不稳定)
+uyan:
+  enable: false
+  uyan_id: 1966422
+
+
+## 网站访客统计
+visit_counter:
+   site: true
+   page: true
+
+## 网站访问统计分析
+
+### 网盟CNZZ统计
+cnzz_analytics: 1263868967
+
+### 百度统计
+baidu_analytics:
+
+### 谷歌统计
+google_analytics:
+
+### 腾讯分析
+tencent_analytics:
+
+### 百度站点认证
+baidu_site_verification:
+
+### 百度自动推送
+baidu_push: true
+
+#网站主题配置
+since: 2019
+robot: 'all' ### 控制搜索引擎的抓取和索引编制行为，默认为all
+version: 1.2.3

@@ -1,0 +1,73 @@
+---
+title: Qt安卓-5.12环境搭建
+photos: /img/avatar.jpg
+tags:
+  - Qt
+  - Qml
+  - QtQuick
+  - 组件化编程
+  - Android
+categories: Qt进阶之路
+abbrlink: 58045
+date: 2019-07-10 00:44:23
+---
+# 简介
+
+Qt for android 环境搭建，以Windows平台 Qt5.12为基准。
+
+# 安装Qt
+
+需要先安装Android版的Qt。 一般在Qt的安装包中都有集成，安装的时候勾上就行
+
+![预览](/images/Android/1.png)
+
+# 安装必备工具链
+
+Android开发必备的工具链包括：
+
+* Java JDK
+* Android SDK
+* Android NDK
+
+下载链接分别点击QtCreator中的按钮就能跳转到
+
+![预览](/images/Android/3.png)
+
+如果不能访问，需要梯子，或者找镜像网站。
+
+这里要注意版本，和Qt5.12适配的才能用。Qt官方也没有说，都是自己试出来的。
+
+JDK： OpenJDK没有试过，Oracle 的JDK， LTS版本有 1.8 和1.11，但是目前的Android SDK都是基于1.8开发的，1.11还用不了。
+
+SDK： SDK下最新的就好。
+
+NDK： Qt5.12能用的NDK是R19C，当前最新的是R20，里面工具链修改了，Qt还没有跟上，得后续版本（Qt5.12.5）
+
+都装好就行了，不要去修改环境变量。直接在QtCreator里面选好路径即可。
+
+![预览](/images/Android/2.png)
+
+# 更新SDK，build Tool
+
+到SDK 管理页面，安装一堆必要的工具和镜像。注意Android SDK Build Tool ， 能用的是28.0.3，最新的29用不了。
+
+![预览](/images/Android/4.png)
+
+# 创建项目
+
+创建一个Qt项目，使用Andorid kit。
+
+之后在项目管理页面中，点一下 “Create Template”按钮，生成一堆android相关配置文件。
+
+![预览](/images/Android/5.png)
+
+之后去项目路径下，找到build.gradle文件
+
+![预览](/images/Android/6.png)
+
+把buildToolsVersion改成"28.0.3"
+
+![预览](/images/Android/7.png)
+
+
+最后编译运行就可以了。模拟器或真机连接，就不说了。

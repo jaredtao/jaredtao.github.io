@@ -1,0 +1,38 @@
+﻿## 转载声明
+
+文章出自[涛哥的博客](https://jaredtao.github.io/)
+
+文章采用 [知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc-sa/4.0/)进行许可, 转载请注明出处, 谢谢合作 © [涛哥](https://jaredtao.github.io/)
+
+### 联系方式
+
+***
+
+| 作者 | 武威的涛哥                          |
+| ---- | -------------------------------- |
+|开发理念 |  弘扬鲁班文化，传承工匠精神 |
+| 博客 | https://jaredtao.github.io |
+|github| https://github.com/jaredtao|
+| 知乎专栏 | Qt进阶之路 https://zhuanlan.zhihu.com/TaoQt |
+|微信公众号| Qt进阶之路|
+| 邮箱 | jared2020@163.com   |
+| 微信 | xsd2410421                       |
+| QQ   | 759378563                  |
+***
+
+****请放心联系我，乐于提供咨询服务，也可洽谈商务合作相关事宜。****
+
+#### **打赏**
+
+<b>
+<img src="http://pqrbffxkg.bkt.clouddn.com/Tao/weixin.jpg?raw=true" width="30%" height="30%" /><img src="http://pqrbffxkg.bkt.clouddn.com/Tao/zhifubao.jpg?raw=true" width="30%" height="30%" />
+</b>
+
+***
+****如果觉得涛哥写的还不错，还请为涛哥打个赏，您的赞赏是涛哥持续创作的源泉。****
+***
+
+
+
+![weixin](http://pqrbffxkg.bkt.clouddn.com/Tao/weixin.jpg)
+![zhifubao](http://pqrbffxkg.bkt.clouddn.com/Tao/zhifubao.jpg)
