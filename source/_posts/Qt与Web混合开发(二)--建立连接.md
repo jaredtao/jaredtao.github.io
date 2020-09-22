@@ -549,7 +549,7 @@ async function onAngleChanged() {
 
 改动如下：
 
-![](/images/Web2/webchannel.png)
+![](../images/Web2/webchannel.png)
 
 ### QObject to Typescript
 
