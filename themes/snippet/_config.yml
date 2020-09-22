@@ -35,7 +35,7 @@ rss: /atom.xml
 
 ## Carousel
 carousel:
-  img: './img/bike1.jpg'
+  img: './img/bike2.jpg'
   url: 'javascript:'
 
 # 各个小工具的设置
@@ -68,7 +68,6 @@ notification: |-
                   <p>涛哥的博客正式上线了</p>
                   <P>博客网址<a href="https://jaredtao.github.io">https://jaredtao.github.io</a></p>
                   <P>国内镜像<a href="https://jaredtao.gitee.io">https://jaredtao.gitee.io</a></p>
-                  <p>知乎专栏 <a href="https://zhuanlan.zhihu.com/TaoQt">Qt进阶之路</a> 同步更新</p>
                   <p>高质量QQ交流群:734623697 <a href="https://jq.qq.com/?_wv=1027&k=5ZCbGXD">转到群</a></p>
               </p>
 
@@ -77,9 +76,6 @@ social:
  - name: Github
    icon: git
    href: https://github.com/jaredtao
- - name: Zhihu
-   icon: zhihu
-   href: "https://www.zhihu.com/people/wentao-jia"
  - name: 邮箱
    icon: envelope-o
    href: mailto:jared2020@163.com
@@ -132,7 +128,7 @@ links:
 # 主题自定义个性化配置
 
 ## 网站宣传语
-branding: 传承工匠精神
+branding: 空谈误国，实干兴邦
 
 ## 设置banner背景图片
 banner:
@@ -162,7 +158,7 @@ bootstrap:
 
 ## 文章过期提醒功能
 warning:
-  days: 600
+  days: 500
   text: '本文于%d天之前发表，文中内容可能已经过时。'
 
 ## 文章内声明
