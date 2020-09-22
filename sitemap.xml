@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jaredtao.github.io/2019/09/12/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD6-%E7%A8%8B%E5%BA%8F%E5%8F%91%E5%B8%83%E6%8C%87%E5%8D%97/</loc>
+    
+    <lastmod>2020-09-22T04:48:15.266Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jaredtao.github.io/2019/10/30/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B11-%E5%8F%AF%E6%8B%96%E5%8A%A8%E7%BB%84%E4%BB%B6/</loc>
+    
+    <lastmod>2020-09-22T04:35:03.131Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jaredtao.github.io/2019/04/29/%E6%B6%9B%E5%93%A5%E5%8D%9A%E5%AE%A2%E6%9D%82%E8%B0%88/</loc>
     
     <lastmod>2020-09-22T01:18:21.264Z</lastmod>
@@ -17,13 +31,6 @@
   
   <url>
     <loc>https://jaredtao.github.io/2019/09/02/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD5-%E6%8E%8C%E6%8F%A1%E4%BF%A1%E5%8F%B7%E6%A7%BD%E4%BD%BF%E7%94%A8%E7%BB%86%E8%8A%82/</loc>
-    
-    <lastmod>2020-09-21T12:47:30.647Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jaredtao.github.io/2019/09/12/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD6-%E7%A8%8B%E5%BA%8F%E5%8F%91%E5%B8%83%E6%8C%87%E5%8D%97/</loc>
     
     <lastmod>2020-09-21T12:47:30.647Z</lastmod>
     
@@ -142,13 +149,6 @@
   </url>
   
   <url>
-    <loc>https://jaredtao.github.io/2019/08/04/Qt3D%E6%8E%A2%E8%B7%AF%E7%AC%94%E8%AE%B01/</loc>
-    
-    <lastmod>2020-09-21T12:47:30.644Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://jaredtao.github.io/2020/03/04/Qt%E4%B8%8EWeb%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91(%E4%B8%80)--%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</loc>
     
     <lastmod>2020-09-21T12:47:30.644Z</lastmod>
@@ -213,13 +213,6 @@
   
   <url>
     <loc>https://jaredtao.github.io/2019/06/01/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B10-%E8%87%AA%E5%AE%9A%E4%B9%89Quick%E6%A8%A1%E5%9D%97/</loc>
-    
-    <lastmod>2020-09-21T12:47:30.642Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jaredtao.github.io/2019/10/30/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B11-%E5%8F%AF%E6%8B%96%E5%8A%A8%E7%BB%84%E4%BB%B6/</loc>
     
     <lastmod>2020-09-21T12:47:30.642Z</lastmod>
     
