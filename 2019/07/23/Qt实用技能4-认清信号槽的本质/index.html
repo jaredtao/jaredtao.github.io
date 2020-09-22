@@ -1,0 +1,532 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Qt,Qt实用技能,QtCreator" />
+
+
+    <meta name="description" content="
+简介
+猫和老鼠的故事
+对象之间的通信机制
+尝试一：直接调用
+尝试二：回调函数+映射表
+
+
+观察者模式
+Qt的信号-槽
+信号-槽简介
+信号-槽分两种
+信号-槽的实现 元对象编译器moc
+moc的..." />
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+
+    <!--Title-->
+
+<title>
+    
+    Qt实用技能4-认清信号槽的本质 |
+    
+    涛哥的博客
+</title>
+
+    <link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 传承工匠精神 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qt进阶之路/"><i class="fa "></i>Qt进阶之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml组件化编程/"><i class="fa "></i>Qml组件化编程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml特效/"><i class="fa "></i>Qml特效</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/C-修炼之路/"><i class="fa "></i>C++修炼之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/涛哥的博客/"><i class="fa "></i>涛哥的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Qt实用技能4-认清信号槽的本质">
+            
+	            Qt实用技能4-认清信号槽的本质
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Qt%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF/">Qt进阶之路</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtCreator/" rel="tag">QtCreator</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/07/23</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>426</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div id="post-gallery">
+        
+          <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+        
+    </div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%e7%ae%80%e4%bb%8b">简介</a></li>
+<li><a href="#%e7%8c%ab%e5%92%8c%e8%80%81%e9%bc%a0%e7%9a%84%e6%95%85%e4%ba%8b">猫和老鼠的故事</a></li>
+<li><a href="#%e5%af%b9%e8%b1%a1%e4%b9%8b%e9%97%b4%e7%9a%84%e9%80%9a%e4%bf%a1%e6%9c%ba%e5%88%b6">对象之间的通信机制</a><ul>
+<li><a href="#%e5%b0%9d%e8%af%95%e4%b8%80%e7%9b%b4%e6%8e%a5%e8%b0%83%e7%94%a8">尝试一：直接调用</a></li>
+<li><a href="#%e5%b0%9d%e8%af%95%e4%ba%8c%e5%9b%9e%e8%b0%83%e5%87%bd%e6%95%b0%e6%98%a0%e5%b0%84%e8%a1%a8">尝试二：回调函数+映射表</a></li>
+</ul>
+</li>
+<li><a href="#%e8%a7%82%e5%af%9f%e8%80%85%e6%a8%a1%e5%bc%8f">观察者模式</a></li>
+<li><a href="#qt%e7%9a%84%e4%bf%a1%e5%8f%b7-%e6%a7%bd">Qt的信号-槽</a><ul>
+<li><a href="#%e4%bf%a1%e5%8f%b7-%e6%a7%bd%e7%ae%80%e4%bb%8b">信号-槽简介</a></li>
+<li><a href="#%e4%bf%a1%e5%8f%b7-%e6%a7%bd%e5%88%86%e4%b8%a4%e7%a7%8d">信号-槽分两种</a></li>
+<li><a href="#%e4%bf%a1%e5%8f%b7-%e6%a7%bd%e7%9a%84%e5%ae%9e%e7%8e%b0-%e5%85%83%e5%af%b9%e8%b1%a1%e7%bc%96%e8%af%91%e5%99%a8moc">信号-槽的实现 元对象编译器moc</a></li>
+<li><a href="#moc%e7%9a%84%e6%9c%ac%e8%b4%a8-%e5%8f%8d%e5%b0%84">moc的本质-反射</a></li>
+</ul>
+</li>
+<li><a href="#%e5%8f%82%e8%80%83%e6%96%87%e7%8c%ae">参考文献</a></li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文是《Qt实用技能》系列文章的第四篇，涛哥在这里讨论Qt信号-槽相关的知识点。</p>
+<p>信号-槽是Qt框架中最核心的机制，也是每个Qt开发者必须掌握的技能。</p>
+<p>网络上有很多介绍信号-槽的文章，也可以参考。</p>
+<p>涛哥的专栏是《Qt进阶之路》，如果连信号-槽的文章都没有，将是没有灵魂的。</p>
+<p>所以这次涛哥就由浅到深地说一说信号-槽。</p>
+<h2 id="猫和老鼠的故事"><a href="#猫和老鼠的故事" class="headerlink" title="猫和老鼠的故事"></a>猫和老鼠的故事</h2><p>如果一上来就讲一大堆概念和定义，读者很容易读睡着。所以涛哥从一个故事/场景开始说起。</p>
+<p>涛哥小时候喜欢看动画片《猫和老鼠》, 里面有汤姆猫(Tom)和杰瑞鼠(Jerry)斗智斗勇的故事。。。</p>
+<p><img src="/images/Qt4/1.jpg" alt="预览"></p>
+<p>现在做个简单的设定：Tom有个技能叫”喵”，就是发出猫叫，而正在偷吃东西的Jerry,听见猫叫声就会逃跑。</p>
+<p><img src="/images/Qt4/TomCat.png" alt="预览"></p>
+<p><img src="/images/Qt4/jerry.jpg" alt="预览"></p>
+<p>我们尝试用C++面向对象的思想，描述这个设定。</p>
+<p>先是定义Tom和Jerry两种对象</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Tom的定义</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tom</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//猫叫</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Miaow</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"喵!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//省略其它</span></span><br><span class="line">    ... </span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//Jerry的定义</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Jerry</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//逃跑</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RunAway</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"那只猫又来了，快溜！"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//省略其它</span></span><br><span class="line">    ... </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接下来模拟场景</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//实例化tom</span></span><br><span class="line">    Tom tom;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//实例化jerry</span></span><br><span class="line">    Jerry jerry;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//tom发出叫声</span></span><br><span class="line">    tom.Miaow();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//jerry逃跑</span></span><br><span class="line">    jerry.RunAway();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个场景看起来很简单，tom发出叫声之后手动调用了jerry的逃跑。</p>
+<p>我们再看几种稍微复杂的场景:</p>
+<p>场景一:</p>
+<p>假如jerry逃跑后过段时间，又回来偷吃东西。Tom再次发出叫声，jerry再次逃跑。。。</p>
+<p>这个场景要重复几十次。我们能否实现，只要tom的Miaow被调用了，jerry的RunAway就自动被调用，而不是每次都手动调用?</p>
+<p>场景二:</p>
+<p>假如jerry是藏在“厨房的柜子里的米袋子后面”，无法直接发现它(不能直接获取到jerry对象，并调用它的函数)。</p>
+<p>这种情况下，该怎么建立 “猫叫-老鼠逃跑” 的模型？</p>
+<p>场景三：</p>
+<p>假如有多只jerry，一只tom发出叫声时，所有jerry都逃跑。这种模型该怎么建立？</p>
+<p>假如有多只tom，任意一只发出叫声时，所有jerry都逃跑。这种模型又该怎么建立？</p>
+<p>场景四：</p>
+<p>假如不知道猫的确切品种或者名字，也不知道老鼠的品种或者名字，只要 猫 这种动物发出叫声，老鼠 这种动物就要逃跑。</p>
+<p>这样的模型又该如何建立?</p>
+<p>…</p>
+<p> 还有很多场景，就不赘述了。</p>
+<h2 id="对象之间的通信机制"><a href="#对象之间的通信机制" class="headerlink" title="对象之间的通信机制"></a>对象之间的通信机制</h2><p>这里概括一下要实现的功能：</p>
+<p>要提供一种对象之间的通信机制。这种机制，要能够给两个不同对象中的函数建立映射关系，前者被调用时后者也能被自动调用。</p>
+<p>再深入一些，两个对象都互相不知道对方的存在，仍然可以建立联系。甚至一对一的映射可以扩展到多对多，具体对象之间的映射可以扩展到抽象概念之间。</p>
+<h3 id="尝试一：直接调用"><a href="#尝试一：直接调用" class="headerlink" title="尝试一：直接调用"></a>尝试一：直接调用</h3><p>应该会有人说， Miaow()的函数中直接调用RunAway()不就行了？</p>
+<p>明显场景二就把这种方案pass掉了。</p>
+<p>直接调用的问题是，猫要知道老鼠有个函数/接口叫逃跑，然后主动调用了它。</p>
+<p>这就好比Tom叫了一声，然后Tom主动拧着Jerry的腿让它跑。这样是不合理的。(Jerry表示一脸懵逼!)</p>
+<p>真实的逻辑是，猫的叫声在空气/介质中传播，传到了老鼠的耳朵里，老鼠就逃跑了。猫和老鼠互相都没看见呢。</p>
+<h3 id="尝试二：回调函数-映射表"><a href="#尝试二：回调函数-映射表" class="headerlink" title="尝试二：回调函数+映射表"></a>尝试二：回调函数+映射表</h3><p>似乎是可行的。</p>
+<p>稍微思考一下，我们要做这两件事情：</p>
+<p>1 把RunAway函数取出来存储在某个地方</p>
+<p>2 建立Miaow函数和RunAway的映射关系，能够在前者被调用时，自动调用后者。</p>
+<p>RunAway函数可以用 函数指针|成员函数指针 或者C++11-function 来存储，都可以称作 “回调函数”。</p>
+<p>(下面的代码以C++11 function的写法为主，函数指针的写法稍微复杂一些，本质一样)</p>
+<p>我们先用一个简单的Map来存储映射关系, 就用一个字符串作为映射关系的名字</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>, <span class="built_in">std</span>::function&lt;<span class="keyword">void</span>()&gt;&gt; callbackMap;</span><br></pre></td></tr></table></figure>
+<p>我们还要实现 “建立映射关系” 和 “调用”功能，所以这里封装一个Connections类</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Connections</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//按名称“建立映射关系”</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;name, <span class="keyword">const</span> <span class="built_in">std</span>::function&lt;<span class="keyword">void</span>()&gt; &amp;callback)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_callbackMap[name] = callback;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//按名称“调用”</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">invok</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;name)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> it = m_callbackMap.find(name);</span><br><span class="line">        <span class="comment">//迭代器判断</span></span><br><span class="line">        <span class="keyword">if</span> (it != m_callbackMap.end()) &#123;</span><br><span class="line">            <span class="comment">//迭代器有效的情况，直接调用</span></span><br><span class="line">            it-&gt;second();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>, <span class="built_in">std</span>::function&lt;<span class="keyword">void</span>()&gt;&gt; m_callbackMap;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>那么这个映射关系存储在哪里呢? 显然是一个Tom和Jerry共有的”上下文环境”中。</p>
+<p>我们用一个全局变量来表示，这样就可以简单地模拟了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//全局共享的Connections。</span></span><br><span class="line"><span class="keyword">static</span> Connections s_connections;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Tom的定义</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tom</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//猫叫</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Miaow</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"喵!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="comment">//调用一下名字为mouse的回调</span></span><br><span class="line">        s_connections.invok(<span class="string">"mouse"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//省略其它</span></span><br><span class="line">    ... </span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//Jerry的定义</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Jerry</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Jerry() </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//构造函数中，建立映射关系。std::bind属于基本用法。</span></span><br><span class="line">        s_connections.connect(<span class="string">"mouse"</span>, <span class="built_in">std</span>::bind(&amp;Jerry::RunAway, <span class="keyword">this</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//逃跑</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RunAway</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"那只猫又来了，快溜！"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//省略其它</span></span><br><span class="line">    ... </span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//模拟嵌套层级很深的场景，外部不能直接访问到tom</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">B</span> &#123;</span></span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">C</span> &#123;</span></span><br><span class="line">                <span class="keyword">private</span>:</span><br><span class="line">                    <span class="comment">//Tom在很深的结构中</span></span><br><span class="line">                    Tom tom;</span><br><span class="line">                <span class="keyword">public</span>:</span><br><span class="line">                    <span class="function"><span class="keyword">void</span> <span class="title">MiaoMiaoMiao</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">                    </span>&#123;</span><br><span class="line">                        tom.Miaow();</span><br><span class="line">                    &#125;</span><br><span class="line">            &#125;c;</span><br><span class="line">            <span class="function"><span class="keyword">void</span> <span class="title">MiaoMiao</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                c.MiaoMiaoMiao();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;b;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Miao</span><span class="params">()</span> </span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            b.MiaoMiao();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;a;</span><br><span class="line">    <span class="comment">//模拟嵌套层级很深的场景，外部不能直接访问到jerry</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">D</span> &#123;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">E</span> &#123;</span></span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">F</span> &#123;</span></span><br><span class="line">                <span class="keyword">private</span>:</span><br><span class="line">                    <span class="comment">//jerry在很深的结构中</span></span><br><span class="line">                    Jerry jerry;</span><br><span class="line">            &#125;f;</span><br><span class="line">        &#125;e;</span><br><span class="line">    &#125;d;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//A间接调用tom的MiaoW，发出猫叫声</span></span><br><span class="line">    a.Miao();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看一下运行结果：</p>
+<p><img src="/images/Qt4/run.png" alt="预览"></p>
+<p>RunAway没有被直接调用，而是被自动触发。</p>
+<p>分析：这里是以”mouse”这个字符串作为连接tom和jerry的关键。这只是一种简单、粗糙的示例实现。</p>
+<h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><p>在GOF四人帮的书籍《设计模式》中，有一种观察者模式，可以比较优雅地实现同样的功能。</p>
+<p>(顺便说一下，GOF总结的设计模式一共有23种，涛哥曾经用C++11实现了全套的，github地址是:<a href="https://github.com/jaredtao/DesignPattern" target="_blank" rel="noopener">https://github.com/jaredtao/DesignPattern</a>)</p>
+<p>初级的观察者模式，涛哥就不重复了。这里涛哥用C++11搭配一点模板技巧，实现一个更加通用的观察者模式。</p>
+<p>也可以叫发布-订阅模式。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Subject.hpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Subject 事件或消息的主体。模板参数为观察者类型</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> ObserverType&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Subject</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//订阅</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">subscibe</span><span class="params">(ObserverType *obs)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> itor = <span class="built_in">std</span>::find(m_observerList.begin(), m_observerList.end(), obs);</span><br><span class="line">        <span class="keyword">if</span> (m_observerList.end() == itor) &#123;</span><br><span class="line">            m_observerList.push_back(obs);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//取消订阅</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unSubscibe</span><span class="params">(ObserverType *obs)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_observerList.erase(<span class="built_in">std</span>::remove(m_observerList.begin(), m_observerList.end(), obs));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//发布。这里的模板参数为函数类型。</span></span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> FuncType&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">publish</span><span class="params">(FuncType func)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> obs: m_observerList)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//调用回调函数，将obs作为第一个参数传递</span></span><br><span class="line">            func(obs);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;ObserverType *&gt; m_observerList;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Subject.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cout</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//CatObserver 接口 猫的观察者</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CatObserver</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//猫叫事件</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">onMiaow</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~CatObserver() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Tom 继承于Subject模板类，模板参数为CatObserver。这样Tom就拥有了订阅、发布的功能。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tom</span> :</span> <span class="keyword">public</span> Subject&lt;CatObserver&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">miaoW</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"喵!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="comment">//发布"猫叫"。</span></span><br><span class="line">        <span class="comment">//这里取CatObserver类的成员函数指针onMiaow。而成员函数指针调用时，要传递一个对象的this指针才行的。</span></span><br><span class="line">        <span class="comment">//所以用std::bind 和 std::placeholders::_1将第一个参数 绑定为 函数被调用时的第一个参数，也就是前面Subject::publish中的obs</span></span><br><span class="line">        publish(<span class="built_in">std</span>::bind(&amp;CatObserver::onMiaow, <span class="built_in">std</span>::placeholders::_1));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//Jerry 继承于 CatObserver</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Jerry</span>:</span> <span class="keyword">public</span> CatObserver</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//重写“猫叫事件”</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onMiaow</span><span class="params">()</span> override</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//发生 “猫叫”时 调用 逃跑</span></span><br><span class="line">        RunAway();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">RunAway</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"那只猫又来了，快溜！"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Tom tom;</span><br><span class="line">    Jerry jerry;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//拿jerry去订阅Tom的 猫叫事件</span></span><br><span class="line">    tom.subscibe(&amp;jerry);</span><br><span class="line"></span><br><span class="line">    tom.miaoW();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>任意类只要继承Subject模板类，提供观察者参数，就拥有了发布-订阅功能。</p>
+<h2 id="Qt的信号-槽"><a href="#Qt的信号-槽" class="headerlink" title="Qt的信号-槽"></a>Qt的信号-槽</h2><h3 id="信号-槽简介"><a href="#信号-槽简介" class="headerlink" title="信号-槽简介"></a>信号-槽简介</h3><p>信号-槽 是Qt自定义的一种通信机制，它不同于标准C/C++ 语言。</p>
+<p>信号-槽的使用方法，是在普通的函数声明之前，加上signal、slot标记，然后通过connect函数把信号与槽 连接起来。</p>
+<p>后续只要调用 信号函数,就可以触发连接好的信号或槽函数。</p>
+<p><img src="/images/Qt4/signals-slot.png" alt="预览"></p>
+<p>连接的时候，前面的是发送者，后面的是接收者。信号与信号也可以连接，这种情况把接收者信号看做槽即可。</p>
+<h3 id="信号-槽分两种"><a href="#信号-槽分两种" class="headerlink" title="信号-槽分两种"></a>信号-槽分两种</h3><p>信号-槽要分成两种来看待，一种是同一个线程内的信号-槽，另一种是跨线程的信号-槽。</p>
+<p>同一个线程内的信号-槽，就相当于函数调用，和前面的观察者模式相似，只不过信号-槽稍微有些性能损耗(这个后面细说)。</p>
+<p>跨线程的信号-槽，在信号触发时，发送者线程将槽函数的调用转化成了一次“调用事件”，放入事件循环中。</p>
+<p>接收者线程执行到下一次事件处理时，处理“调用事件”，调用相应的函数。</p>
+<p>(关于事件循环，可以参考专栏上一篇文章《Qt实用技能3-理解事件循环》)</p>
+<h3 id="信号-槽的实现-元对象编译器moc"><a href="#信号-槽的实现-元对象编译器moc" class="headerlink" title="信号-槽的实现 元对象编译器moc"></a>信号-槽的实现 元对象编译器moc</h3><p>信号-槽的实现，借助一个工具：元对象编译器MOC(Meta Object Compiler)。</p>
+<p>这个工具被集成在了Qt的编译工具链qmake中，在开始编译Qt工程时，会先去执行MOC，从代码中</p>
+<p>解析signals、slot、emit等等这些标准C/C++不存在的关键字，以及处理Q_OBJECT、Q_PROPERTY、</p>
+<p>Q_INVOKABLE等相关的宏，生成一个moc_xxx.cpp的C++文件。(使用黑魔法来变现语法糖)</p>
+<p>比如信号函数只要声明、不需要自己写实现，就是在这个moc_xxx.cpp文件中，自动生成的。</p>
+<p>MOC之后就是常规的C/C++编译、链接流程了。</p>
+<h3 id="moc的本质-反射"><a href="#moc的本质-反射" class="headerlink" title="moc的本质-反射"></a>moc的本质-反射</h3><p>MOC的本质，其实是一个反射器。标准C++没有反射功能(将来会有)，所以Qt用moc实现了反射功能。</p>
+<p>什么叫反射呢？ 简单来说，就是运行过程中，获取对象的构造函数、成员函数、成员变量。</p>
+<p>举个例子来说明，有下面这样一个类声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tom</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Tom() &#123;&#125;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> &amp; <span class="title">getName</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m_name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setName</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;name)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_name = name;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> m_name;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>类的使用者,看不到类的声明,头文件都拿不到,不能直接调用类的构造函数、成员函数。</p>
+<p>从配置文件/网络拿到了一段字符串“Tom”，就要创建一个Tom类的对象实例。</p>
+<p>然后又拿到一段“setName”的字符串，就要去调用Tom的setName函数。</p>
+<p>面对这种需求，就需要把Tom类的构造函数、成员函数等信息存储起来，还要能够被调用到。</p>
+<p>这些信息就是 “元信息”，使用者通过“元信息”就可以“使用这个类”。这便是反射了。</p>
+<p>设计模式中的“工厂模式”，就是一个典型的反射案例。不过工厂模式只解决了构造函数的调用，没有成员函数、成员变量等信息。</p>
+<p>反射包括 编译期静态反射 和 运行期动态反射。。。</p>
+<p>文章有点长了，这次先到这里，剩下的下次再讨论。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] Qt帮助文档, 搜索关键词 Signals &amp; Slots<br>[2] IBM文档库 <a href="https://www.ibm.com/developerworks/cn/linux/guitoolkit/qt/signal-slot/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/guitoolkit/qt/signal-slot/index.html</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/08/04/Qt3D%E6%8E%A2%E8%B7%AF%E7%AC%94%E8%AE%B01/" class="pre-post btn btn-default" title='Qt3D探路笔记1'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Qt3D探路笔记1</span>
+        </a>
+    
+    
+        <a href="/2019/07/10/Qt%E5%AE%89%E5%8D%93-5.12.4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="next-post btn btn-default" title='Qt安卓-5.12环境搭建'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Qt安卓-5.12环境搭建</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+            appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: true,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#猫和老鼠的故事"><span class="toc-text">猫和老鼠的故事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象之间的通信机制"><span class="toc-text">对象之间的通信机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#尝试一：直接调用"><span class="toc-text">尝试一：直接调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尝试二：回调函数-映射表"><span class="toc-text">尝试二：回调函数+映射表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#观察者模式"><span class="toc-text">观察者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt的信号-槽"><span class="toc-text">Qt的信号-槽</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#信号-槽简介"><span class="toc-text">信号-槽简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#信号-槽分两种"><span class="toc-text">信号-槽分两种</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#信号-槽的实现-元对象编译器moc"><span class="toc-text">信号-槽的实现 元对象编译器moc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#moc的本质-反射"><span class="toc-text">moc的本质-反射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+    <script>
+        var tagOption = {
+            textColour: '#444', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+
+</body>
+</html>

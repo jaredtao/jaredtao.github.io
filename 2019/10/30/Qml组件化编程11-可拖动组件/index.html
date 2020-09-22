@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Qt,Qt实用技能,Qt发布" />
+
+
+    <meta name="description" content="简介本文是《Qml组件化编程》系列文章的第十一篇，涛哥将教大家，实现Qml可拖动组件。
+注：文章主要发布在涛哥的博客 和 涛哥的知乎专栏-Qt进阶之路
+效果图
+代码https://github...." />
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+
+    <!--Title-->
+
+<title>
+    
+    Qml组件化编程11-可拖动组件 |
+    
+    涛哥的博客
+</title>
+
+    <link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 传承工匠精神 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qt进阶之路/"><i class="fa "></i>Qt进阶之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml组件化编程/"><i class="fa "></i>Qml组件化编程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml特效/"><i class="fa "></i>Qml特效</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/C-修炼之路/"><i class="fa "></i>C++修炼之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/涛哥的博客/"><i class="fa "></i>涛哥的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Qml组件化编程11-可拖动组件">
+            
+	            Qml组件化编程11-可拖动组件
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/">Qml组件化编程</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%8F%91%E5%B8%83/" rel="tag">Qt发布</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/10/30</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>327</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div id="post-gallery">
+        
+          <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+        
+    </div>
+
+    <div class="post-body post-content">
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文是《Qml组件化编程》系列文章的第十一篇，涛哥将教大家，实现Qml可拖动组件。</p>
+<p>注：文章主要发布在<a href="https://jaredtao.github.io">涛哥的博客</a> 和 <a href="https://zhuanlan.zhihu.com/TaoQt" target="_blank" rel="noopener">涛哥的知乎专栏-Qt进阶之路</a></p>
+<h1 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h1><p><img src="/images/Qml11/1.gif" alt="1"></p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/jaredtao/TaoDragBorder" target="_blank" rel="noopener">https://github.com/jaredtao/TaoDragBorder</a></p>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>封装的组件名称是TemplateBorder。</p>
+<p>使用很简单，在要支持拖拽的目标组件上，创建一个TemplateBorder实例即可，例如：</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    <span class="attribute">x</span>: <span class="number">100</span></span><br><span class="line">    <span class="attribute">y</span>: <span class="number">200</span></span><br><span class="line">    <span class="attribute">width</span>: <span class="number">300</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">200</span></span><br><span class="line">    <span class="attribute">color</span>: <span class="string">"red"</span></span><br><span class="line">    <span class="attribute">smooth</span>: <span class="literal">true</span></span><br><span class="line">    <span class="attribute">antialiasing</span>: <span class="literal">true</span></span><br><span class="line">    <span class="title">MouseArea</span> &#123;</span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">        <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">            <span class="built_in">parent</span>.focus = <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//这里添加一个边框</span></span><br><span class="line">    <span class="title">TemplateBorder</span> &#123;</span><br><span class="line">        <span class="comment">//注意控制大小</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="built_in">parent</span>.width + borderMargin * <span class="number">2</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="built_in">parent</span>.height + borderMargin * <span class="number">2</span></span><br><span class="line">        <span class="attribute">anchors.centerIn</span>: <span class="built_in">parent</span></span><br><span class="line">        <span class="comment">//目标item有焦点时显示边框</span></span><br><span class="line">        <span class="attribute">visible</span>: <span class="built_in">parent</span>.focus</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="拖拽的前提"><a href="#拖拽的前提" class="headerlink" title="拖拽的前提"></a>拖拽的前提</h2><p>目标组件不要用锚布局，不要用Layout布局。</p>
+<p>拖拽需要修改目标组件的坐标和宽高，而锚布局、Layout会限定坐标或宽高。</p>
+<h2 id="拖拽原理"><a href="#拖拽原理" class="headerlink" title="拖拽原理"></a>拖拽原理</h2><p>拖拽本身可以使用MouseArea的 drag.target，但这个target限制为item及其子类。</p>
+<p>有时候还需要处理无边框窗口的拖动，窗口不是item，就不能用drag.target。</p>
+<p>所以需要一个通用的拖拽算法：</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="title">MouseArea</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> mouseArea</span></span><br><span class="line">    <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int lastX</span>: <span class="number">0</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int lastY</span>: <span class="number">0</span></span><br><span class="line">    <span class="attribute">onPressedChanged</span>: &#123;</span><br><span class="line">        <span class="keyword">if</span> (containsPress) &#123;</span><br><span class="line">          <span class="comment">//按下鼠标时记录坐标</span></span><br><span class="line">            lastX = mouseX;</span><br><span class="line">            lastY = mouseY;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">onPositionChanged</span>: &#123;</span><br><span class="line">        <span class="keyword">if</span> (pressed) &#123;</span><br><span class="line">          <span class="comment">//拖动时修改目标的坐标</span></span><br><span class="line">            <span class="built_in">parent</span>.x += mouseX - lastX</span><br><span class="line">            <span class="built_in">parent</span>.y += mouseY - lastY</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h2><p>锚点就是在组件的左上角、右上角等八个点，分别放一个小圆圈，圆圈里面是可拖拽组件，分别控制组件的坐标、宽高。</p>
+<p>注意每个点的计算规则都不太一样。</p>
+<p>例如左上角，要同时计算x、y和宽高，而右上角则只计算y、和宽高：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Item &#123;</span><br><span class="line">    id: root</span><br><span class="line">    &#x2F;&#x2F;controller 要控制大小的目标，可以是Item，也可以是view，只要提供x、y、width、height等属性的修改</span><br><span class="line">    &#x2F;&#x2F;默认值为parent</span><br><span class="line">    property var control: parent</span><br><span class="line">    &#x2F;&#x2F;左上角的拖拽</span><br><span class="line">    TDragItem &#123;</span><br><span class="line">        id: leftTopHandle</span><br><span class="line">        posType: posLeftTop</span><br><span class="line">        onPosChange: &#123;</span><br><span class="line">            if (control.x + xOffset &lt; control.x + control.width)</span><br><span class="line">                control.x +&#x3D; xOffset;</span><br><span class="line">            if (control.y + yOffset &lt; control.y + control.height)</span><br><span class="line">                control.y +&#x3D; yOffset;</span><br><span class="line">            if (control.width - xOffset &gt; 0)</span><br><span class="line">                control.width-&#x3D; xOffset;</span><br><span class="line">            if (control.height -yOffset &gt; 0)</span><br><span class="line">                control.height -&#x3D; yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;右上角拖拽</span><br><span class="line">    TDragItem &#123;</span><br><span class="line">        id: rightTopHandle</span><br><span class="line">        posType: posRightTop</span><br><span class="line">        x: parent.width - width</span><br><span class="line">        onPosChange: &#123;</span><br><span class="line">            &#x2F;&#x2F;向左拖动时，xOffset为负数</span><br><span class="line">            if (control.width + xOffset &gt; 0)</span><br><span class="line">                control.width +&#x3D; xOffset;</span><br><span class="line">            if (control.height - yOffset &gt; 0)</span><br><span class="line">                control.height -&#x3D; yOffset;</span><br><span class="line">            if (control.y + yOffset &lt; control.y + control.height)</span><br><span class="line">                control.y +&#x3D; yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p>旋转算法和拖拽类似</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">MouseArea &#123;</span><br><span class="line">    id: rotateArea</span><br><span class="line">    anchors.centerIn: parent</span><br><span class="line">    property int lastX: 0</span><br><span class="line"></span><br><span class="line">    onPressedChanged: &#123;</span><br><span class="line">      if (containsPress) &#123;</span><br><span class="line">        lastX &#x3D; mouseX;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    onPositionChanged: &#123;</span><br><span class="line">      if (pressed) &#123;</span><br><span class="line">        let t &#x3D; controller.rotation +(mouseX - lastX) &#x2F; 5</span><br><span class="line">        &#x2F;&#x2F;这里的除以5，用来消除抖动。</span><br><span class="line">        t &#x3D; t % 360</span><br><span class="line">        controller.rotation &#x3D; t</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/11/19/Qt%E4%BD%BF%E7%94%A8github-Actions%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BC%96%E8%AF%91/" class="pre-post btn btn-default" title='Qt使用github-Actions自动化编译'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Qt使用github-Actions自动化编译</span>
+        </a>
+    
+    
+        <a href="/2019/09/12/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD6-%E7%A8%8B%E5%BA%8F%E5%8F%91%E5%B8%83%E6%8C%87%E5%8D%97/" class="next-post btn btn-default" title='Qt实用技能6-程序发布指南'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Qt实用技能6-程序发布指南</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+            appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: true,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#效果图"><span class="toc-text">效果图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#拖拽的前提"><span class="toc-text">拖拽的前提</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拖拽原理"><span class="toc-text">拖拽原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#锚点"><span class="toc-text">锚点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#旋转"><span class="toc-text">旋转</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+    <script>
+        var tagOption = {
+            textColour: '#444', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Qt,Qt实用技能" />
+
+
+    <meta name="description" content="简介Qt3D已经推出有一段时间了，除了官方和KDAB的文档，相关资料非常稀缺。
+涛哥研究过一段时间Qt3D，这里把自己探路的一些笔记分享出来, 抛砖引玉吧。
+我们看图说话。
+3D场景首先得创建一..." />
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+
+    <!--Title-->
+
+<title>
+    
+    Qt3D探路笔记1 |
+    
+    涛哥的博客
+</title>
+
+    <link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 传承工匠精神 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qt进阶之路/"><i class="fa "></i>Qt进阶之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml组件化编程/"><i class="fa "></i>Qml组件化编程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml特效/"><i class="fa "></i>Qml特效</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/C-修炼之路/"><i class="fa "></i>C++修炼之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/涛哥的博客/"><i class="fa "></i>涛哥的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Qt3D探路笔记1">
+            
+	            Qt3D探路笔记1
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Qt%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF/">Qt进阶之路</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/08/04</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>414</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div id="post-gallery">
+        
+          <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+        
+    </div>
+
+    <div class="post-body post-content">
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Qt3D已经推出有一段时间了，除了官方和KDAB的文档，相关资料非常稀缺。</p>
+<p>涛哥研究过一段时间Qt3D，这里把自己探路的一些笔记分享出来, 抛砖引玉吧。</p>
+<p>我们看图说话。</p>
+<h2 id="3D场景"><a href="#3D场景" class="headerlink" title="3D场景"></a>3D场景</h2><p>首先得创建一个3D场景</p>
+<p><img src="/images/Qt3D/2.png" alt="预览"></p>
+<p>安卓模拟器也跑一跑</p>
+<p><img src="/images/Qt3D/2_Android.png" alt="预览"></p>
+<h2 id="三角形"><a href="#三角形" class="headerlink" title="三角形"></a>三角形</h2><p>随便画点三角形，试试牛刀杀鸡。</p>
+<p><img src="/images/Qt3D/3.png" alt="预览"></p>
+<p><img src="/images/Qt3D/3_Android.png" alt="预览"></p>
+<p>创建了4个3D场景，放在了一起。</p>
+<p>左上角为顶点绘制的三角形，4个点+ TriangleFan的方式绘制。</p>
+<p>右上角是 索引+顶点绘制的线框模式两个三角形</p>
+<p>左下角为一次绘制两个三角形（顶点数据包含两个三角形）</p>
+<p>右下角为绘制彩色的三角形(顶点数据之外，增加色彩数据)</p>
+<h2 id="纹理"><a href="#纹理" class="headerlink" title="纹理"></a>纹理</h2><p>贴纹理</p>
+<p><img src="/images/Qt3D/5.png" alt="预览"></p>
+<p><img src="/images/Qt3D/5_Android.png" alt="预览"></p>
+<h2 id="立方体"><a href="#立方体" class="headerlink" title="立方体"></a>立方体</h2><p><img src="/images/Qt3D/7.png" alt="预览"></p>
+<p><img src="/images/Qt3D/7_Android.png" alt="预览"></p>
+<h2 id="动态创建立方体"><a href="#动态创建立方体" class="headerlink" title="动态创建立方体"></a>动态创建立方体</h2><p><img src="/images/Qt3D/8.png" alt="预览"></p>
+<p><img src="/images/Qt3D/8_Android.png" alt="预览"></p>
+<h2 id="几何图形合影"><a href="#几何图形合影" class="headerlink" title="几何图形合影"></a>几何图形合影</h2><p><img src="/images/Qt3D/16.png" alt="预览"></p>
+<h2 id="立方体贴图"><a href="#立方体贴图" class="headerlink" title="立方体贴图"></a>立方体贴图</h2><p><img src="/images/Qt3D/10.png" alt="预览"></p>
+<h2 id="天空盒"><a href="#天空盒" class="headerlink" title="天空盒"></a>天空盒</h2><p><img src="/images/Qt3D/11.png" alt="预览"></p>
+<p><img src="/images/Qt3D/11_Android.png" alt="预览"></p>
+<h2 id="3D文字"><a href="#3D文字" class="headerlink" title="3D文字"></a>3D文字</h2><p><img src="/images/Qt3D/14.gif" alt="预览"></p>
+<h2 id="纳米军团"><a href="#纳米军团" class="headerlink" title="纳米军团"></a>纳米军团</h2><p><img src="/images/Qt3D/15.png" alt="预览"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>都挺简单的，不做说明了，直接看源码吧。</p>
+<p><a href="https://github.com/jaredtao/Qt3D-Learn" target="_blank" rel="noopener">https://github.com/jaredtao/Qt3D-Learn</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/08/30/Qt%E5%8E%9F%E7%90%86-%E7%AA%A5%E6%8E%A2%E4%BF%A1%E5%8F%B7%E6%A7%BD%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82/" class="pre-post btn btn-default" title='Qt原理-窥探信号槽的实现细节'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Qt原理-窥探信号槽的实现细节</span>
+        </a>
+    
+    
+        <a href="/2019/07/23/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD4-%E8%AE%A4%E6%B8%85%E4%BF%A1%E5%8F%B7%E6%A7%BD%E7%9A%84%E6%9C%AC%E8%B4%A8/" class="next-post btn btn-default" title='Qt实用技能4-认清信号槽的本质'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Qt实用技能4-认清信号槽的本质</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+            appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: true,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3D场景"><span class="toc-text">3D场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三角形"><span class="toc-text">三角形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#纹理"><span class="toc-text">纹理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#立方体"><span class="toc-text">立方体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#动态创建立方体"><span class="toc-text">动态创建立方体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几何图形合影"><span class="toc-text">几何图形合影</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#立方体贴图"><span class="toc-text">立方体贴图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#天空盒"><span class="toc-text">天空盒</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3D文字"><span class="toc-text">3D文字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#纳米军团"><span class="toc-text">纳米军团</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码"><span class="toc-text">代码</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+    <script>
+        var tagOption = {
+            textColour: '#444', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+
+</body>
+</html>

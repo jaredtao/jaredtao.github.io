@@ -1,0 +1,534 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Qt,Qt实用技能" />
+
+
+    <meta name="description" content="
+简介
+事件与事件循环
+Hello World
+循环处理
+类比事件循环的概念
+
+
+不同操作系统的事件循环
+Windows
+Linux X11窗口
+MacOS Cocoa Application
+..." />
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+
+    <!--Title-->
+
+<title>
+    
+    Qt实用技能3-理解事件循环 |
+    
+    涛哥的博客
+</title>
+
+    <link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 传承工匠精神 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qt进阶之路/"><i class="fa "></i>Qt进阶之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml组件化编程/"><i class="fa "></i>Qml组件化编程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml特效/"><i class="fa "></i>Qml特效</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/C-修炼之路/"><i class="fa "></i>C++修炼之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/涛哥的博客/"><i class="fa "></i>涛哥的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Qt实用技能3-理解事件循环">
+            
+	            Qt实用技能3-理解事件循环
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Qt%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF/">Qt进阶之路</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/07/06</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>443</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div id="post-gallery">
+        
+          <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+        
+    </div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E4%BA%8B%E4%BB%B6%E4%B8%8E%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF">事件与事件循环</a><ul>
+<li><a href="#Hello-World">Hello World</a></li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E5%A4%84%E7%90%86">循环处理</a></li>
+<li><a href="#%E7%B1%BB%E6%AF%94%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E7%9A%84%E6%A6%82%E5%BF%B5">类比事件循环的概念</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%8D%E5%90%8C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF">不同操作系统的事件循环</a><ul>
+<li><a href="#Windows">Windows</a></li>
+<li><a href="#Linux-X11%E7%AA%97%E5%8F%A3">Linux X11窗口</a></li>
+<li><a href="#MacOS-Cocoa-Application">MacOS Cocoa Application</a></li>
+</ul>
+</li>
+<li><a href="#Qt%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF">Qt的事件循环</a><ul>
+<li><a href="#QEventLoop%E7%B1%BB">QEventLoop类</a></li>
+<li><a href="#QCoreApplication-%E4%B8%BB%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF">QCoreApplication 主事件循环</a></li>
+</ul>
+</li>
+<li><a href="#Qt%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86">Qt的事件分发和事件处理</a><ul>
+<li><a href="#%E9%87%8D%E8%BD%BD%E4%BA%8B%E4%BB%B6">重载事件</a></li>
+<li><a href="#QEvent">QEvent</a></li>
+<li><a href="#%E4%BA%8B%E4%BB%B6%E8%BF%87%E6%BB%A4%E5%99%A8">事件过滤器</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E7%9A%84%E8%BF%90%E7%94%A8">事件循环的运用</a><ul>
+<li><a href="#processEvents%E4%B8%8D%E9%98%BB%E5%A1%9EUI">processEvents不阻塞UI</a></li>
+<li><a href="#QEventLoop%E6%A8%A1%E6%8B%9F%E5%90%8C%E6%AD%A5%E8%B0%83%E7%94%A8">QEventLoop模拟同步调用</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文是《Qt实用技能》系列文章的第三篇，涛哥在这里讨论事件循环相关的知识点。</p>
+<p>一些常见的问题，诸如：</p>
+<pre><code>为什么Qt程序的main函数都有一个QApplication?
+
+执行比较耗时的任务时，怎样能不卡界面?
+
+同步、异步、阻塞、非阻塞到底是怎么回事?</code></pre><p>等等，都可以在本文中找到答案。</p>
+<p>注：文章主要发布在<a href="https://jaredtao.github.io">涛哥的博客</a> 和 <a href="https://zhuanlan.zhihu.com/TaoQt" target="_blank" rel="noopener">涛哥的知乎专栏-Qt进阶之路</a></p>
+<h2 id="事件与事件循环"><a href="#事件与事件循环" class="headerlink" title="事件与事件循环"></a>事件与事件循环</h2><h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h3><p>从Hello World说起吧</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello World"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一段大家都很熟悉的命令行程序，运行起来会在终端输出”Hello World”，之后程序就退出了。</p>
+<h3 id="循环处理"><a href="#循环处理" class="headerlink" title="循环处理"></a>循环处理</h3><p>我们稍微加点需求: 程序能够一直运行，每次用户输入一些信息并按下回车时，打印出用户的输入。直到输入的内容为“quit”时才退出。</p>
+<p>按照这个需求，代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> input[<span class="number">1024</span>];   <span class="comment">//假设输入长度不超过1024</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> quitStr[] = <span class="string">"quit"</span>;</span><br><span class="line">    <span class="keyword">bool</span> quit = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">false</span> == quit) &#123;</span><br><span class="line">        scanf_s(<span class="string">"%s"</span>, input, <span class="keyword">sizeof</span> input);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"user input: %s\n"</span>, input);</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">0</span> == <span class="built_in">memcmp</span>(input, quitStr, <span class="keyword">sizeof</span> quitStr)) &#123;</span><br><span class="line">            quit = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们使用了一个while循环。在这个循环体内，不停地处理用户的输入。当输入的内容为”quit”时，循环终止条件被设置为true，循环将终止。</p>
+<h3 id="类比事件循环的概念"><a href="#类比事件循环的概念" class="headerlink" title="类比事件循环的概念"></a>类比事件循环的概念</h3><p>在上面这个例子中，“用户输入并按下回车”这件事情，我们可以称作一个“事件”或者“用户输入事件”，不停的去处理“事件”的这段代码，</p>
+<p>我们可以称作“事件循环”, 也可以叫做”消息循环”，是一回事。</p>
+<p>一般对于带UI窗口的程序来说，“事件”是由操作系统或程序框架在不同的时刻发出的。</p>
+<p>当用户按下鼠标、敲下键盘，或者是窗口需要重新绘制的时候，计时器触发的时候，都会发出一个相应的事件。</p>
+<p>我们把“事件循环”的代码 提炼/抽象 如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">loop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    initialize();</span><br><span class="line">    <span class="keyword">bool</span> shouldQuit = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">false</span> == shouldQuit)</span><br><span class="line">    &#123;</span><br><span class="line">        var message = get_next_message();</span><br><span class="line">        process_message(message);</span><br><span class="line">        <span class="keyword">if</span> (message == QUIT) </span><br><span class="line">        &#123;</span><br><span class="line">            shouldQuit = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在事件循环中, 不停地去获取下一个事件，然后做出处理。直到quit事件发生，循环结束。</p>
+<p>有“取事件”的过程，那么自然有“存储事件”的地方，要么是操作系统存储，要么是软件框架存储。</p>
+<p>存储事件的地方，我们称作 “事件队列” Event Queue</p>
+<p>处理事件，我们也称作 “事件分发” Event Dispatch</p>
+<h2 id="不同操作系统的事件循环"><a href="#不同操作系统的事件循环" class="headerlink" title="不同操作系统的事件循环"></a>不同操作系统的事件循环</h2><h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>先来看一个Windows系统的事件循环示例(win32 API)：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">MSG msg = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="keyword">bool</span> done = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">while</span> (!done)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (PeekMessage(&amp;msg, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, PM_REMOVE))</span><br><span class="line">    &#123;</span><br><span class="line">        TranslateMessage(&amp;msg);</span><br><span class="line">        DispatchMessage(&amp;msg);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (msg.message == WM_QUIT)</span><br><span class="line">    &#123;</span><br><span class="line">        done = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>思路和前面介绍的一致</p>
+<h3 id="Linux-X11窗口"><a href="#Linux-X11窗口" class="headerlink" title="Linux X11窗口"></a>Linux X11窗口</h3><p>有些linux系统使用X11窗口系统，看看其窗口事件循环</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Atom wmDeleteMessage = XInternAtom(mDisplay, <span class="string">"WM_DELETE_WINDOW"</span>, False);</span><br><span class="line">XSetWMProtocols(display, window, &amp;wmDeleteMessage, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">XEvent event;</span><br><span class="line"><span class="keyword">bool</span> running = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (running)</span><br><span class="line">&#123;</span><br><span class="line">    XNextEvent(display, &amp;event);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (event.type)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> Expose:</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Expose\n"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> ClientMessage:</span><br><span class="line">            <span class="keyword">if</span> (event.xclient.data.l[<span class="number">0</span>] == wmDeleteMessage)</span><br><span class="line">                running = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路也是和前面一致的</p>
+<h3 id="MacOS-Cocoa-Application"><a href="#MacOS-Cocoa-Application" class="headerlink" title="MacOS Cocoa Application"></a>MacOS Cocoa Application</h3><p>在Cocoa Application中, 有一种获取事件的机制，叫做runloop(一个NSRunLoop对象,它允许进程接收窗口服务的各种事件)</p>
+<p>一般的Cocoa Application运行流程是，从runloop的事件队列中获取一个事件(NSEvent)</p>
+<p>派发事件(NSEvent)到合适的对象(Object)</p>
+<p>事件被处理完成后,再取下一个事件(NSEvent),直到应用退出.</p>
+<p>思路也是和前面一致的。</p>
+<h2 id="Qt的事件循环"><a href="#Qt的事件循环" class="headerlink" title="Qt的事件循环"></a>Qt的事件循环</h2><p>Qt作为一个跨平台的UI框架，其事件循环实现原理, 就是把不同平台的事件循环进行了封装，并提供统一的抽象接口。</p>
+<p>和Qt做了类似工作的，还有glfw、SDL等等很多开源库。</p>
+<h3 id="QEventLoop类"><a href="#QEventLoop类" class="headerlink" title="QEventLoop类"></a>QEventLoop类</h3><p>QEventLoop即Qt中的事件循环类，主要接口如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">exec</span><span class="params">(QEventLoop::ProcessEventsFlags flags = AllEvents)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exit</span><span class="params">(<span class="keyword">int</span> returnCode = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isRunning</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">processEvents</span><span class="params">(QEventLoop::ProcessEventsFlags flags = AllEvents)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processEvents</span><span class="params">(QEventLoop::ProcessEventsFlags flags, <span class="keyword">int</span> maxTime)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">wakeUp</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+<p>其中exec是启动事件循环，调用exec以后，调用exec的函数就会被“阻塞”，直到EventLoop里面的while循环结束。</p>
+<p>这里画个简单的示意图:</p>
+<p><img src="/images/Qt3/1.png" alt="预览"></p>
+<p>exit是退出事件循环(将EventLoop中的退出标识设为true)</p>
+<p>processEvents是及时处理队列中的事件(这个很有用，后面还会讲)。</p>
+<p>这里有个问题，exec阻塞了当前函数，还怎么退出EventLoop呢？</p>
+<p>答案是：在派发事件后，某个事件处理的函数中，达到事件退出条件时，调用exit函数，将EventLoop中的退出标识设为true。</p>
+<p><img src="/images/Qt3/2.png" alt="预览"></p>
+<p>这样的程序运行流程，我们叫做 “事件驱动”式的程序。</p>
+<h3 id="QCoreApplication-主事件循环"><a href="#QCoreApplication-主事件循环" class="headerlink" title="QCoreApplication 主事件循环"></a>QCoreApplication 主事件循环</h3><p>一般的Qt程序，main函数中都有一个QCoreApplication/QGuiApplication/QApplication，并在末尾调用 exec。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QCoreApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;</span><br><span class="line">    <span class="comment">//或者QGuiApplication， 或者 QApplication</span></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span> app.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Application类中，除去启动参数、版本等相关东西后，关键就是维护了一个QEventLoop，Application的exec就是QEventLoop的exec。</p>
+<p>不过Application中的这个EventLoop，我们称作“主事件循环”Main EventLoop。</p>
+<p>所有的事件分发、事件处理都从这里开始。</p>
+<p>Application还提供了sendEvent和poseEvent两个函数，分别用来发送事件。</p>
+<p>sendEvent发出的事件会立即被处理，也就是“同步”执行。</p>
+<p>postEvent发送的事件会被加入事件队列，在下一轮事件循环时才处理，也就是“异步”执行。</p>
+<p>还有一个特殊的sendPostedEvents，是将已经加入队列中的准备异步执行的事件立即同步执行。</p>
+<h2 id="Qt的事件分发和事件处理"><a href="#Qt的事件分发和事件处理" class="headerlink" title="Qt的事件分发和事件处理"></a>Qt的事件分发和事件处理</h2><p>以QWidget为例来说明。</p>
+<p>QWidget是Widget框架中，大部分UI组件的基类。QWidget类拥有一些名字为xxxEvent的虚函数,比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">virtual void keyPressEvent(QKeyEvent *event)</span><br><span class="line">virtual void keyReleaseEvent(QKeyEvent *event)</span><br></pre></td></tr></table></figure>
+<p>keyPressEvent就表示按键按下时的处理，keyReleaseEvent表示按键松开时的处理。</p>
+<p>主事件循环中(注册过QWidget类之后)，事件分发会在按键按下时调用QWidget的keyPressEvent函数，按键松开时调用QWidget的keyReleaseEvent函数。</p>
+<h3 id="重载事件"><a href="#重载事件" class="headerlink" title="重载事件"></a>重载事件</h3><p>有了上面的事件处理机制，我们就可以在自己的QWidget子类中，通过重载keyPressEvent、keyReleaseEvent等等事件处理函数，做一些自定义的事件处理。</p>
+<h3 id="QEvent"><a href="#QEvent" class="headerlink" title="QEvent"></a>QEvent</h3><p>每一个事件处理函数，都是带有参数的，这个参数是QEvent的子类，携带了各种事件的参数。比如</p>
+<p>按键事件 void keyPressEvent(QKeyEvent *event) 中的QKeyEvent, 就包括了按下的按键值key、 count等等。</p>
+<h3 id="事件过滤器"><a href="#事件过滤器" class="headerlink" title="事件过滤器"></a>事件过滤器</h3><p>Qt还提供了事件过滤机制，在事件分发之前先过滤一部分事件。</p>
+<p>用法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class KeyPressEater : public QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">protected:</span><br><span class="line">    bool eventFilter(QObject *obj, QEvent *event) override;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">bool KeyPressEater::eventFilter(QObject *obj, QEvent *event)</span><br><span class="line">&#123;</span><br><span class="line">    if (event-&gt;type() &#x3D;&#x3D; QEvent::KeyPress) &#123;</span><br><span class="line">        QKeyEvent *keyEvent &#x3D; static_cast&lt;QKeyEvent *&gt;(event);</span><br><span class="line">        qDebug(&quot;Ate key press %d&quot;, keyEvent-&gt;key());</span><br><span class="line">        return true;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        &#x2F;&#x2F; standard event processing</span><br><span class="line">        return QObject::eventFilter(obj, event);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">。。。</span><br><span class="line"></span><br><span class="line"> monitoredObj-&gt;installEventFilter(filterObj);</span><br></pre></td></tr></table></figure>
+<p>自定义一个QObject子类，重载eventFilter函数。之后在要过滤的QObject对象上，调用installEventFilter函数以安装过滤器上去。</p>
+<p>过滤器函数的返回值为bool，true表示这个事件被过滤掉了，不用再往下分发了。false表示没有过滤。</p>
+<h2 id="事件循环的运用"><a href="#事件循环的运用" class="headerlink" title="事件循环的运用"></a>事件循环的运用</h2><h3 id="processEvents不阻塞UI"><a href="#processEvents不阻塞UI" class="headerlink" title="processEvents不阻塞UI"></a>processEvents不阻塞UI</h3><p>我们的UI界面，要持续不断地刷新（对于QWidget就是触发paintEvent事件），以保证显示流畅、能及时响应用户输入。</p>
+<p>一般要有一个良好的帧率，比如每秒刷新60帧, 即经常说的FPS 60， 换算一下 1000 ms/ 60 ≈ 16 ms,也就是每隔16毫秒刷新一次。</p>
+<p>而我们有时候又需要做一些复杂的计算，这些计算的耗时远远超过了16毫秒。</p>
+<p>在没有计算完成之前，函数不会退出（相当于阻塞），事件循环得不到及时处理，就会发生UI卡住的现象。</p>
+<p>这种场景下，就可以使用Qt为我们提供的接口，立即处理一次事件循环，来保证UI的流畅</p>
+<p>(先不讨论多线程的情况，后续有多线程专题文章，而且你们玩的不一定比涛哥6)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//耗时操作</span></span><br><span class="line">someWork1()</span><br><span class="line"><span class="comment">//适当的位置，插入一个processEvents,保证事件循环被处理</span></span><br><span class="line">QCoreApplication::processEvents();</span><br><span class="line"></span><br><span class="line"><span class="comment">//耗时操作</span></span><br><span class="line">someWork2()</span><br></pre></td></tr></table></figure>
+
+<h3 id="QEventLoop模拟同步调用"><a href="#QEventLoop模拟同步调用" class="headerlink" title="QEventLoop模拟同步调用"></a>QEventLoop模拟同步调用</h3><p>经常会有这种场景： “触发 ”了某项操作，必须等该操作完成后才能进行“ 下一步 ”</p>
+<p>比如：软件的登录界面，向服务器发起登录请求后，必须等收到服务器返回的登录数据，才知道登录结果并决定下一步如何执行。</p>
+<p>这种场景，如果设计成异步调用，直接用Qt的信号/槽即可，如果要设计成同步调用，就可以使用本地QEventLoop</p>
+<p>这里写段伪代码示例一下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">login</span><span class="params">(<span class="keyword">const</span> QString &amp;userName, <span class="keyword">const</span> QString &amp;passwdHash, <span class="keyword">const</span> QString &amp;slat)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//声明本地EventLoop</span></span><br><span class="line">    QEventLoop loop;</span><br><span class="line">    <span class="keyword">bool</span> result = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//先连接好信号</span></span><br><span class="line">    connect(&amp;network, &amp;Network::result, [&amp;](<span class="keyword">bool</span> r, <span class="keyword">const</span> QString &amp;info)&#123;</span><br><span class="line">        result = r;</span><br><span class="line">        qDebug() &lt;&lt; info;</span><br><span class="line">        <span class="comment">//槽中退出事件循环</span></span><br><span class="line">        loop.quit();</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">//发起登录请求</span></span><br><span class="line">    sendLoginRequest(userName, passwdHash, slat);</span><br><span class="line">    <span class="comment">//启动事件循环。阻塞当前函数调用，但是事件循环还能运行。</span></span><br><span class="line">    <span class="comment">//这里不会再往下运行，直到前面的槽中，调用loop.quit之后，才会继续往下走</span></span><br><span class="line">    loop.exec();</span><br><span class="line">    <span class="comment">//返回result。loop退出之前，result中的值已经被更新了。</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/07/10/Qt%E5%AE%89%E5%8D%93-5.12.4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="pre-post btn btn-default" title='Qt安卓-5.12环境搭建'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Qt安卓-5.12环境搭建</span>
+        </a>
+    
+    
+        <a href="/2019/07/04/Qml%E7%89%B9%E6%95%88-%E7%A7%BB%E6%A4%8DShaderToy/" class="next-post btn btn-default" title='Qml特效-移植ShaderToy'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Qml特效-移植ShaderToy</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+            appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: true,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件与事件循环"><span class="toc-text">事件与事件循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hello-World"><span class="toc-text">Hello World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#循环处理"><span class="toc-text">循环处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类比事件循环的概念"><span class="toc-text">类比事件循环的概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不同操作系统的事件循环"><span class="toc-text">不同操作系统的事件循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-X11窗口"><span class="toc-text">Linux X11窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MacOS-Cocoa-Application"><span class="toc-text">MacOS Cocoa Application</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt的事件循环"><span class="toc-text">Qt的事件循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#QEventLoop类"><span class="toc-text">QEventLoop类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QCoreApplication-主事件循环"><span class="toc-text">QCoreApplication 主事件循环</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt的事件分发和事件处理"><span class="toc-text">Qt的事件分发和事件处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#重载事件"><span class="toc-text">重载事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QEvent"><span class="toc-text">QEvent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件过滤器"><span class="toc-text">事件过滤器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#事件循环的运用"><span class="toc-text">事件循环的运用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#processEvents不阻塞UI"><span class="toc-text">processEvents不阻塞UI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QEventLoop模拟同步调用"><span class="toc-text">QEventLoop模拟同步调用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+    <script>
+        var tagOption = {
+            textColour: '#444', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+
+</body>
+</html>

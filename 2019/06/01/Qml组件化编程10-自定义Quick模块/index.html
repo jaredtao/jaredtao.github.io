@@ -1,0 +1,566 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Qt,Qml,QtQuick,组件化编程" />
+
+
+    <meta name="description" content="
+简介
+近期讯息
+Qt Design Studio
+TaoQuick
+
+
+Qt资源管理
+qrc内容
+编译和加载qrc
+资源的引用
+插件中注册资源
+
+
+Qml模块
+qmldir文件
+示例
+不用开放..." />
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+
+    <!--Title-->
+
+<title>
+    
+    Qml组件化编程10-自定义Quick模块 |
+    
+    涛哥的博客
+</title>
+
+    <link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 传承工匠精神 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qt进阶之路/"><i class="fa "></i>Qt进阶之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml组件化编程/"><i class="fa "></i>Qml组件化编程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml特效/"><i class="fa "></i>Qml特效</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/C-修炼之路/"><i class="fa "></i>C++修炼之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/涛哥的博客/"><i class="fa "></i>涛哥的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Qml组件化编程10-自定义Quick模块">
+            
+	            Qml组件化编程10-自定义Quick模块
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/">Qml组件化编程</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">组件化编程</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/06/01</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>478</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div id="post-gallery">
+        
+          <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+        
+    </div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E8%BF%91%E6%9C%9F%E8%AE%AF%E6%81%AF">近期讯息</a><ul>
+<li><a href="#qt-design-studio">Qt Design Studio</a></li>
+<li><a href="#taoquick">TaoQuick</a></li>
+</ul>
+</li>
+<li><a href="#qt%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86">Qt资源管理</a><ul>
+<li><a href="#qrc%E5%86%85%E5%AE%B9">qrc内容</a></li>
+<li><a href="#%E7%BC%96%E8%AF%91%E5%92%8C%E5%8A%A0%E8%BD%BDqrc">编译和加载qrc</a></li>
+<li><a href="#%E8%B5%84%E6%BA%90%E7%9A%84%E5%BC%95%E7%94%A8">资源的引用</a></li>
+<li><a href="#%E6%8F%92%E4%BB%B6%E4%B8%AD%E6%B3%A8%E5%86%8C%E8%B5%84%E6%BA%90">插件中注册资源</a></li>
+</ul>
+</li>
+<li><a href="#qml%E6%A8%A1%E5%9D%97">Qml模块</a><ul>
+<li><a href="#qmldir%E6%96%87%E4%BB%B6">qmldir文件</a><ul>
+<li><a href="#%E7%A4%BA%E4%BE%8B">示例</a></li>
+<li><a href="#%E4%B8%8D%E7%94%A8%E5%BC%80%E6%94%BEqml%E6%BA%90%E7%A0%81">不用开放Qml源码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#designer%E6%94%AF%E6%8C%81">Designer支持</a><ul>
+<li><a href="#metainfo">metainfo</a></li>
+<li><a href="#%E5%B8%A6%E8%B5%84%E6%BA%90%E7%9A%84%E7%BB%84%E4%BB%B6%E9%9C%80%E8%A6%81%E7%94%A8c%E6%89%A9%E5%B1%95%E6%B3%A8%E5%86%8C%E8%B5%84%E6%BA%90">带资源的组件，需要用C++扩展注册资源</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文是《Qml组件化编程》系列文章的第十篇，涛哥将教大家，Qml自定义模块的知识。</p>
+<p>特别是最近的研究结果：如何让Qml模块在Designer中拖拽使用。涛哥希望有更多的人学会这个技能。</p>
+<p>注：文章主要发布在<a href="https://jaredtao.github.io">涛哥的博客</a> 和 <a href="https://zhuanlan.zhihu.com/TaoQt" target="_blank" rel="noopener">涛哥的知乎专栏-Qt进阶之路</a></p>
+<h2 id="近期讯息"><a href="#近期讯息" class="headerlink" title="近期讯息"></a>近期讯息</h2><p>(先播点新闻)</p>
+<h3 id="Qt-Design-Studio"><a href="#Qt-Design-Studio" class="headerlink" title="Qt Design Studio"></a>Qt Design Studio</h3><p>2019年5月20的时候，Qt官方放出了Qt Design Studio的beta版， 免费使用/暂不开源。</p>
+<p><img src="/images/Qml10/1.png" alt=""></p>
+<p>下载地址在这：</p>
+<p><a href="http://download.qt.io/development_releases/qtdesignstudio/1.2/1.2.0-beta1-community/" target="_blank" rel="noopener">http://download.qt.io/development_releases/qtdesignstudio/1.2/1.2.0-beta1-community/</a></p>
+<p>Qt Design Studio是主要给美工使用的一款UI工具。</p>
+<p>Qt在Photo Shop/Sketch这两款工具中，提供了QtBridge插件，可以将设计好的资源直接导出成Qml工程。</p>
+<p>导出的工程可以用Qt Design Studio/QtCreator打开，用托托拽拽的方式，实现各种功能、动画等等。</p>
+<p>QtDesignStudio目前还不成熟，但未来是一片光明。等Designer做好了，就不再需要手写Qml代码，托托拽拽就能搞定界面部分。</p>
+<p>只剩下逻辑处理和后端功能才需要写代码/写js脚本。</p>
+<p>Qt Design Studio目前与QtCreator的差异是，前者内置了一些特殊的模块：包括 Shapes图元、Effects等，</p>
+<p><img src="/images/Qml10/2.png" alt=""></p>
+<p>Qt Design Studio还使用了qmlproject文件作工程管理。</p>
+<p>除此之外，功能都是一样的。帧动画编辑器在QtCreator中也是可以使用的。</p>
+<h3 id="TaoQuick"><a href="#TaoQuick" class="headerlink" title="TaoQuick"></a>TaoQuick</h3><p>最新的TaoQuick (tag: 0.1.6), 已经支持在QtCreator中拖拽使用了</p>
+<p><img src="/images/Qml10/1.gif" alt=""></p>
+<p>代码仓库在这：<a href="https://github.com/jaredtao/TaoQuick" target="_blank" rel="noopener">TaoQuick</a></p>
+<p>(下面进入正题)</p>
+<h2 id="Qt资源管理"><a href="#Qt资源管理" class="headerlink" title="Qt资源管理"></a>Qt资源管理</h2><p>(有必要先说一下资源管理，这部分内容帮助文档都有，搜索关键词为”rcc” 或 “Qt Resource”)</p>
+<p>Qt提供了一个资源管理工具rcc，可以将各种资源文件压缩、打包进二进制程序。</p>
+<p>通常用来打包各种图片、Qml文件、配置文件或数据文件等等，只要将资源文件添加到qrc文件中即可。</p>
+<p>qrc文件是xml格式的文本文件，里面记录着添加的各种资源。</p>
+<h3 id="qrc内容"><a href="#qrc内容" class="headerlink" title="qrc内容"></a>qrc内容</h3><p>示例 TaoResource.qrc:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE RCC&gt;</span><span class="tag">&lt;<span class="name">RCC</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">qresource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span>images/copy.png<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span>images/cut.png<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span>images/new.png<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span>images/open.png<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span>images/paste.png<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span>images/save.png<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">qresource</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">RCC</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="编译和加载qrc"><a href="#编译和加载qrc" class="headerlink" title="编译和加载qrc"></a>编译和加载qrc</h3><p>只要在pro文件中写上 RESOURCES = TaoResource.qrc就可以了。qmake会自动将资源压缩、打包进exe/dll程序</p>
+<p>也可以使用命令行手动编译：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rcc -binary TaoResource.qrc -o TaoResource.rcc</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rcc -binary TaoResource.qrc -o TaoResource.dll</span><br></pre></td></tr></table></figure>
+<p>这种方式编译出来的，是一个纯粹的资源插件，扩展名写什么都无所谓的。</p>
+<p>可以在代码中动态加载资源、卸载资源</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QResource::registerResource(<span class="string">"/path/to/TaoResource.rcc"</span>);</span><br><span class="line">QResource::unRegisterResource(<span class="string">"/path/to/TaoResource.rcc"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="资源的引用"><a href="#资源的引用" class="headerlink" title="资源的引用"></a>资源的引用</h3><p>使用”:/“ 或者 “qrc:/“开头的路径即可，这两者的区别涛哥未作总结，大家自己实践吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cutAct &#x3D; new QAction(QIcon(&quot;:&#x2F;images&#x2F;cut.png&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="插件中注册资源"><a href="#插件中注册资源" class="headerlink" title="插件中注册资源"></a>插件中注册资源</h3><p>在Qt插件中，添加了资源的情况下，需要用宏Q_INIT_RESOURCE来注册资源</p>
+<p>(Qt插件和前面的rcc编译出来的不一样，不是一个纯粹的资源插件，不能直接被QResource::registerResource识别)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">TaoClass::TaoClass() : BaseClass()</span><br><span class="line">&#123;</span><br><span class="line">    Q_INIT_RESOURCE(TaoResource);</span><br><span class="line"></span><br><span class="line">    QFile file(&quot;:&#x2F;images&#x2F;save.png&quot;);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Qml模块"><a href="#Qml模块" class="headerlink" title="Qml模块"></a>Qml模块</h2><p>(这部分内容帮助文档也有，搜索关键词”QML Modules”)</p>
+<p>设计Qml模块的大致步骤如下：</p>
+<ol>
+<li>实现Qml组件</li>
+<li>实现qmldir文件</li>
+<li>导出Qml插件类</li>
+</ol>
+<p>如果要支持designer，还要加上一步：</p>
+<ol start="4">
+<li>创建designer文件夹，编写metainfo文件</li>
+</ol>
+<p>这一步暂时没有任何文档和工具，涛哥照猫画虎做出来的。以后文档肯定会出来的，现在有些功能不完善。</p>
+<p>(参考Qt的支持Designer的Qml模块。更深入的了解，在QtCreator源码)</p>
+<h3 id="qmldir文件"><a href="#qmldir文件" class="headerlink" title="qmldir文件"></a>qmldir文件</h3><p>(帮助文档搜索关键词 “qmldir” 或 “Module Definition qmldir…”)</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>这里以TaoQuick中的为例，我顺手加了点注释：</p>
+<p>TaoQuick/TaoQuick/qmldir:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#模块名称 import使用的地方，就用这个名称</span><br><span class="line">module TaoQuick</span><br><span class="line"></span><br><span class="line">#插件dll文件名称，即 TaoQuick.dll</span><br><span class="line">plugin TaoQuick</span><br><span class="line"></span><br><span class="line">#依赖的模块</span><br><span class="line"></span><br><span class="line">depends QtQuick 2.12</span><br><span class="line">depends QtQuick.Controls 2.12</span><br><span class="line"></span><br><span class="line"># 这里一堆的组件</span><br><span class="line">TGradientBtn 1.0 BasicComponent&#x2F;Button&#x2F;TGradientBtn.qml</span><br><span class="line">TImageBtn 1.0 BasicComponent&#x2F;Button&#x2F;TImageBtn.qml</span><br><span class="line">TImgTextBtn 1.0 BasicComponent&#x2F;Button&#x2F;TImgTextBtn.qml</span><br><span class="line">TTextBtn 1.0 BasicComponent&#x2F;Button&#x2F;TTextBtn.qml</span><br><span class="line"></span><br><span class="line">TMoveArea 1.0 BasicComponent&#x2F;Mouse&#x2F;TMoveArea.qml</span><br><span class="line">TTransArea 1.0 BasicComponent&#x2F;Mouse&#x2F;TTransArea.qml</span><br><span class="line"></span><br><span class="line">TNormalProgress 1.0 BasicComponent&#x2F;Progress&#x2F;TNormalProgress.qml</span><br><span class="line">TCircleProgress 1.0 BasicComponent&#x2F;Progress&#x2F;TCircleProgress.qml</span><br><span class="line"></span><br><span class="line">TBusyIndicator 1.0 BasicComponent&#x2F;Others&#x2F;TBusyIndicator.qml</span><br><span class="line">TDragItem 1.0 BasicComponent&#x2F;Others&#x2F;TDragItem.qml</span><br><span class="line">TResizeBorder 1.0 BasicComponent&#x2F;Others&#x2F;TResizeBorder.qml</span><br><span class="line">TToolTip 1.0 BasicComponent&#x2F;Others&#x2F;TToolTip.qml</span><br><span class="line">TDialog 1.0 BasicComponent&#x2F;Others&#x2F;TDialog.qml</span><br><span class="line">TPopup 1.0 BasicComponent&#x2F;Others&#x2F;TPopup.qml</span><br><span class="line">TFPS 1.0 BasicComponent&#x2F;Others&#x2F;TFPS.qml</span><br><span class="line"></span><br><span class="line"># 支持designer</span><br><span class="line">designersupported</span><br></pre></td></tr></table></figure>
+<p>还有单例singleton、内部类型internal、C++类型描述typeinfo， 这些用法TaoQuick没有用到，就不多说了。</p>
+<p>plugin TaoQuick这一句，表示对应的dll文件名称。dll是要写一个C++类，继承自QQmlExtensionPlugin</p>
+<p>看一下TaoQuick中的实现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//taoquick_plugin.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QQmlExtensionPlugin&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TaoQuickPlugin</span> :</span> <span class="keyword">public</span> QQmlExtensionPlugin</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line">    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">registerTypes</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *uri)</span> override</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//taoquick_plugin.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"taoquick_plugin.h"</span></span></span><br><span class="line"><span class="keyword">void</span> TaoQuickPlugin::registerTypes(<span class="keyword">const</span> <span class="keyword">char</span> *uri)</span><br><span class="line">&#123;</span><br><span class="line">    Q_UNUSED(uri);</span><br><span class="line">    Q_INIT_RESOURCE(Qml); <span class="comment">//注册Qml.qrc</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行时候的bin路径文件结构是这样的:</p>
+<p><img src="/images/Qml10/3.png" alt=""></p>
+<p>TaoQuick文件夹的名字就是模块名字</p>
+<h4 id="不用开放Qml源码"><a href="#不用开放Qml源码" class="headerlink" title="不用开放Qml源码"></a>不用开放Qml源码</h4><p>这里说一下，TaoQuick项目中还有一个qmldir文件：</p>
+<p>TaoQuick/TaoQuick/Qml/qmldir:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">TGradientBtn 1.0 BasicComponent&#x2F;Button&#x2F;TGradientBtn.qml</span><br><span class="line">TImageBtn 1.0 BasicComponent&#x2F;Button&#x2F;TImageBtn.qml</span><br><span class="line">TImgTextBtn 1.0 BasicComponent&#x2F;Button&#x2F;TImgTextBtn.qml</span><br><span class="line">TTextBtn 1.0 BasicComponent&#x2F;Button&#x2F;TTextBtn.qml</span><br><span class="line"></span><br><span class="line">TMoveArea 1.0 BasicComponent&#x2F;Mouse&#x2F;TMoveArea.qml</span><br><span class="line">TTransArea 1.0 BasicComponent&#x2F;Mouse&#x2F;TTransArea.qml</span><br><span class="line"></span><br><span class="line">TNormalProgress 1.0 BasicComponent&#x2F;Progress&#x2F;TNormalProgress.qml</span><br><span class="line">TCircleProgress 1.0 BasicComponent&#x2F;Progress&#x2F;TCircleProgress.qml</span><br><span class="line"></span><br><span class="line">TBusyIndicator 1.0 BasicComponent&#x2F;Others&#x2F;TBusyIndicator.qml</span><br><span class="line">TDragItem 1.0 BasicComponent&#x2F;Others&#x2F;TDragItem.qml</span><br><span class="line">TResizeBorder 1.0 BasicComponent&#x2F;Others&#x2F;TResizeBorder.qml</span><br><span class="line">TToolTip 1.0 BasicComponent&#x2F;Others&#x2F;TToolTip.qml</span><br><span class="line">TDialog 1.0 BasicComponent&#x2F;Others&#x2F;TDialog.qml</span><br><span class="line">TPopup 1.0 BasicComponent&#x2F;Others&#x2F;TPopup.qml</span><br><span class="line">TFPS 1.0 BasicComponent&#x2F;Others&#x2F;TFPS.qml</span><br></pre></td></tr></table></figure>
+<p>这里面module、plugin这些东西都没有，只有组件。而且这个文件是加入了qrc的，即编译进dll里面了。</p>
+<p>前面那个qmldir，需要和dll放在同级目录，dll模块才能被Qml引擎导入。</p>
+<p>后面这个qmldir的作用是，导出dll插件时，不用带上qml源码，直接import 这个qmldir的资源路径，就能够用里面的组件了。</p>
+<p>也就是说，使用的地方，要写两句import</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> TaoQuick <span class="number">1.0</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"qrc:/Tao/Qml/"</span></span><br></pre></td></tr></table></figure>
+<p>这种用法不能在QtCreator高亮，运行没问题。（商业版似乎有更高级的资源内建功能，或许可以支持高亮，后续再研究）</p>
+<p>具体的实现和用法，可以参考TaoQuick</p>
+<p>TaoQuick中的qmake语法，可以参考另一篇文章 &lt;Qt实用技能2-用好qmake&gt;</p>
+<h2 id="Designer支持"><a href="#Designer支持" class="headerlink" title="Designer支持"></a>Designer支持</h2><p>再看一下效果：</p>
+<p><img src="/images/Qml10/2.gif" alt=""></p>
+<p>要支持Designer，需要以下步骤：</p>
+<p>首先要在Qml路径下，创建一个designer文件夹。必须叫这个名字</p>
+<p>其次要放一个扩展名为.metainfo的文件，里面按格式写上组件信息。名字似乎没有要求。</p>
+<p><img src="/images/Qml10/4.png" alt=""></p>
+<p>最后，将整个Qml文件夹拷贝到[QTDIR]/qml/路径下，并把文件夹名字改成模块名字。</p>
+<p>TaoQuick项目的路径是这样的：</p>
+<p><img src="/images/Qml10/5.png" alt=""></p>
+<h3 id="metainfo"><a href="#metainfo" class="headerlink" title="metainfo"></a>metainfo</h3><p>metainfo文件，目前没有文档、没有自动生成工具，只能手动写，语法和qml语法类似。(可以参考QtCreator源码，里面有完整的解析器)</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">MetaInfo</span> &#123;</span><br><span class="line">    <span class="title">Type</span> &#123;</span><br><span class="line">        <span class="attribute">name</span>: <span class="string">"TaoQuick.BasicComponent.Button.TGradientBtn"</span></span><br><span class="line">        <span class="attribute">icon</span>: <span class="string">"images/TGradientBtn.png"</span></span><br><span class="line"></span><br><span class="line">        <span class="title">ItemLibraryEntry</span> &#123;</span><br><span class="line">            <span class="attribute">name</span>: <span class="string">"TGradientBtn"</span></span><br><span class="line">            <span class="attribute">category</span>: <span class="string">"TaoQuick - Buttons"</span></span><br><span class="line">            <span class="attribute">libraryIcon</span>: <span class="string">"images/TGradientBtn.png"</span></span><br><span class="line">            <span class="attribute">version</span>: <span class="string">"1.0"</span></span><br><span class="line">            <span class="attribute">requiredImport</span>: <span class="string">"TaoQuick"</span></span><br><span class="line">            <span class="title">Property</span> &#123; <span class="attribute">name</span>: <span class="string">"width"</span>; <span class="attribute">type</span>: <span class="string">"int"</span>; <span class="attribute">value</span>: <span class="number">120</span> &#125;</span><br><span class="line">            <span class="title">Property</span> &#123; <span class="attribute">name</span>: <span class="string">"height"</span>; <span class="attribute">type</span>: <span class="string">"int"</span>; <span class="attribute">value</span>: <span class="number">80</span> &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>顶层MetaInfo为固定写法</p>
+<p>接下来一个Type就对应Designer中的一个可拖拽的组件：</p>
+<pre><code>* name应该算作Qml组件文件的路径，路径分隔符用&quot;点&quot;， 路径默认从[QTDIR]/qml开始，如果有自定义qml 导入路径，应该可以从相应的路径开始查找（未尝试）。
+
+* icon 就是小图标了，用来在Designer界面上预览。这里的images路径，默认从designer文件夹开始</code></pre><p>ItemLibraryEntry 是对这个组件更详细的描述：</p>
+<pre><code>* name 显示在Designer上面的名字
+* category 分组的名字
+* libraryIcon 小图标，和前面那个一样（不懂有什么区别，先照抄）
+* version 版本 （TaoQuick都是1.0）
+* requiredImport 必要的导入的模块
+* Property 属性。就是可以在Designer中调整、做帧动画的。</code></pre><p>Property支持的关键字有 name type value三个。 type 的值，暂时没有完整的支持列表，源码里面能翻到Qml的基础类型[“boolean”, “int”, “real”, “string”, “url”, “color”], Qt发行的Qml中，还能看到”binding”。</p>
+<p>(qtcreator-4.9.0\qt-creator-opensource-src-4.9.0\src\plugins\qmldesigner\designercore\metainfo\metainfo.cpp)</p>
+<p>属性这里，应该是QtCreator还没有开发完整。Qml组件里，什么属性都不写，Designer里面一个属性都看不到。就写一个width属性，其它的导出属性也自动给列出来了。</p>
+<p>但是Color这种，即使写了color，还是按照binding字符串处理的，不能用颜色选择器改颜色。只能等QtCreator后续版本了。</p>
+<p>Qt自带的Rectangle一类，是从C++里面写的，Color属性是可以用颜色选择器的。Qt自带的Qml组件Color属性也是按binding处理的。</p>
+<h3 id="带资源的组件，需要用C-扩展注册资源"><a href="#带资源的组件，需要用C-扩展注册资源" class="headerlink" title="带资源的组件，需要用C++扩展注册资源"></a>带资源的组件，需要用C++扩展注册资源</h3><p>前面示例那个FPS组件，用到了一张图片。图片资源要么和Qml文件放一起，用”file:///./“的方式访问，要么放进资源里，用C++注册。</p>
+<p>所以在前面的TaoQuick安装路径中，有一个dll文件。C:\Qt\5.12.3\msvc2017_64\qml\TaoQuick\TaoQuick.dll</p>
+<p>然后封装这个组件的时候，还要再import一下TaoQuick.dll, 即import TaoQuick 1.0</p>
+<p>图片路径就用资源路径</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TFPS.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.12</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.12</span></span><br><span class="line"><span class="keyword">import</span> TaoQuick <span class="number">1.0</span></span><br><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="keyword">property</span><span class="string"> int fps</span>: <span class="number">60</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int frameCount</span>: <span class="number">0</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> color textColor</span>: <span class="string">"#f7e08c"</span></span><br><span class="line">    <span class="title">Image</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> spinner</span></span><br><span class="line">        <span class="attribute">source</span>: <span class="string">"qrc:/Core/Image/Others/spinner.png"</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">32</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">32</span></span><br><span class="line">        <span class="attribute">anchors.verticalCenter</span>: <span class="built_in">parent</span>.verticalCenter</span><br><span class="line">        <span class="attribute">anchors.left</span>: <span class="built_in">parent</span>.left</span><br><span class="line">        RotationAnimation <span class="keyword">on</span> <span class="title">rotation</span> &#123;</span><br><span class="line">            <span class="attribute">from</span>: <span class="number">0</span></span><br><span class="line">            <span class="attribute">to</span>: <span class="number">360</span></span><br><span class="line">            <span class="attribute">running</span>: <span class="literal">true</span></span><br><span class="line">            <span class="attribute">loops</span>: Animation.Infinite</span><br><span class="line">            <span class="attribute">duration</span>: <span class="number">1000</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">onRotationChanged</span>: frameCount++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">Text</span> &#123;</span><br><span class="line">        <span class="attribute">anchors.left</span>: spinner.right</span><br><span class="line">        <span class="attribute">anchors.verticalCenter</span>: <span class="built_in">parent</span>.verticalCenter</span><br><span class="line">        <span class="attribute">text</span>: <span class="string">"FPS"</span> + fps</span><br><span class="line">        <span class="attribute">font.pixelSize</span>: <span class="number">20</span></span><br><span class="line">        <span class="attribute">renderType</span>: Text.NativeRendering</span><br><span class="line">        <span class="attribute">color</span>: textColor</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">Timer</span> &#123;</span><br><span class="line">        <span class="attribute">interval</span>: <span class="number">1000</span></span><br><span class="line">        <span class="attribute">repeat</span>: <span class="literal">true</span></span><br><span class="line">        <span class="attribute">running</span>: <span class="literal">true</span></span><br><span class="line">        <span class="attribute">onTriggered</span>: &#123;</span><br><span class="line">            fps = frameCount</span><br><span class="line">            frameCount = <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>可以手动拷贝文件夹，也可以参考TaoQuick的自动化安装。</p>
+<p>&lt;Qt实用技能2-用好qmake&gt;一文中已经说过了</p>
+<p>只要增加一个pri文件，再执行make install即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;TaoQuickDesigner.pri</span><br><span class="line">taoquick_designer.files &#x3D; $$PWD&#x2F;designer&#x2F;TaoQuick.metainfo</span><br><span class="line">taoquick_designer.path &#x3D; $$[QT_INSTALL_QML]&#x2F;$$&#123;uri&#125;&#x2F;designer</span><br><span class="line"></span><br><span class="line">toaquick_qmldir.files &#x3D; $$PWD&#x2F;qmldir</span><br><span class="line">toaquick_qmldir.path &#x3D; $$[QT_INSTALL_QML]&#x2F;$$&#123;uri&#125;</span><br><span class="line"></span><br><span class="line">taoquick_qml_buttons.files &#x3D; $$PWD&#x2F;BasicComponent&#x2F;Button&#x2F;*.qml</span><br><span class="line">taoquick_qml_buttons.path &#x3D; $$[QT_INSTALL_QML]&#x2F;$$&#123;uri&#125;&#x2F;BasicComponent&#x2F;Button</span><br><span class="line"></span><br><span class="line">taoquick_qml_mouse.files &#x3D; $$PWD&#x2F;BasicComponent&#x2F;Mouse&#x2F;*.qml</span><br><span class="line">taoquick_qml_mouse.path &#x3D; $$[QT_INSTALL_QML]&#x2F;$$&#123;uri&#125;&#x2F;BasicComponent&#x2F;Mouse</span><br><span class="line"></span><br><span class="line">taoquick_qml_others.files &#x3D; $$PWD&#x2F;BasicComponent&#x2F;Others&#x2F;*.qml</span><br><span class="line">taoquick_qml_others.path &#x3D; $$[QT_INSTALL_QML]&#x2F;$$&#123;uri&#125;&#x2F;BasicComponent&#x2F;Others</span><br><span class="line"></span><br><span class="line">taoquick_qml_progress.files &#x3D; $$PWD&#x2F;BasicComponent&#x2F;Progress&#x2F;*.qml</span><br><span class="line">taoquick_qml_progress.path &#x3D; $$[QT_INSTALL_QML]&#x2F;$$&#123;uri&#125;&#x2F;BasicComponent&#x2F;Progress</span><br><span class="line"></span><br><span class="line">taoquick_degisner_images.files &#x3D; $$PWD&#x2F;designer&#x2F;images&#x2F;*.png</span><br><span class="line">taoquick_degisner_images.path &#x3D; $$[QT_INSTALL_QML]&#x2F;$$&#123;uri&#125;&#x2F;designer&#x2F;images</span><br><span class="line"></span><br><span class="line">INSTALLS  +&#x3D; taoquick_designer toaquick_qmldir taoquick_qml_buttons taoquick_qml_mouse taoquick_qml_others taoquick_qml_progress taoquick_degisner_images</span><br></pre></td></tr></table></figure>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/06/08/Qml%E7%89%B9%E6%95%881-%E8%BF%9B%E5%9C%BA%E5%8A%A8%E7%94%BB-%E9%A3%9E%E5%85%A5/" class="pre-post btn btn-default" title='Qml特效1-进场动画-飞入'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Qml特效1-进场动画-飞入</span>
+        </a>
+    
+    
+        <a href="/2019/05/29/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD2-%E7%94%A8%E5%A5%BDqmake/" class="next-post btn btn-default" title='Qt实用技能2-用好qmake'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Qt实用技能2-用好qmake</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+            appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: true,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#近期讯息"><span class="toc-text">近期讯息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Qt-Design-Studio"><span class="toc-text">Qt Design Studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TaoQuick"><span class="toc-text">TaoQuick</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt资源管理"><span class="toc-text">Qt资源管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#qrc内容"><span class="toc-text">qrc内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译和加载qrc"><span class="toc-text">编译和加载qrc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#资源的引用"><span class="toc-text">资源的引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件中注册资源"><span class="toc-text">插件中注册资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qml模块"><span class="toc-text">Qml模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#qmldir文件"><span class="toc-text">qmldir文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不用开放Qml源码"><span class="toc-text">不用开放Qml源码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Designer支持"><span class="toc-text">Designer支持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#metainfo"><span class="toc-text">metainfo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#带资源的组件，需要用C-扩展注册资源"><span class="toc-text">带资源的组件，需要用C++扩展注册资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+    <script>
+        var tagOption = {
+            textColour: '#444', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+
+</body>
+</html>

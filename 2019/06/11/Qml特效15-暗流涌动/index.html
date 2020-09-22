@@ -1,0 +1,506 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Qt,Qml,QtQuick,特效" />
+
+
+    <meta name="description" content="
+简介
+关于文章
+暗流涌动 效果预览
+QtQuick动画系统
+动画组件
+动画的使用
+用例一 直接声明动画
+用例二 on语法
+用例三 Transitions或状态机
+
+
+
+
+ShaderEffec..." />
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+
+    <!--Title-->
+
+<title>
+    
+    Qml特效15-暗流涌动 |
+    
+    涛哥的博客
+</title>
+
+    <link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 传承工匠精神 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qt进阶之路/"><i class="fa "></i>Qt进阶之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml组件化编程/"><i class="fa "></i>Qml组件化编程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml特效/"><i class="fa "></i>Qml特效</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/C-修炼之路/"><i class="fa "></i>C++修炼之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/涛哥的博客/"><i class="fa "></i>涛哥的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Qml特效15-暗流涌动">
+            
+	            Qml特效15-暗流涌动
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Qml%E7%89%B9%E6%95%88/">Qml特效</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/06/11</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>468</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div id="post-gallery">
+        
+          <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+        
+    </div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E5%85%B3%E4%BA%8E%E6%96%87%E7%AB%A0">关于文章</a></li>
+<li><a href="#%E6%9A%97%E6%B5%81%E6%B6%8C%E5%8A%A8-%E6%95%88%E6%9E%9C%E9%A2%84%E8%A7%88">暗流涌动 效果预览</a></li>
+<li><a href="#QtQuick%E5%8A%A8%E7%94%BB%E7%B3%BB%E7%BB%9F">QtQuick动画系统</a><ul>
+<li><a href="#%E5%8A%A8%E7%94%BB%E7%BB%84%E4%BB%B6">动画组件</a></li>
+<li><a href="#%E5%8A%A8%E7%94%BB%E7%9A%84%E4%BD%BF%E7%94%A8">动画的使用</a><ul>
+<li><a href="#%E7%94%A8%E4%BE%8B%E4%B8%80-%E7%9B%B4%E6%8E%A5%E5%A3%B0%E6%98%8E%E5%8A%A8%E7%94%BB">用例一 直接声明动画</a></li>
+<li><a href="#%E7%94%A8%E4%BE%8B%E4%BA%8C-on%E8%AF%AD%E6%B3%95">用例二 on语法</a></li>
+<li><a href="#%E7%94%A8%E4%BE%8B%E4%B8%89-Transitions%E6%88%96%E7%8A%B6%E6%80%81%E6%9C%BA">用例三 Transitions或状态机</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#ShaderEffect">ShaderEffect</a></li>
+<li><a href="#%E6%9A%97%E6%B5%81%E6%B6%8C%E5%8A%A8-%E6%95%88%E6%9E%9C%E6%BA%90%E7%A0%81">暗流涌动 效果源码</a><ul>
+<li><a href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B0%81%E8%A3%85">组件的封装</a></li>
+<li><a href="#%E5%8E%9F%E7%90%86">原理</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8">组件的使用</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这是《Qml特效》系列文章的第15篇，涛哥将会教大家一些Qml特效和动画相关的知识。</p>
+<p>前12篇是进场动画效果 参考了WPS版ppt的动画，12种基本效果已经全部实现，可以到github TaoQuick项目中预览：</p>
+<p><a href="https://github.com/jaredtao/TaoQuick/blob/master/Preview-animation.md" target="_blank" rel="noopener">进场动画预览</a></p>
+<p>因为效果都比较简单，就没有写太多说明。</p>
+<p>没有13</p>
+<p>没有13</p>
+<p>没有13</p>
+<p>从14篇开始，做一些特殊的效果和动画，同时会讲解相关的知识。</p>
+<h2 id="关于文章"><a href="#关于文章" class="headerlink" title="关于文章"></a>关于文章</h2><p>文章主要发布在<a href="https://jaredtao.github.io">涛哥的博客</a> 和 <a href="https://zhuanlan.zhihu.com/TaoQt" target="_blank" rel="noopener">涛哥的知乎专栏-Qt进阶之路</a></p>
+<h2 id="暗流涌动-效果预览"><a href="#暗流涌动-效果预览" class="headerlink" title="暗流涌动 效果预览"></a>暗流涌动 效果预览</h2><p>流动的箭头，以及倒影</p>
+<p><img src="/images/Ani1/Arrow.gif" alt=""></p>
+<p>其中用到的知识点有: Qml路径动画。</p>
+<p>当然还有一些预备知识：</p>
+<p>做特效和动画，要用到QtQuick的动画系统，以及ShaderEffect特效。</p>
+<h2 id="QtQuick动画系统"><a href="#QtQuick动画系统" class="headerlink" title="QtQuick动画系统"></a>QtQuick动画系统</h2><h3 id="动画组件"><a href="#动画组件" class="headerlink" title="动画组件"></a>动画组件</h3><p>Qt动画系统，在帮助文档有详细的介绍，搜索关键词”Animation”，涛哥在这里说一些重点。</p>
+<p>涛哥用思维导图列出了Qml中所有的动画组件:</p>
+<p><img src="/images/Ani1/1.png" alt=""></p>
+<ul>
+<li><p>右边带虚线框的部分比较常用，是做动画必须要掌握的，尤其是属性动画PropertyAnimation和数值动画NumberAinmation。<br>常见的各种坐标动画、宽高动画、透明度动画、颜色动画等等，都可以用这些组件来实现。</p>
+</li>
+<li><p>底下的States、Behavior 和 Traisitions，也是比较常用的和动画相关的组件。可在帮助文档搜索<br>关键词”Qt Quick States”、”Behavior”、”Animation and Transitions”。后续的文章，涛哥会专门讲解。</p>
+</li>
+<li><p>左边的Animator系列，属于Scene Graph渲染层面的优化，其属性Change信号只在最终值时发出，不发出中间值，使用的时候需要注意。</p>
+</li>
+<li><p>顶上的AnimationController，属于高端玩家，用来控制整个动画的进度。</p>
+</li>
+</ul>
+<h3 id="动画的使用"><a href="#动画的使用" class="headerlink" title="动画的使用"></a>动画的使用</h3><h4 id="用例一-直接声明动画"><a href="#用例一-直接声明动画" class="headerlink" title="用例一 直接声明动画"></a>用例一 直接声明动画</h4><p>直接声明动画，指定target和property，之后可以在槽函数/js脚本中通过id控制动画的运行。</p>
+<p>也可以通过设定loops 和 running属性来控制动画</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> flashingblob</span></span><br><span class="line">    <span class="attribute">width</span>: <span class="number">75</span>; <span class="attribute">height</span>: <span class="number">75</span></span><br><span class="line">    <span class="attribute">color</span>: <span class="string">"blue"</span></span><br><span class="line">    <span class="attribute">opacity</span>: <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line">    <span class="title">MouseArea</span> &#123;</span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">        <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">            animateColor.start()</span><br><span class="line">            animateOpacity.start()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">PropertyAnimation</span> &#123;<span class="attribute">id:</span><span class="string"> animateColor</span>; <span class="attribute">target</span>: flashingblob; <span class="attribute">properties</span>: <span class="string">"color"</span>; <span class="attribute">to</span>: <span class="string">"green"</span>; <span class="attribute">duration</span>: <span class="number">100</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">NumberAnimation</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> animateOpacity</span></span><br><span class="line">        <span class="attribute">target</span>: flashingblob</span><br><span class="line">        <span class="attribute">properties</span>: <span class="string">"opacity"</span></span><br><span class="line">        <span class="attribute">from</span>: <span class="number">0.99</span></span><br><span class="line">        <span class="attribute">to</span>: <span class="number">1.0</span></span><br><span class="line">        <span class="attribute">loops</span>: Animation.Infinite</span><br><span class="line">        <span class="title">easing</span> &#123;<span class="attribute">type</span>: Easing.OutBack; <span class="attribute">overshoot</span>: <span class="number">500</span>&#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="用例二-on语法"><a href="#用例二-on语法" class="headerlink" title="用例二 on语法"></a>用例二 on语法</h4><p>on语法可以使用动画组件，也可以用Behavior，直接on某个特定的属性即可。效果一样。</p>
+<p>on动画中，如果直接指定了running属性，默认就会执行这个动画。</p>
+<p>也可以不指定running属性，其它地方修改这个属性时，会自动按照动画来执行。</p>
+<p>示例代码 on动画</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Rectangle &#123;</span><br><span class="line">    width: 100; height: 100; color: &quot;green&quot;</span><br><span class="line">    RotationAnimation on rotation &#123;</span><br><span class="line">        loops: Animation.Infinite</span><br><span class="line">        from: 0</span><br><span class="line">        to: 360</span><br><span class="line">        running: true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>示例代码 Behavior 动画</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import QtQuick 2.0</span><br><span class="line"></span><br><span class="line">Rectangle &#123;</span><br><span class="line">    id: rect</span><br><span class="line">    width: 100; height: 100</span><br><span class="line">    color: &quot;red&quot;</span><br><span class="line"></span><br><span class="line">    Behavior on width &#123;</span><br><span class="line">        NumberAnimation &#123; duration: 1000 &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    MouseArea &#123;</span><br><span class="line">        anchors.fill: parent</span><br><span class="line">        onClicked: rect.width &#x3D; 50</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="用例三-Transitions或状态机"><a href="#用例三-Transitions或状态机" class="headerlink" title="用例三 Transitions或状态机"></a>用例三 Transitions或状态机</h4><p>过渡动画和状态机动画，本质还是直接使用动画组件。只不过是把动画声明并存储起来，以在状态切换时使用。</p>
+<p>这里先不细说了，后面会有系列文章&lt;Qml特效-页面切换动画&gt;，会专门讲解。</p>
+<h2 id="ShaderEffect"><a href="#ShaderEffect" class="headerlink" title="ShaderEffect"></a>ShaderEffect</h2><p>动画只能控制组件的属性整体的变化，做特效需要精确到像素。</p>
+<p>Qml中提供了ShaderEffect这个组件，就能实现像素级别的操作。</p>
+<p>Qml中有一个模块QtGraphicalEffects，提供了部分特效，就是使用ShaderEffect实现的。</p>
+<p>使用ShaderEffect实现特效，需要有一些OpenGL/DirectX知识，了解GPU渲染管线，同时也需要一些数学知识。</p>
+<p>大名鼎鼎的ShaderToy网站，就是使用Shader实现各种像素级别的酷炫特效。</p>
+<p><a href="https://www.shadertoy.com" target="_blank" rel="noopener">ShaderToy</a></p>
+<p><a href="http://www.iquilezles.org/www/articles/raymarchingdf/raymarchingdf.htm" target="_blank" rel="noopener">作者iq大神</a></p>
+<p>ShaderToy上面的特效都是可以移植到Qml中的。</p>
+<p>使用Shader开发，需要一定的图形学知识。其中使用GLSL需要熟悉OpenGL, 使用HLSL需要熟悉DirectX。</p>
+<h2 id="暗流涌动-效果源码"><a href="#暗流涌动-效果源码" class="headerlink" title="暗流涌动 效果源码"></a>暗流涌动 效果源码</h2><h3 id="组件的封装"><a href="#组件的封装" class="headerlink" title="组件的封装"></a>组件的封装</h3><p>封装了一个组件TArrow</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TArrow.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.12</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.12</span></span><br><span class="line"><span class="title">Image</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="attribute">x</span>: <span class="number">10</span></span><br><span class="line">    <span class="attribute">y</span>: <span class="number">10</span></span><br><span class="line">    <span class="attribute">source</span>: <span class="string">"qrc:/EffectImage/Img/arrow.png"</span></span><br><span class="line">    <span class="attribute">visible</span>: <span class="literal">false</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">run</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        visible = <span class="literal">true</span>;</span><br><span class="line">        pathAnimation.start();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">PathAnimation</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> pathAnimation</span></span><br><span class="line">        <span class="attribute">target</span>: root</span><br><span class="line">        <span class="attribute">loops</span>: <span class="number">-1</span></span><br><span class="line">        <span class="attribute">duration</span>: <span class="number">2400</span></span><br><span class="line">        <span class="attribute">orientation</span>: PathAnimation.TopFirst</span><br><span class="line">        <span class="attribute">path</span>: <span class="title">Path</span>&#123;</span><br><span class="line">            <span class="attribute">startX</span>: <span class="number">10</span></span><br><span class="line">            <span class="attribute">startY</span>: <span class="number">10</span></span><br><span class="line">            <span class="title">PathCurve</span> &#123; <span class="attribute">x</span>: <span class="number">60</span>; <span class="attribute">y</span>: <span class="number">15</span>&#125;</span><br><span class="line">            <span class="title">PathCurve</span> &#123; <span class="attribute">x</span>: <span class="number">110</span>; <span class="attribute">y</span>: <span class="number">205</span>&#125;</span><br><span class="line">            <span class="title">PathCurve</span> &#123; <span class="attribute">x</span>: <span class="number">210</span>; <span class="attribute">y</span>: <span class="number">200</span>&#125;</span><br><span class="line">            <span class="title">PathCurve</span> &#123; <span class="attribute">x</span>: <span class="number">260</span>; <span class="attribute">y</span>: <span class="number">35</span>&#125;</span><br><span class="line">            <span class="title">PathCurve</span> &#123; <span class="attribute">x</span>: <span class="number">310</span>; <span class="attribute">y</span>: <span class="number">25</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>很简单的路径动画,使用的箭头图片是这张:</p>
+<p><img src="/images/Ani1/arrow.png" alt=""></p>
+<h3 id="组件的使用"><a href="#组件的使用" class="headerlink" title="组件的使用"></a>组件的使用</h3><figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.12</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.12</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"../Effects/"</span></span><br><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">    <span class="attribute">color</span>: <span class="string">"black"</span></span><br><span class="line">    <span class="title">Item</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> arrowItem</span></span><br><span class="line">        <span class="attribute">x</span>: <span class="number">10</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="number">10</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">300</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">300</span></span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow1</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow2</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow3</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow4</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow5</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow6</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow7</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow8</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TArrow</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> arrow9</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">Item</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> mirrorItem</span></span><br><span class="line">        <span class="attribute">x</span>: arrowItem.x</span><br><span class="line">        <span class="attribute">y</span>: arrowItem.y + arrowItem.height</span><br><span class="line">        <span class="attribute">width</span>: arrowItem.width</span><br><span class="line">        <span class="attribute">height</span>: arrowItem.height</span><br><span class="line">        <span class="attribute">opacity</span>: <span class="number">0.3</span></span><br><span class="line">        <span class="attribute">layer.enabled</span>: <span class="literal">true</span></span><br><span class="line">        <span class="attribute">layer.effect</span>: <span class="title">Component</span> &#123;</span><br><span class="line">            <span class="title">ShaderEffectSource</span> &#123;</span><br><span class="line">                <span class="attribute">sourceItem</span>: arrowItem</span><br><span class="line">                <span class="attribute">textureMirroring</span>: ShaderEffectSource.MirrorVertically</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="title">Rotation</span> &#123;</span><br><span class="line">            <span class="attribute">origin.x</span>: mirrorItem.width / <span class="number">2</span></span><br><span class="line">            <span class="attribute">origin.y</span>: mirrorItem.height / <span class="number">2</span></span><br><span class="line">            <span class="title">axis</span> &#123;<span class="attribute">x</span>: <span class="number">1</span>; <span class="attribute">y</span>: <span class="number">0</span>; <span class="attribute">z</span>: <span class="number">0</span>&#125;</span><br><span class="line">            <span class="attribute">angle</span>: <span class="number">180</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">Component.onCompleted</span>: &#123;</span><br><span class="line">        seAnimation.start()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">SequentialAnimation</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> seAnimation</span></span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow1.run()&#125;</span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">200</span> &#125;</span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow2.run()&#125;</span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">200</span> &#125;</span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow3.run()&#125;</span><br><span class="line"></span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">500</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow4.run()&#125;</span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">200</span> &#125;</span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow5.run()&#125;</span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">200</span> &#125;</span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow6.run()&#125;</span><br><span class="line"></span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">500</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow7.run()&#125;</span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">200</span> &#125;</span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow8.run()&#125;</span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">200</span> &#125;</span><br><span class="line">        <span class="title">ScriptAction</span> &#123;<span class="attribute">script</span>: arrow9.run()&#125;</span><br><span class="line">        <span class="title">PauseAnimation</span> &#123;<span class="attribute">duration</span>: <span class="number">200</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>动画比较简单粗暴。</p>
+<p>倒影这里，和《Qml特效14-跟上节奏》使用的不一样，使用的是Item的layer属性</p>
+<p>layer.enabled: true</p>
+<p>layer.effect: Component {<br>    ShaderEffectSource {</p>
+<pre><code>}</code></pre><p>}</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/06/22/Qml%E7%89%B9%E6%95%88-%E7%9D%80%E8%89%B2%E5%99%A8%E6%95%88%E6%9E%9CShaderEffect/" class="pre-post btn btn-default" title='Qml特效-着色器效果ShaderEffect'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Qml特效-着色器效果ShaderEffect</span>
+        </a>
+    
+    
+        <a href="/2019/06/11/Qml%E7%89%B9%E6%95%8814-%E8%B7%9F%E4%B8%8A%E8%8A%82%E5%A5%8F/" class="next-post btn btn-default" title='Qml特效14-跟上节奏'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Qml特效14-跟上节奏</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+            appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: true,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于文章"><span class="toc-text">关于文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#暗流涌动-效果预览"><span class="toc-text">暗流涌动 效果预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtQuick动画系统"><span class="toc-text">QtQuick动画系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#动画组件"><span class="toc-text">动画组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动画的使用"><span class="toc-text">动画的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#用例一-直接声明动画"><span class="toc-text">用例一 直接声明动画</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用例二-on语法"><span class="toc-text">用例二 on语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用例三-Transitions或状态机"><span class="toc-text">用例三 Transitions或状态机</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ShaderEffect"><span class="toc-text">ShaderEffect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#暗流涌动-效果源码"><span class="toc-text">暗流涌动 效果源码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#组件的封装"><span class="toc-text">组件的封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组件的使用"><span class="toc-text">组件的使用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+    <script>
+        var tagOption = {
+            textColour: '#444', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Qt,Qml,QtQuick,组件化编程" />
+
+
+    <meta name="description" content="
+简介
+拖动组件
+拖动改变坐标
+拖动改变大小
+融合
+多级组件和Qml应用的框架结构
+
+
+自定义窗口
+无边框
+可拖动窗口
+自定义标题栏
+
+
+效果
+
+简介本文是《Qml组件化编程》系列文章的第二篇，..." />
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+
+    <!--Title-->
+
+<title>
+    
+    Qml组件化编程2-可拖动组件和定制窗体 |
+    
+    涛哥的博客
+</title>
+
+    <link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://snippet.shenliyang.com/img/banner.jpg)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 传承工匠精神 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qt进阶之路/"><i class="fa "></i>Qt进阶之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml组件化编程/"><i class="fa "></i>Qml组件化编程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Qml特效/"><i class="fa "></i>Qml特效</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/C-修炼之路/"><i class="fa "></i>C++修炼之路</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/涛哥的博客/"><i class="fa "></i>涛哥的博客</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Qml组件化编程2-可拖动组件和定制窗体">
+            
+	            Qml组件化编程2-可拖动组件和定制窗体
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/">Qml组件化编程</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">组件化编程</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/05/11</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+            <p class="fa fa-exclamation-triangle warning">
+                本文于<strong>499</strong>天之前发表，文中内容可能已经过时。
+            </p>
+        
+    </div>
+    
+    <div id="post-gallery">
+        
+          <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+        
+    </div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E6%8B%96%E5%8A%A8%E7%BB%84%E4%BB%B6">拖动组件</a><ul>
+<li><a href="#%E6%8B%96%E5%8A%A8%E6%94%B9%E5%8F%98%E5%9D%90%E6%A0%87">拖动改变坐标</a></li>
+<li><a href="#%E6%8B%96%E5%8A%A8%E6%94%B9%E5%8F%98%E5%A4%A7%E5%B0%8F">拖动改变大小</a></li>
+<li><a href="#%E8%9E%8D%E5%90%88">融合</a></li>
+<li><a href="#%E5%A4%9A%E7%BA%A7%E7%BB%84%E4%BB%B6%E5%92%8Cqml%E5%BA%94%E7%94%A8%E7%9A%84%E6%A1%86%E6%9E%B6%E7%BB%93%E6%9E%84">多级组件和Qml应用的框架结构</a></li>
+</ul>
+</li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AA%97%E5%8F%A3">自定义窗口</a><ul>
+<li><a href="#%E6%97%A0%E8%BE%B9%E6%A1%86">无边框</a></li>
+<li><a href="#%E5%8F%AF%E6%8B%96%E5%8A%A8%E7%AA%97%E5%8F%A3">可拖动窗口</a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E9%A2%98%E6%A0%8F">自定义标题栏</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%88%E6%9E%9C">效果</a></li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文是《Qml组件化编程》系列文章的第二篇，涛哥将教大家，如何在Qml中实现可拖动组件，通过拖动</p>
+<p>改变组件的大小和位置；以及实现定制窗体（无边框和标题栏）, 并把拖动组件应用在顶层窗体。</p>
+<p>文章主要发布在<a href="https://jaredtao.github.io">涛哥的博客</a> 和 <a href="https://zhuanlan.zhihu.com/TaoQt" target="_blank" rel="noopener">知乎专栏-涛哥的Qt进阶之路</a>。</p>
+<h2 id="拖动组件"><a href="#拖动组件" class="headerlink" title="拖动组件"></a>拖动组件</h2><h3 id="拖动改变坐标"><a href="#拖动改变坐标" class="headerlink" title="拖动改变坐标"></a>拖动改变坐标</h3><p> 拖动改变坐标的原理很简单，鼠标移动的时候改变目标Item的坐标即可。</p>
+<p> 说话的功夫，涛哥就造了个轮子出来</p>
+<p> (其实是太常用了，涛哥已经写了很多遍)</p>
+ <figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.9</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.5</span></span><br><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">800</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">600</span></span><br><span class="line"></span><br><span class="line">    <span class="title">Rectangle</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> moveItem</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//注意拖动目标不要使用锚布局或者Layout，而是使用相对坐标</span></span><br><span class="line">        <span class="attribute">x</span>: <span class="number">100</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="number">100</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">300</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">200</span></span><br><span class="line"></span><br><span class="line">        <span class="attribute">color</span>: <span class="string">"lightblue"</span></span><br><span class="line">        <span class="title">MouseArea</span> &#123;</span><br><span class="line">            <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">            <span class="keyword">property</span><span class="string"> real lastX</span>: <span class="number">0</span></span><br><span class="line">            <span class="keyword">property</span><span class="string"> real lastY</span>: <span class="number">0</span></span><br><span class="line">            <span class="attribute">onPressed</span>: &#123;</span><br><span class="line">                <span class="comment">//鼠标按下时，记录鼠标初始位置</span></span><br><span class="line">                lastX = mouseX</span><br><span class="line">                lastY = mouseY</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="attribute">onPositionChanged</span>: &#123;</span><br><span class="line">                <span class="keyword">if</span> (pressed) &#123; </span><br><span class="line">                    <span class="comment">//鼠标按住的前提下，坐标改变时，计算偏移量，应用到目标item的坐标上即可</span></span><br><span class="line">                    moveItem.x += mouseX - lastX</span><br><span class="line">                    moveItem.y += mouseY - lastY</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/Qml2/1.gif" alt="预览"></p>
+<p>上面例子中的MouseArea是拖动区域，Rectangle是要拖动的目标Item。</p>
+<p>为了实现高度的可复用性，涛哥将MouseArea独立封装成一个组件,并提供一个control属性，</p>
+<p>让外部使用组件实例的时候指定要拖动的目标。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TMoveArea.qml</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.9</span></span><br><span class="line"></span><br><span class="line"><span class="title">MouseArea</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> real lastX</span>: <span class="number">0</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> real lastY</span>: <span class="number">0</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> bool mask</span>: <span class="literal">false</span>       <span class="comment">//有时候外面需要屏蔽拖动，导出一个mask属性， 默认false。</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> var control</span>: <span class="built_in">parent</span>   <span class="comment">//导出一个control属性，指定要拖动的目标， 默认就用parent好了。注意目标要有x和y属性并且可修改</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">onPressed</span>: &#123;</span><br><span class="line">        lastX = mouseX;</span><br><span class="line">        lastY = mouseY;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">onContainsMouseChanged</span>: &#123; <span class="comment">//修改一下鼠标样式，以示区别</span></span><br><span class="line">        <span class="keyword">if</span> (containsMouse) &#123;</span><br><span class="line">            cursorShape = Qt.SizeAllCursor;</span><br><span class="line">        &#125; <span class="title">else</span> &#123;</span><br><span class="line">            cursorShape = Qt.ArrowCursor;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">onPositionChanged</span>: &#123;</span><br><span class="line">        <span class="keyword">if</span> (!mask &amp;&amp; pressed &amp;&amp; control)</span><br><span class="line">        &#123;</span><br><span class="line">            control.x +=mouseX - lastX</span><br><span class="line">            control.y +=mouseY - lastY</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>TMoveArea组件的用法</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line"></span><br><span class="line">    <span class="title">Rectangle</span> &#123;</span><br><span class="line">        <span class="attribute">x</span>: <span class="number">100</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="number">200</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">400</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">300</span></span><br><span class="line">        <span class="attribute">color</span>: <span class="string">"darkred"</span></span><br><span class="line">        <span class="comment">//实例化一个MoveArea</span></span><br><span class="line">        <span class="title">TMoveArea</span> &#123;</span><br><span class="line">            <span class="comment">//指定control为parent。 其实默认就是parent，写出来示意一下</span></span><br><span class="line">            <span class="attribute">control</span>: <span class="built_in">parent</span></span><br><span class="line">            <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一般来说，将</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">property</span><span class="string"> var control</span>: <span class="built_in">parent</span></span><br></pre></td></tr></table></figure>
+
+<p>中的var换成确切的类型比如Item会更好一些，Qml底层引擎处理var会慢一些，但是这样就限制了</p>
+<p>目标必须是Item或者其子类。var是把双刃剑，有利有弊。涛哥后面要拖动的目标还包括QQuickView</p>
+<p>这种类型，所以这里用var就好了。</p>
+<h3 id="拖动改变大小"><a href="#拖动改变大小" class="headerlink" title="拖动改变大小"></a>拖动改变大小</h3><p>拖动改变大小，原理参考下面这张示意图：</p>
+<p><img src="/images/Qml2/2.png" alt="预览"></p>
+<p>就是在要拖动的目标Item的8个位置分别放一个拖动组件，并在拖动时计算相应的坐标和大小变化即可。</p>
+<p>涛哥先是把TMoveArea改造成了TDragRect</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TDragRect.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.9</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.0</span></span><br><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias containsMouse</span>: mouseArea.containsMouse</span><br><span class="line">    <span class="keyword">signal</span><span class="string"> posChange</span>(<span class="built_in">int</span> xOffset, <span class="built_in">int</span> yOffset)</span><br><span class="line">    <span class="attribute">implicitWidth</span>: <span class="number">12</span>   <span class="comment">//这里隐式的宽为12</span></span><br><span class="line">    <span class="attribute">implicitHeight</span>: <span class="number">12</span>  <span class="comment">//这里隐式的高为12</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int posType</span>: Qt.ArrowCursor</span><br><span class="line"></span><br><span class="line">    <span class="comment">//5.10之前, qml是不能定义枚举的，用只读的int属性代替一下。</span></span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posLeftTop</span>: Qt.SizeFDiagCursor</span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posLeft</span>: Qt.SizeHorCursor</span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posLeftBottom</span>: Qt.SizeBDiagCursor</span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posTop</span>: Qt.SizeVerCursor</span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posBottom</span>: Qt.SizeVerCursor</span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posRightTop</span>: Qt.SizeBDiagCursor</span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posRight</span>: Qt.SizeHorCursor</span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int posRightBottom</span>: Qt.SizeFDiagCursor</span><br><span class="line">    <span class="title">MouseArea</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> mouseArea</span></span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">        <span class="attribute">hoverEnabled</span>: <span class="literal">true</span></span><br><span class="line">        <span class="keyword">property</span><span class="string"> int lastX</span>: <span class="number">0</span></span><br><span class="line">        <span class="keyword">property</span><span class="string"> int lastY</span>: <span class="number">0</span></span><br><span class="line">        <span class="attribute">onContainsMouseChanged</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (containsMouse) &#123;</span><br><span class="line">                cursorShape = posType;</span><br><span class="line">            &#125; <span class="title">else</span> &#123;</span><br><span class="line">                cursorShape = Qt.ArrowCursor;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">onPressedChanged</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (containsPress) &#123;</span><br><span class="line">                lastX = mouseX;</span><br><span class="line">                lastY = mouseY;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">onPositionChanged</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (pressed) &#123;</span><br><span class="line">                posChange(mouseX - lastX, mouseY - lastY)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就是把前面的鼠标拖动时的处理逻辑，换成了带参数的信号发送出去，由外面决定怎么用这两个坐标</p>
+<p>同时也定义了一组枚举，用来表示拖动区域的位置。位置不同，则鼠标样式不同。</p>
+<p>之后涛哥写了一个叫TResizeBorder的组件，里面实例化了8个TDragRect组件，分别放在前面示意图</p>
+<p>所示的位置，并实现了不同的处理逻辑。</p>
+<p>(后来涛哥把上下左右四个中心点换成了四个边)</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TResizeBorder.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.7</span></span><br><span class="line"></span><br><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="attribute">color</span>: <span class="string">"transparent"</span></span><br><span class="line">    <span class="attribute">border.width</span>: <span class="number">4</span></span><br><span class="line">    <span class="attribute">border.color</span>: <span class="string">"black"</span></span><br><span class="line">    <span class="attribute">width</span>: <span class="built_in">parent</span>.width</span><br><span class="line">    <span class="attribute">height</span>: <span class="built_in">parent</span>.height</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var control</span>: <span class="built_in">parent</span></span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posLeftTop</span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="comment">//不要简化这个判断条件，至少让以后维护的人能看懂。化简过后我自己都看不懂了。</span></span><br><span class="line">            <span class="keyword">if</span> (control.x + xOffset &lt; control.x + control.width)</span><br><span class="line">                control.x += xOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.y + yOffset &lt; control.y + control.height)</span><br><span class="line">                control.y += yOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.width - xOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.width-= xOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.height -yOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.height -= yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posMidTop</span><br><span class="line">        <span class="attribute">x</span>: (<span class="built_in">parent</span>.width - width) / <span class="number">2</span></span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (control.y + yOffset &lt; control.y + control.height)</span><br><span class="line">                control.y += yOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.height - yOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.height -= yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posRightTop</span><br><span class="line">        <span class="attribute">x</span>: <span class="built_in">parent</span>.width - width</span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="comment">//向左拖动时，xOffset为负数</span></span><br><span class="line">            <span class="keyword">if</span> (control.width + xOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.width += xOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.height - yOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.height -= yOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.y + yOffset &lt; control.y + control.height)</span><br><span class="line">                control.y += yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posLeftMid</span><br><span class="line">        <span class="attribute">y</span>: (<span class="built_in">parent</span>.height - height) / <span class="number">2</span></span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (control.x + xOffset &lt; control.x + control.width)</span><br><span class="line">                control.x += xOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.width - xOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.width-= xOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posRightMid</span><br><span class="line">        <span class="attribute">x</span>: <span class="built_in">parent</span>.width - width</span><br><span class="line">        <span class="attribute">y</span>: (<span class="built_in">parent</span>.height - height) / <span class="number">2</span></span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (control.width + xOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.width += xOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posLeftBottom</span><br><span class="line">        <span class="attribute">y</span>: <span class="built_in">parent</span>.height - height</span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (control.x + xOffset &lt; control.x + control.width)</span><br><span class="line">                control.x += xOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.width - xOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.width-= xOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.height + yOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.height += yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posMidBottom</span><br><span class="line">        <span class="attribute">x</span>: (<span class="built_in">parent</span>.width - width) / <span class="number">2</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="built_in">parent</span>.height - height</span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (control.height + yOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.height += yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">TDragRect</span> &#123;</span><br><span class="line">        <span class="attribute">posType</span>: posRightBottom</span><br><span class="line">        <span class="attribute">x</span>: <span class="built_in">parent</span>.width - width</span><br><span class="line">        <span class="attribute">y</span>: <span class="built_in">parent</span>.height - height</span><br><span class="line">        <span class="attribute">onPosChange</span>: &#123;</span><br><span class="line">            <span class="keyword">if</span> (control.width + xOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.width += xOffset;</span><br><span class="line">            <span class="keyword">if</span> (control.height + yOffset &gt; <span class="number">0</span>)</span><br><span class="line">                control.height += yOffset;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意组件的顶层，使用的是透明的Rectangle，这样做的目的是，外面可以给这个组件设置</p>
+<p>不同的颜色、边框等。无论哪种UI框架，透明处理都是需要一定的性能消耗的，所以在不需要显示</p>
+<p>出来的情况下，组件顶层最好还是用Item替代。</p>
+<h3 id="融合"><a href="#融合" class="headerlink" title="融合"></a>融合</h3><p>我们来实例化一个能拖动改变大小和位置的Item</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">800</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">600</span></span><br><span class="line">    <span class="title">Rectangle</span> &#123;</span><br><span class="line">        <span class="attribute">x</span>: <span class="number">300</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="number">200</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">120</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">80</span></span><br><span class="line">        <span class="attribute">color</span>: <span class="string">"darkred"</span></span><br><span class="line">        <span class="title">TMoveArea</span> &#123;</span><br><span class="line">            <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">            <span class="attribute">control</span>: <span class="built_in">parent</span>     <span class="comment">//默认就是parent，可以不写。这里写出来示意一下。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TResizeBorder</span> &#123;</span><br><span class="line">            <span class="attribute">control</span>: <span class="built_in">parent</span>     <span class="comment">//默认就是parent，可以不写。这里写出来示意一下。</span></span><br><span class="line">            <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Qml2/3.gif" alt="预览"></p>
+<p>用起来还是挺方便的，直接在目标Item里面实例化TMoveArea和TResizeBorder两个组件，作为目标Item的child，</p>
+<p>分别指定control,就把两种功能 融合起来了。注意前后顺序，如果反过来写则TMoveArea会把TResizeBorder遮</p>
+<p>盖住。（Qml是有z轴的，以后的文章涛哥再讲）</p>
+<h3 id="多级组件和Qml应用的框架结构"><a href="#多级组件和Qml应用的框架结构" class="headerlink" title="多级组件和Qml应用的框架结构"></a>多级组件和Qml应用的框架结构</h3><p>回过头来看一下，先是封装了两个组件：TMoveArea和TDragRect，之后又封装了一个组件：TResizeBorder，</p>
+<p>而这个TResizeBorder里面使用了多个TDragRect组件，显然是有层级结构在里面的。</p>
+<p>涛哥把TMoveArea和TDragRect这样的最基础的组件叫做一级组件，那么TResizeBorder就是一个二级组件。</p>
+<p>涛哥大量的实战经验后，总结出了这样一种Qml应用框架结构：</p>
+<pre><code>一级和二级组件可以单独做成一个插件(或者叫Qml通用库)。
+
+实际的Qml项目，在这些基础上，做一些功能性或者业务性的组件，即三级组件。
+
+由这些三级组件组成一堆的页面(Page)。
+
+最终的main.qml中，只剩下Page的布局。</code></pre><p>示意图如下：</p>
+<p><img src="/images/Qml2/4.png" alt="预览"></p>
+<h2 id="自定义窗口"><a href="#自定义窗口" class="headerlink" title="自定义窗口"></a>自定义窗口</h2><p>自定义窗口，这里以QQuickView为主。</p>
+<h3 id="无边框"><a href="#无边框" class="headerlink" title="无边框"></a>无边框</h3><p>去掉边框，需要在C++中设置flag为Qt::FramelessWindowHint</p>
+<p>同时我们注册view到qml上下文环境，给后面的功能来使用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">QQuickView view;</span><br><span class="line">view.setFlag(Qt::FramelessWindowHint);</span><br><span class="line">view.rootContext()-&gt;setContextProperty(<span class="string">"view"</span>, &amp;view);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="可拖动窗口"><a href="#可拖动窗口" class="headerlink" title="可拖动窗口"></a>可拖动窗口</h3><p>将我们前面做的两种拖动框放在main.qml中，填满顶层Item，并指定control为view。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.qml</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.0</span></span><br><span class="line"></span><br><span class="line">#import TaoQuick 1.0      //这里是做成插件的情况下，引用了插件</span><br><span class="line">#import "qrc:/Tao/Qml"    //没有做插件的情况下，只要引用qml文件的资源路径即可</span><br><span class="line"></span><br><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="comment">//标题栏</span></span><br><span class="line">    <span class="title">TitlePage</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> titleRect</span></span><br><span class="line">        <span class="attribute">width</span>: root.width</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">60</span></span><br><span class="line">        ...</span><br><span class="line">        <span class="comment">//标题栏区域，实例化一个可以拖动位置的组件</span></span><br><span class="line">        <span class="title">TMoveArea</span> &#123;</span><br><span class="line">            <span class="attribute">height</span>: <span class="built_in">parent</span>.height</span><br><span class="line">            <span class="title">anchors</span> &#123;</span><br><span class="line">                <span class="attribute">left</span>: <span class="built_in">parent</span>.left</span><br><span class="line">                <span class="attribute">right</span>: <span class="built_in">parent</span>.right</span><br><span class="line">                <span class="attribute">rightMargin</span>: <span class="number">170</span> <span class="comment">//留一点右边距，给最小化、最大化、关闭等按钮用</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//指定拖动目标为view</span></span><br><span class="line">            <span class="attribute">control</span>: view</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//实例化一个拖动改大小的组件</span></span><br><span class="line">    <span class="title">TResizeBorder</span> &#123;</span><br><span class="line">        <span class="comment">//指定拖动目标为view</span></span><br><span class="line">        <span class="attribute">control</span>: view</span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义标题栏"><a href="#自定义标题栏" class="headerlink" title="自定义标题栏"></a>自定义标题栏</h3><p>标题栏的关键就是实现右侧的三个按钮，如果你看了<a href="https://jaredtao.github.io/2019/05/09/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B1-%E6%8C%89%E9%92%AE%E7%9A%84%E5%AE%9A%E5%88%B6%E4%B8%8E%E5%B0%81%E8%A3%85/">《Qml组件化编程1-按钮的定制与封装》</a>，</p>
+<p>这都没有什么难度了。涛哥这里用图片按钮的方式实现。</p>
+<p>注意最大化按钮在最大化状态下变成标准化按钮。</p>
+<p>最小化：view.showMinimized()</p>
+<p>最大化：view.showMaximized()</p>
+<p>标准化：view.showNormal()</p>
+<p>关闭: view.close()</p>
+<p>这里给出关键代码</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">property</span><span class="string"> bool isMaxed</span>: <span class="literal">false</span></span><br><span class="line">    <span class="title">Row</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> controlButtons</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">20</span></span><br><span class="line">        <span class="attribute">anchors.verticalCenter</span>: <span class="built_in">parent</span>.verticalCenter</span><br><span class="line">        <span class="attribute">anchors.right</span>: <span class="built_in">parent</span>.right</span><br><span class="line">        <span class="attribute">anchors.rightMargin</span>: <span class="number">12</span></span><br><span class="line">        <span class="attribute">spacing</span>: <span class="number">10</span></span><br><span class="line">        <span class="title">TImageBtn</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">height</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">imageUrl</span>: containsMouse ? <span class="string">"qrc:/Image/Window/minimal_white.png"</span> : <span class="string">"qrc:/Image/Window/minimal_gray.png"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                view.showMinimized()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TImageBtn</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">height</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">visible</span>: !isMaxed</span><br><span class="line">            <span class="attribute">imageUrl</span>: containsMouse ? <span class="string">"qrc:/Image/Window/max_white.png"</span> : <span class="string">"qrc:/Image/Window/max_gray.png"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                view.showMaximized()</span><br><span class="line">                isMaxed = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TImageBtn</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">height</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">visible</span>: isMaxed</span><br><span class="line">            <span class="attribute">imageUrl</span>: containsMouse ? <span class="string">"qrc:/Image/Window/normal_white.png"</span> : <span class="string">"qrc:/Image/Window/normal_gray.png"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                view.showNormal()</span><br><span class="line">                isMaxed = <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TImageBtn</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">height</span>: <span class="number">20</span></span><br><span class="line">            <span class="attribute">imageUrl</span>: containsMouse ? <span class="string">"qrc:/Image/Window/close_white.png"</span> : <span class="string">"qrc:/Image/Window/close_gray.png"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                view.close()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>最后，我们来看一下效果吧</p>
+<p><img src="/images/Qml2/5.gif" alt="预览"></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/05/12/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B3-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E7%9A%AE%E8%82%A4/" class="pre-post btn btn-default" title='Qml组件化编程3-动态切换皮肤'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Qml组件化编程3-动态切换皮肤</span>
+        </a>
+    
+    
+        <a href="/2019/05/09/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B1-%E6%8C%89%E9%92%AE%E7%9A%84%E5%AE%9A%E5%88%B6%E4%B8%8E%E5%B0%81%E8%A3%85/" class="next-post btn btn-default" title='Qml组件化编程1-按钮的定制与封装'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Qml组件化编程1-按钮的定制与封装</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+            appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+            placeholder: '说点什么吧',
+            notify: false,
+            verify: true,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#拖动组件"><span class="toc-text">拖动组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拖动改变坐标"><span class="toc-text">拖动改变坐标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拖动改变大小"><span class="toc-text">拖动改变大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#融合"><span class="toc-text">融合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多级组件和Qml应用的框架结构"><span class="toc-text">多级组件和Qml应用的框架结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义窗口"><span class="toc-text">自定义窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无边框"><span class="toc-text">无边框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可拖动窗口"><span class="toc-text">可拖动窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义标题栏"><span class="toc-text">自定义标题栏</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果"><span class="toc-text">效果</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+    <script>
+        var tagOption = {
+            textColour: '#444', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+
+</body>
+</html>
