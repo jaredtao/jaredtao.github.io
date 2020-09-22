@@ -8,20 +8,20 @@ menu:
 - page: home
   url: /
   icon:
+- page: Qt进阶之路
+  url: /categories/Qt进阶之路/
+  icon:
 - page: Qml组件化编程
   url: /categories/Qml组件化编程/
   icon:
 - page: Qml特效
   url: /categories/Qml特效/
   icon:
-- page: Qt进阶之路
-  url: /categories/Qt进阶之路/
-  icon:
 - page: C++修炼之路
   url: /categories/C-修炼之路/
   icon:
-- page: 武威故事
-  url: /categories/武威故事/
+- page: 涛哥的博客
+  url: /categories/涛哥的博客/
   icon:
 - page: 时间轴
   url: /archives/
@@ -35,7 +35,7 @@ rss: /atom.xml
 
 ## Carousel
 carousel:
-  img: './img/qz.png'
+  img: './img/bike1.jpg'
   url: 'javascript:'
 
 # 各个小工具的设置
@@ -187,7 +187,7 @@ valine:
    appKey: eitB2FV5n2qyMHcDM7x6EQpt
    placeholder: 说点什么吧
    notify: false
-   verify: false
+   verify: true
    avatar: mm
    meta: nick,mail
    pageSize: 10
