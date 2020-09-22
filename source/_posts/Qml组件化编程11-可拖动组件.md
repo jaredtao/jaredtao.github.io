@@ -13,8 +13,6 @@ date: 2019-10-30 18:44:23
 
 本文是《Qml组件化编程》系列文章的第十一篇，涛哥将教大家，实现Qml可拖动组件。
 
-注：文章主要发布在[涛哥的博客](https://jaredtao.github.io) 和 [涛哥的知乎专栏-Qt进阶之路](https://zhuanlan.zhihu.com/TaoQt)
-
 
 # 效果图
 

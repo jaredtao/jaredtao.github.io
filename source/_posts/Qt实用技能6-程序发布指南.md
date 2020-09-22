@@ -270,6 +270,10 @@ d:\qt\Online\5.12.4\msvc2017_64\bin\windeployqt.exe HelloDeploy.exe --qmldir .\q
 
 Dependencies下载链接:  https://github.com/lucasg/Dependencies
 
+Dependencies 下载好，点击"DependenciesGui.exe"就可以打开界面。注意是名字带Gui的那个，不带gui的“Dependencies.exe”是命令行程序。
+
+![预览](/images/QtDeployment/depency.jpg)
+
 下面列举一些常见的错误信息
 
 ### 应用程序无法正常启动
