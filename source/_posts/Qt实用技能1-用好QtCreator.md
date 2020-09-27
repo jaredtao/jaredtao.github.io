@@ -42,8 +42,6 @@ QtCreator版本以Qt5.6.x及以上安装包所带的都行，再旧的版本不�
 
 光标焦点放在代码文本中，之后 菜单栏: 编辑->Advanced->Toggle Fold All
 
-![预览](/images/Qt1/1.gif)
-
 这个功能没有快捷键
 
 ## QtCreator属性生成
@@ -54,7 +52,7 @@ QtCreator版本以Qt5.6.x及以上安装包所带的都行，再旧的版本不�
 
 也可以使用快捷键，光标放在Q_PROPERTY上，按Alt + Enter。
 
-![预览](/images/Qml3/2.gif)
+![预览](/images/Qml3/1.gif)
 
 ## QtCreator注释代码
 
