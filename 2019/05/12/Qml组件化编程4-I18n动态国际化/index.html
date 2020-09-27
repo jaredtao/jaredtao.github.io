@@ -278,10 +278,6 @@ Qml中切换语言
 <p>u8是c++11标准支持的字符串字面量写法，可以参考<a href="https://zh.cppreference.com/w/cpp/language/string_literal" target="_blank" rel="noopener">https://zh.cppreference.com/w/cpp/language/string_literal</a></p>
 <p>QStringLiteral是Qt特有的宏，用来在编译期生成字符串字面量，效果和u8类似。</p>
 <p>QString::fromLocal8Bit可以在运行过程中，动态处理中文字符串。</p>
-<p>（题外话：有一部分人给涛哥提过 “源码中不该写中文，应该全部做进翻译文件”的思想，但是涛哥在实践中发现这个思想并不能很好地执行。</p>
-<p>一方面并没有编译器之类的约束，另一方面也不方便。</p>
-<p>涛哥这里提出反问：文件本身是utf8的，utf8就是支持中文的，凭啥就不能写中文了？再者说，我翻译的目标语言正确了，翻译源文是什么语言又有什么关系呢？</p>
-<p>俄罗斯人代码写的挺好的，github上就有不少带俄文注释的代码)</p>
 <h2 id="Qt本身的国际化"><a href="#Qt本身的国际化" class="headerlink" title="Qt本身的国际化"></a>Qt本身的国际化</h2><p>Qt的国际化, 相关文章太多了，Qt帮助文档也有，涛哥这里列出重点</p>
 <ol>
 <li>C++代码中的字符串使用QObject::tr()包起来，类本身是QObject的子类时可以省略作用域“QObject::”,直接写tr</li>
