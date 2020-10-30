@@ -16,7 +16,7 @@ date: 2019-04-29 23:44:23
 
 涛哥在这里告诉大家一个隐藏的技能，那就是输出彩色的log:
 
-![293105e6f37901923d3576fcd12c650f.png](/images/ConsoleColor/Image2.png)
+![293105e6f37901923d3576fcd12c650f.png](/images/ConsoleColor/2.jpg)
 
 
 从此看到的log，不再是黑白的，而是五颜六色的，生活更加绚丽多彩。
@@ -218,4 +218,4 @@ int main(int argc, char *argv[])
 
 ```
 顺便说一下，设置了console的工程不能显示出彩色，得把console去掉。
-![a03d569415d1c9ab1aaa6fb1a1d62d3a.png](/images/ConsoleColor/Image3.png)
+![a03d569415d1c9ab1aaa6fb1a1d62d3a.png](/images/ConsoleColor/3.jpg)

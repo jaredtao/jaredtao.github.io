@@ -173,10 +173,6 @@ date: 2019-04-30 23:44:23
 
 这个模板只使用了一些很基本的html元素和css样式表，筛选器那里用了一点JavaScript。
 
-(筛选器功能，我去请教了一下前端的同事，给了我一个JQuery版本，只要很少几行代码，但是要带上一个大大的JQuery.js。。。)
-
-(涛哥我也写了不少qml，多多少少还是懂点js的，于是就自己写了这么一个筛选器。不到20行代码，真是自己动手丰衣足食啊。)
-
 * Log模板的用法
 
 很简单的，模板作为html文件的前面部分，接下来每一行log，以追加的方式跟在模板后面就行了。
@@ -270,8 +266,8 @@ Qt提供了一个函数qSetMessagePattern，用来定制输出信息。
 
 时间戳、log类型、文件名、行号 等信息。也可以不改任何代码、改环境变量来做到
 
-![预览](/images/Logger/4.png)
-![预览](/images/Logger/5.png)
+![预览](/images/Logger/2.jpg) 
+![预览](/images/Logger/3.jpg)
 
 * Release模式信息缺失
 
@@ -302,13 +298,13 @@ Qt还提供了一个函数 qInstallMessageHandler，可以插入一个回调函�
 
 函数的打印信息，都经过这个回调来处理。看一下帮助文档：
 
-![预览](/images/Logger/6.png)
+![预览](/images/Logger/4.jpg)
 
 其实帮助文档已经提供了一个简易的log功能，涛哥就是在这个功能的基础上，做了一些定制化的修改。
 
 ### 融合
   
-![预览](/images/Logger/3.png)
+![预览](/images/Logger/5.jpg)
 
 * log存储路径和容量
 
@@ -428,24 +424,11 @@ static void outputMessage(QtMsgType type, const QMessageLogContext &context, con
     ::OutputDebugString(L"\r\n");
 }
 ```
-## 文件句柄复用
 
-有朋友(Qt侠- 刘典武)指出了优化的地方，应该复用文件句柄，不要每次都打开关闭文件，所以涛哥改了一下。
 
-这里贴个小乌龟的变更图吧，当然github上也有变更记录的。
-
-![预览](/images/Logger/9.png)
-
-## 多线程测试
-
-涛哥同时起了8个线程，每个线程输出1000条log信息，并统计最终结果。
-
-![预览](/images/Logger/7.png)
-
-![预览](/images/Logger/8.png)
-
-代码去github吧。
 
 ## github仓库链接
+
+源代码代码去github吧。
 
 [TaoLogger](https://github.com/jaredtao/TaoLogger)

@@ -363,7 +363,7 @@ Item {
 }
 ```
 
-![预览](/images/Qml2/3.gif)
+![预览](/images/Qml2/3.webp)
 
 用起来还是挺方便的，直接在目标Item里面实例化TMoveArea和TResizeBorder两个组件，作为目标Item的child，
 
