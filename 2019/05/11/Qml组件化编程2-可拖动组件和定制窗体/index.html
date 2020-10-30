@@ -224,7 +224,7 @@
         
         <p class="fa fa-exclamation-triangle warning">
             本文于<strong>
-                527</strong>
+                537</strong>
             天之前发表，文中内容可能已经过时。
         </p>
         
@@ -295,7 +295,7 @@
 <h3 id="融合"><a href="#融合" class="headerlink" title="融合"></a>融合</h3><p>我们来实例化一个能拖动改变大小和位置的Item</p>
 <figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">800</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">600</span></span><br><span class="line">    <span class="title">Rectangle</span> &#123;</span><br><span class="line">        <span class="attribute">x</span>: <span class="number">300</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="number">200</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">120</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">80</span></span><br><span class="line">        <span class="attribute">color</span>: <span class="string">"darkred"</span></span><br><span class="line">        <span class="title">TMoveArea</span> &#123;</span><br><span class="line">            <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">            <span class="attribute">control</span>: <span class="built_in">parent</span>     <span class="comment">//默认就是parent，可以不写。这里写出来示意一下。</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">TResizeBorder</span> &#123;</span><br><span class="line">            <span class="attribute">control</span>: <span class="built_in">parent</span>     <span class="comment">//默认就是parent，可以不写。这里写出来示意一下。</span></span><br><span class="line">            <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/Qml2/3.gif" alt="预览"></p>
+<p><img src="/images/Qml2/3.webp" alt="预览"></p>
 <p>用起来还是挺方便的，直接在目标Item里面实例化TMoveArea和TResizeBorder两个组件，作为目标Item的child，</p>
 <p>分别指定control,就把两种功能 融合起来了。注意前后顺序，如果反过来写则TMoveArea会把TResizeBorder遮</p>
 <p>盖住。（Qml是有z轴的，以后的文章涛哥再讲）</p>
