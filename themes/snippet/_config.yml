@@ -8,17 +8,11 @@ menu:
 - page: home
   url: /
   icon:
-- page: Qt进阶之路
-  url: /categories/Qt进阶之路/
+- page: 玩转Qt
+  url: /categories/玩转Qt/
   icon:
-- page: Qml组件化编程
-  url: /categories/Qml组件化编程/
-  icon:
-- page: Qml特效
-  url: /categories/Qml特效/
-  icon:
-- page: C++修炼之路
-  url: /categories/C-修炼之路/
+- page: 玩转Qml
+  url: /categories/玩转Qml/
   icon:
 - page: 涛哥的博客
   url: /categories/涛哥的博客/
@@ -173,7 +167,7 @@ declaration:
 reward:
   alipay: /img/zhifubao.jpg
   wepay: /img/weixin.jpg
-  tip: 赞赏是不耍流氓的鼓励
+  tip: 为众人抱薪者,不可使其冻毙于霜雪
 
 ## 主题评论
 
