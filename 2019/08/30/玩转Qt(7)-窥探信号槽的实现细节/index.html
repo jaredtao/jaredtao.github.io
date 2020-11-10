@@ -1,0 +1,475 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,信号-槽,Qt原理" />
+
+
+<meta name="description" content="
+简介
+猫和老鼠的故事
+声明与实现
+Q_OBJECT宏
+信号的moc生成
+信号的触发
+槽和moc生成
+第三方信号槽实现
+
+简介这次讨论Qt信号-槽的实现细节。
+上次的文章《认清信号槽的本质》中介..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转Qt(7)-窥探信号槽的实现细节 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转Qt(7)-窥探信号槽的实现细节">
+            
+            玩转Qt(7)-窥探信号槽的实现细节
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQt/">玩转Qt</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%8E%9F%E7%90%86/" rel="tag">Qt原理</a> <a class="tag-link" href="/tags/%E4%BF%A1%E5%8F%B7-%E6%A7%BD/" rel="tag">信号-槽</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/08/30</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%e7%ae%80%e4%bb%8b">简介</a></li>
+<li><a href="#%e7%8c%ab%e5%92%8c%e8%80%81%e9%bc%a0%e7%9a%84%e6%95%85%e4%ba%8b">猫和老鼠的故事</a></li>
+<li><a href="#%e5%a3%b0%e6%98%8e%e4%b8%8e%e5%ae%9e%e7%8e%b0">声明与实现</a></li>
+<li><a href="#qobject%e5%ae%8f">Q_OBJECT宏</a></li>
+<li><a href="#%e4%bf%a1%e5%8f%b7%e7%9a%84moc%e7%94%9f%e6%88%90">信号的moc生成</a></li>
+<li><a href="#%e4%bf%a1%e5%8f%b7%e7%9a%84%e8%a7%a6%e5%8f%91">信号的触发</a></li>
+<li><a href="#%e6%a7%bd%e5%92%8cmoc%e7%94%9f%e6%88%90">槽和moc生成</a></li>
+<li><a href="#%e7%ac%ac%e4%b8%89%e6%96%b9%e4%bf%a1%e5%8f%b7%e6%a7%bd%e5%ae%9e%e7%8e%b0">第三方信号槽实现</a></li>
+</ul>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>这次讨论Qt信号-槽的实现细节。</p>
+<p>上次的文章《认清信号槽的本质》中介绍过，信号-槽是一种对象之间的通信机制，是</p>
+<p>Qt在标准C++之外，使用元对象编译器(MOC)实现的语法糖。</p>
+<p>这次通过一个简单的案例，学习一些信号-槽的实现细节。</p>
+<h1 id="猫和老鼠的故事"><a href="#猫和老鼠的故事" class="headerlink" title="猫和老鼠的故事"></a>猫和老鼠的故事</h1><p><img src="/images/Qt4/1.jpg" alt="预览"></p>
+<p>还是拿上次的设定来说明：Tom有个技能叫”喵”，就是发出猫叫，而正在偷吃东西的Jerry,听见猫叫声就会逃跑。</p>
+<p>我们用信号-槽的方式写出来。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Tom.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QObject&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tom</span> :</span> <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Tom(QObject *parent = <span class="literal">nullptr</span>) : QObject(parent)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">miaow</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        qDebug() &lt;&lt;  <span class="string">u8"喵!"</span> ;</span><br><span class="line">        <span class="function">emit <span class="title">miao</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">signals:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">miao</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Jerry.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QObject&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Jerry</span> :</span> <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Jerry(QObject *parent = <span class="literal">nullptr</span>) : QObject(parent)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">runAway</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        qDebug() &lt;&lt; <span class="string">u8"那只猫又来了，快溜！"</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>以上面的代码为例，要使用信号-槽功能，先决条件是继承QObject类，并在类声明中增加Q_OBJECT宏。</p>
+<p>之后在”signals:” 字段之后声明一些函数，这些函数就是信号。</p>
+<p>在”public slots:” 之后声明的函数，就是槽函数。</p>
+<p>接下来看看我们的main函数:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QCoreApplication&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Tom.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Jerry.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QCoreApplication <span class="title">a</span><span class="params">(argc, argv)</span></span>;</span><br><span class="line"></span><br><span class="line">    Tom tom;</span><br><span class="line">    Jerry jerry;</span><br><span class="line"></span><br><span class="line">    QObject::connect(&amp;tom, &amp;Tom::miao, &amp;jerry, &amp;Jerry::runAway);</span><br><span class="line">    tom.miaow();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> a.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>信号-槽都准备好了，接下来创建两个对象实例，并使用QObject::connect将信号和槽连接起来。</p>
+<p>最后使用emit发送信号，就会自动触发槽函数了。</p>
+<p>运行结果：</p>
+<p><img src="/images/Qt5/1.jpg" alt="预览"></p>
+<h1 id="声明与实现"><a href="#声明与实现" class="headerlink" title="声明与实现"></a>声明与实现</h1><p>信号和槽的本质都是函数。</p>
+<p>我们知道C++中的函数要有声明(declare)，也要有实现(implement),</p>
+<p>而信号只要声明，不需要写实现。这是因为moc会为我们自动生成。</p>
+<p>另外触发信号时，不写emit关键字，直接调用信号函数，也是没有问题的。</p>
+<h1 id="Q-OBJECT宏"><a href="#Q-OBJECT宏" class="headerlink" title="Q_OBJECT宏"></a>Q_OBJECT宏</h1><p>我们来看一下Q_OBJECT宏，展开如下：</p>
+<p>(不同的Qt版本有些差异，涛哥这里用的是5.12.4，以此为例)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>: \</span><br><span class="line">    QT_WARNING_PUSH \</span><br><span class="line">    Q_OBJECT_NO_OVERRIDE_WARNING \</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> QMetaObject staticMetaObject; \</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">const</span> QMetaObject *<span class="title">metaObject</span><span class="params">()</span> <span class="keyword">const</span></span>; \</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> *<span class="title">qt_metacast</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *)</span></span>; \</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">qt_metacall</span><span class="params">(QMetaObject::Call, <span class="keyword">int</span>, <span class="keyword">void</span> **)</span></span>; \</span><br><span class="line">    QT_TR_FUNCTIONS \</span><br><span class="line"><span class="keyword">private</span>: \</span><br><span class="line">    Q_OBJECT_NO_ATTRIBUTES_WARNING \</span><br><span class="line">    <span class="function">Q_DECL_HIDDEN_STATIC_METACALL <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">qt_static_metacall</span><span class="params">(QObject *, QMetaObject::Call, <span class="keyword">int</span>, <span class="keyword">void</span> **)</span></span>; \</span><br><span class="line">    QT_WARNING_POP \</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">QPrivateSignal</span> &#123;</span>&#125;; \</span><br><span class="line">    QT_ANNOTATE_CLASS(qt_qobject, <span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，关键的地方，是声明了一个只读的静态成员变量staticMetaObject，以及3个public的成员函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> QMetaObject staticMetaObject; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">const</span> QMetaObject *<span class="title">metaObject</span><span class="params">()</span> <span class="keyword">const</span></span>; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> *<span class="title">qt_metacast</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *)</span></span>; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">qt_metacall</span><span class="params">(QMetaObject::Call, <span class="keyword">int</span>, <span class="keyword">void</span> **)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>还有一个private的静态成员函数qt_static_metacall</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">qt_static_metacall</span><span class="params">(QObject *, QMetaObject::Call, <span class="keyword">int</span>, <span class="keyword">void</span> **)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>那么声明的这些成员变量/函数，在哪里实现？答案是moc生成的cpp文件。</p>
+<h1 id="信号的moc生成"><a href="#信号的moc生成" class="headerlink" title="信号的moc生成"></a>信号的moc生成</h1><p><img src="/images/Qt5/2.jpg" alt="预览"></p>
+<p>如上图所示目录结构，项目编译完成后，在build文件夹中，自动生成了moc_Jerry.cpp 和 moc_Tom.cpp两个文件</p>
+<p>其中moc_Tom.cpp内容如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/****************************************************************************</span></span><br><span class="line"><span class="comment">** Meta object code from reading C++ file 'Tom.h'</span></span><br><span class="line"><span class="comment">**</span></span><br><span class="line"><span class="comment">** Created by: The Qt Meta Object Compiler version 67 (Qt 5.12.4)</span></span><br><span class="line"><span class="comment">**</span></span><br><span class="line"><span class="comment">** WARNING! All changes made in this file will be lost!</span></span><br><span class="line"><span class="comment">*****************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../../TomJerry/Tom.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QtCore/qbytearray.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QtCore/qmetatype.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !defined(Q_MOC_OUTPUT_REVISION)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"The header file 'Tom.h' doesn't include &lt;QObject&gt;."</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> Q_MOC_OUTPUT_REVISION != 67</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"This file was generated using the moc from 5.12.4. It"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"cannot be used with the include files from this version of Qt."</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> <span class="meta-string">"(The moc has changed too much.)"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">QT_BEGIN_MOC_NAMESPACE</span><br><span class="line">QT_WARNING_PUSH</span><br><span class="line">QT_WARNING_DISABLE_DEPRECATED</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">qt_meta_stringdata_Tom_t</span> &#123;</span></span><br><span class="line">    QByteArrayData data[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">char</span> stringdata0[<span class="number">10</span>];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> QT_MOC_LITERAL(idx, ofs, len) \</span></span><br><span class="line">    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \</span><br><span class="line">    qptrdiff(offsetof(qt_meta_stringdata_Tom_t, stringdata0) + ofs \</span><br><span class="line">        - idx * <span class="keyword">sizeof</span>(QByteArrayData)) \</span><br><span class="line">    )</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> qt_meta_stringdata_Tom_t qt_meta_stringdata_Tom = &#123;</span><br><span class="line">    &#123;</span><br><span class="line">QT_MOC_LITERAL(<span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span>), <span class="comment">// "Tom"</span></span><br><span class="line">QT_MOC_LITERAL(<span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>), <span class="comment">// "miao"</span></span><br><span class="line">QT_MOC_LITERAL(<span class="number">2</span>, <span class="number">9</span>, <span class="number">0</span>) <span class="comment">// ""</span></span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"Tom\0miao\0"</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> QT_MOC_LITERAL</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint qt_meta_data_Tom[] = &#123;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// content:</span></span><br><span class="line">       <span class="number">8</span>,       <span class="comment">// revision</span></span><br><span class="line">       <span class="number">0</span>,       <span class="comment">// classname</span></span><br><span class="line">       <span class="number">0</span>,    <span class="number">0</span>, <span class="comment">// classinfo</span></span><br><span class="line">       <span class="number">1</span>,   <span class="number">14</span>, <span class="comment">// methods</span></span><br><span class="line">       <span class="number">0</span>,    <span class="number">0</span>, <span class="comment">// properties</span></span><br><span class="line">       <span class="number">0</span>,    <span class="number">0</span>, <span class="comment">// enums/sets</span></span><br><span class="line">       <span class="number">0</span>,    <span class="number">0</span>, <span class="comment">// constructors</span></span><br><span class="line">       <span class="number">0</span>,       <span class="comment">// flags</span></span><br><span class="line">       <span class="number">1</span>,       <span class="comment">// signalCount</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">// signals: name, argc, parameters, tag, flags</span></span><br><span class="line">       <span class="number">1</span>,    <span class="number">0</span>,   <span class="number">19</span>,    <span class="number">2</span>, <span class="number">0x06</span> <span class="comment">/* Public */</span>,</span><br><span class="line"></span><br><span class="line"> <span class="comment">// signals: parameters</span></span><br><span class="line">    QMetaType::Void,</span><br><span class="line"></span><br><span class="line">       <span class="number">0</span>        <span class="comment">// eod</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Tom::qt_static_metacall(QObject *_o, QMetaObject::Call _c, <span class="keyword">int</span> _id, <span class="keyword">void</span> **_a)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (_c == QMetaObject::InvokeMetaMethod) &#123;</span><br><span class="line">        <span class="keyword">auto</span> *<span class="keyword">_t</span> = <span class="keyword">static_cast</span>&lt;Tom *&gt;(_o);</span><br><span class="line">        Q_UNUSED(<span class="keyword">_t</span>)</span><br><span class="line">        <span class="keyword">switch</span> (_id) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>: <span class="keyword">_t</span>-&gt;miao(); <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>: ;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_c == QMetaObject::IndexOfMethod) &#123;</span><br><span class="line">        <span class="keyword">int</span> *result = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">int</span> *&gt;(_a[<span class="number">0</span>]);</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">using</span> <span class="keyword">_t</span> = <span class="keyword">void</span> (Tom::*)();</span><br><span class="line">            <span class="keyword">if</span> (*<span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">_t</span> *&gt;(_a[<span class="number">1</span>]) == <span class="keyword">static_cast</span>&lt;<span class="keyword">_t</span>&gt;(&amp;Tom::miao)) &#123;</span><br><span class="line">                *result = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Q_UNUSED(_a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">QT_INIT_METAOBJECT <span class="keyword">const</span> QMetaObject Tom::staticMetaObject = &#123; &#123;</span><br><span class="line">    &amp;QObject::staticMetaObject,</span><br><span class="line">    qt_meta_stringdata_Tom.data,</span><br><span class="line">    qt_meta_data_Tom,</span><br><span class="line">    qt_static_metacall,</span><br><span class="line">    <span class="literal">nullptr</span>,</span><br><span class="line">    <span class="literal">nullptr</span></span><br><span class="line">&#125; &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> QMetaObject *Tom::metaObject() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> QObject::d_ptr-&gt;metaObject ? QObject::d_ptr-&gt;dynamicMetaObject() : &amp;staticMetaObject;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> *Tom::qt_metacast(<span class="keyword">const</span> <span class="keyword">char</span> *_clname)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!_clname) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(_clname, qt_meta_stringdata_Tom.stringdata0))</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">void</span>*&gt;(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span> QObject::qt_metacast(_clname);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Tom::qt_metacall(QMetaObject::Call _c, <span class="keyword">int</span> _id, <span class="keyword">void</span> **_a)</span><br><span class="line">&#123;</span><br><span class="line">    _id = QObject::qt_metacall(_c, _id, _a);</span><br><span class="line">    <span class="keyword">if</span> (_id &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> _id;</span><br><span class="line">    <span class="keyword">if</span> (_c == QMetaObject::InvokeMetaMethod) &#123;</span><br><span class="line">        <span class="keyword">if</span> (_id &lt; <span class="number">1</span>)</span><br><span class="line">            qt_static_metacall(<span class="keyword">this</span>, _c, _id, _a);</span><br><span class="line">        _id -= <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_c == QMetaObject::RegisterMethodArgumentMetaType) &#123;</span><br><span class="line">        <span class="keyword">if</span> (_id &lt; <span class="number">1</span>)</span><br><span class="line">            *<span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">int</span>*&gt;(_a[<span class="number">0</span>]) = <span class="number">-1</span>;</span><br><span class="line">        _id -= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SIGNAL 0</span></span><br><span class="line"><span class="keyword">void</span> Tom::miao()</span><br><span class="line">&#123;</span><br><span class="line">    QMetaObject::activate(<span class="keyword">this</span>, &amp;staticMetaObject, <span class="number">0</span>, <span class="literal">nullptr</span>);</span><br><span class="line">&#125;</span><br><span class="line">QT_WARNING_POP</span><br><span class="line">QT_END_MOC_NAMESPACE</span><br></pre></td></tr></table></figure>
+
+<p>可以大致看出，生成的cpp文件中，就是变量staticMetaObject以及 那几个函数的实现。</p>
+<p>staticMetaObject是一个结构体，用来存储Tom这个类的信号、槽等元信息，并把</p>
+<p>qt_static_metacall静态函数作为函数指针存储起来。</p>
+<p>因为是静态成员，所以实例化多少个Tom对象，它们的元信息都是一样的。</p>
+<p>qt_static_metacall函数提供了两种“元调用的实现”：</p>
+<p>如果是InvokeMetaMethod类型的调用，则直接 把参数中的QObject对象，</p>
+<p>转换成Tom类然后调用其miao函数</p>
+<p>如果是IndexOfMethod类型的调用，即获取元函数的索引号，则计算miao函数的偏移并返回。</p>
+<p>而moc_Tom.cpp末尾的</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SIGNAL 0</span></span><br><span class="line"><span class="keyword">void</span> Tom::miao()</span><br><span class="line">&#123;</span><br><span class="line">    QMetaObject::activate(<span class="keyword">this</span>, &amp;staticMetaObject, <span class="number">0</span>, <span class="literal">nullptr</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就是信号函数的实现。</p>
+<h1 id="信号的触发"><a href="#信号的触发" class="headerlink" title="信号的触发"></a>信号的触发</h1><p>miao信号的实现，直接调用了QMetaObject::activate函数。其中0代表miao这个函数的索引号。</p>
+<p>QMetaObject::activate函数的实现，在Qt源码的QObject.cpp文件中，略微复杂一些，</p>
+<p>且不同版本的Qt，实现差异都比较大，这里总结一下大致的实现：</p>
+<p>先找出与当前信号连接的所有对象-槽函数，再逐个处理：</p>
+<p>这里处理的方式，分为三种：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>((c-&gt;connectionType == Qt::AutoConnection &amp;&amp; !receiverInSameThread)</span><br><span class="line">                || (c-&gt;connectionType == Qt::QueuedConnection)) &#123;</span><br><span class="line">    <span class="comment">// 队列处理</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (c-&gt;connectionType == Qt::BlockingQueuedConnection) &#123;</span><br><span class="line">    <span class="comment">// 阻塞处理</span></span><br><span class="line">    <span class="comment">// 如果同线程，打印潜在死锁。</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//直接调用槽函数或回调函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>receiverInSameThread表示当前线程id和接收信号的对象的所在线程id是否相等。</p>
+<p>如果信号-槽连接方式为QueuedConnection，不论是否在同一个线程，按队列处理。</p>
+<p>如果信号-槽连接方式为Auto，且不在同一个线程，也按队列处理。</p>
+<p>如果信号-槽连接方式为阻塞队列BlockingQueuedConnection，按阻塞处理。</p>
+<p>(注意同一个线程就不要按阻塞队列调用了。因为同一个线程，同时只能做一件事，</p>
+<p>本身就是阻塞的，直接调用就好了，如果走阻塞队列，则多了加锁的过程。如果槽中又发了</p>
+<p>同样的信号，就会出现死锁：加锁之后还未解锁，又来申请加锁。)</p>
+<p>队列处理，就是把槽函数的调用，转化成了QMetaCallEvent事件，通过QCoreApplication::postEvent</p>
+<p>放进了事件循环, 等到下一次事件分发，相应的线程才会去调用槽函数。</p>
+<p>关于事件循环，可以参考之前的文章《Qt实用技能3-理解事件循环》</p>
+<h1 id="槽和moc生成"><a href="#槽和moc生成" class="headerlink" title="槽和moc生成"></a>槽和moc生成</h1><p>slot函数我们自己实现了，moc不会做额外的处理，所以自动生成的moc_Jerry.cpp文件中，</p>
+<p>只有Q_OBJECT宏的展开，和前面的moc_Tom.cpp是一致的，不赘述了。</p>
+<h1 id="第三方信号槽实现"><a href="#第三方信号槽实现" class="headerlink" title="第三方信号槽实现"></a>第三方信号槽实现</h1><p>信号-槽是非常优秀的通信机制，但Qt的moc实现方式，被一些人诟病，所以他们造了新的轮子,比如：</p>
+<p><a href="https://woboq.com/blog/verdigris-qt-without-moc.html" target="_blank" rel="noopener">https://woboq.com/blog/verdigris-qt-without-moc.html</a></p>
+<p><a href="http://sigslot.sourceforge.net/" target="_blank" rel="noopener">http://sigslot.sourceforge.net/</a></p>
+<p><a href="https://github.com/NoAvailableAlias/nano-signal-slot" target="_blank" rel="noopener">https://github.com/NoAvailableAlias/nano-signal-slot</a></p>
+<p><a href="https://github.com/pbhogan/Signals" target="_blank" rel="noopener">https://github.com/pbhogan/Signals</a></p>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019/09/02/%E7%8E%A9%E8%BD%ACQt(8)-%E6%8E%8C%E6%8F%A1%E4%BF%A1%E5%8F%B7%E6%A7%BD%E4%BD%BF%E7%94%A8%E7%BB%86%E8%8A%82/" class="pre-post btn btn-default" title='玩转Qt(8)-掌握信号槽使用细节'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(8)-掌握信号槽使用细节</span>
+    </a>
+    
+    
+    <a href="/2019/07/23/%E7%8E%A9%E8%BD%ACQt(6)-%E8%AE%A4%E6%B8%85%E4%BF%A1%E5%8F%B7%E6%A7%BD%E7%9A%84%E6%9C%AC%E8%B4%A8/" class="next-post btn btn-default" title='玩转Qt(6)-认清信号槽的本质'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(6)-认清信号槽的本质</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#猫和老鼠的故事"><span class="toc-text">猫和老鼠的故事</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#声明与实现"><span class="toc-text">声明与实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Q-OBJECT宏"><span class="toc-text">Q_OBJECT宏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#信号的moc生成"><span class="toc-text">信号的moc生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#信号的触发"><span class="toc-text">信号的触发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#槽和moc生成"><span class="toc-text">槽和moc生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第三方信号槽实现"><span class="toc-text">第三方信号槽实现</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

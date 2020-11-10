@@ -1,0 +1,544 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,Qml,QtQuick,组件化编程" />
+
+
+<meta name="description" content="
+简介
+Qml内置类型
+简单类型
+枚举
+list
+var
+var数组
+var回调函数
+
+
+
+
+Qml模块扩展类型
+Qml属性
+属性的change信号
+属性绑定
+动态解绑、动态绑定
+条件绑定
+只读..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转Qml(8)-Qml属性 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转Qml(8)-Qml属性">
+            
+            玩转Qml(8)-Qml属性
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">组件化编程</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/22</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+        <p class="fa fa-exclamation-triangle warning">
+            本文于<strong>
+                537</strong>
+            天之前发表，文中内容可能已经过时。
+        </p>
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#qml%E5%86%85%E7%BD%AE%E7%B1%BB%E5%9E%8B">Qml内置类型</a><ul>
+<li><a href="#%E7%AE%80%E5%8D%95%E7%B1%BB%E5%9E%8B">简单类型</a></li>
+<li><a href="#%E6%9E%9A%E4%B8%BE">枚举</a></li>
+<li><a href="#list">list</a></li>
+<li><a href="#var">var</a><ul>
+<li><a href="#var%E6%95%B0%E7%BB%84">var数组</a></li>
+<li><a href="#var%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0">var回调函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#qml%E6%A8%A1%E5%9D%97%E6%89%A9%E5%B1%95%E7%B1%BB%E5%9E%8B">Qml模块扩展类型</a></li>
+<li><a href="#qml%E5%B1%9E%E6%80%A7">Qml属性</a><ul>
+<li><a href="#%E5%B1%9E%E6%80%A7%E7%9A%84change%E4%BF%A1%E5%8F%B7">属性的change信号</a></li>
+<li><a href="#%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A">属性绑定</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E8%A7%A3%E7%BB%91%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A">动态解绑、动态绑定</a></li>
+<li><a href="#%E6%9D%A1%E4%BB%B6%E7%BB%91%E5%AE%9A">条件绑定</a></li>
+<li><a href="#%E5%8F%AA%E8%AF%BB%E5%B1%9E%E6%80%A7">只读属性</a></li>
+<li><a href="#%E9%BB%98%E8%AE%A4%E5%B1%9E%E6%80%A7">默认属性</a></li>
+<li><a href="#%E5%B1%9E%E6%80%A7%E5%88%AB%E5%90%8D">属性别名</a></li>
+<li><a href="#qqmlproperty">QQmlProperty</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%8B%E6%9C%9F%E9%A2%84%E5%91%8A">下期预告</a></li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文是《玩转Qml》系列文章的第八篇，涛哥将教大家，一些Qml中属性的知识和使用技巧。</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>《玩转Qml》系列文章，配套了一个优秀的开源项目:TaoQuick</p>
+<p>github <a href="https://github.com/jaredtao/TaoQuick" target="_blank" rel="noopener">https://github.com/jaredtao/TaoQuick</a></p>
+<p>访问不了或者速度太慢，可以用国内的镜像网站gitee</p>
+<p><a href="https://gitee.com/jaredtao/TaoQuick" target="_blank" rel="noopener">https://gitee.com/jaredtao/TaoQuick</a></p>
+<h2 id="Qml内置类型"><a href="#Qml内置类型" class="headerlink" title="Qml内置类型"></a>Qml内置类型</h2><p>说Qml属性之前，先来看看Qml中都有哪些类型吧</p>
+<p>Qml本身支持的类型如下图：</p>
+<p><img src="/images/Qml8/1.png" alt="预览"></p>
+<p>一共9个，可以在Qml中实用。</p>
+<h3 id="简单类型"><a href="#简单类型" class="headerlink" title="简单类型"></a>简单类型</h3><figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="keyword">property</span><span class="string"> bool doorIsOpened</span>: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int doorCount</span>: <span class="number">1</span> + <span class="number">2</span> * <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> double PI</span>: <span class="number">3.1415926</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> real PI</span>: <span class="number">3.1415926</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> string name</span>: <span class="string">"JaredTao"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url address</span>: <span class="string">"https://jaredtao.github.io"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>bool double int real string url 这6个简单的类型，C++中也分别有对应的类型，其中string对应QString，url对应QUrl，就不用多说了。</p>
+<p>这里提一下，”1 + 2 * 3” 这种可以在编译期间确定的简单数值表达式，</p>
+<p>Qml引擎会自动帮你计算成7。编译进二进制文件的时候就是“7”，不是“1 + 2 * 3” (就好比C++ 中的constexpr)</p>
+<h3 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h3><p>枚举可以通过C++注册给Qml使用。5.10以上的版本还可以直接在Qml中定义枚举。</p>
+<p>这里分别示例一下：</p>
+<p>C++注册枚举给Qml使用<br><img src="/images/Qml8/2.png" alt="预览"></p>
+<p>C++11的作用域枚举，也是可以的：</p>
+<p><img src="/images/Qml8/3.png" alt="预览"></p>
+<p>5.12的版本已经不用写Q_DECLARE_METATYPE(BrotherTao::Country)这一句了，旧一点的版本可能需要写上。</p>
+<p>5.10以上版本，Qml中定义枚举:</p>
+<p><img src="/images/Qml8/4.png" alt="预览"></p>
+<p>注意 使用枚举必须带上首字母大写的Qml文件名</p>
+<p>(这里枚举可能没有语法高亮，但是能正常用，不要担心，那是QtCreator的问题, 可以不管它)</p>
+<h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><p>list就是一个列表，但是一般用来存Qml的扩展类型，不能存基础类型。基础类型想要存List，应该用下面的var。</p>
+<p>(大部分人用不到这个list，可以跳过)</p>
+<p>这里看一下list的用法:</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">states</span>: [</span><br><span class="line">          <span class="title">State</span> &#123; <span class="attribute">name</span>: <span class="string">"activated"</span> &#125;,</span><br><span class="line">          <span class="title">State</span> &#123; <span class="attribute">name</span>: <span class="string">"deactivated"</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种list的实现方式，是在C++中导出了一个特殊类型的属性，即QQmlListProperty。</p>
+<p>你也可以自己定义一个这样的属性:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Q_PROPERTY(QQmlListProperty&lt;Fruit&gt; fruit READ fruit)</span><br></pre></td></tr></table></figure>
+<p>C++里面按它的规则实现几个函数，并注册类型后，就可以在Qml中这样用:</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">fruit</span>: [</span><br><span class="line">    <span class="title">Apple</span> &#123;&#125;,</span><br><span class="line">    <span class="title">Orange</span>&#123;&#125;,</span><br><span class="line">    <span class="title">Banana</span>&#123;&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这个大部分人用不到，就不深入讲解了。</p>
+<h3 id="var"><a href="#var" class="headerlink" title="var"></a>var</h3><p>var就相当于js中的var，什么类型都可以存。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aNumber</span>: <span class="number">100</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aBool</span>: <span class="literal">false</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aString</span>: <span class="string">"Hello world!"</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> var anotherString</span>: <span class="built_in">String</span>(<span class="string">"#FF008800"</span>)</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aColor</span>: Qt.rgba(<span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.5</span>)</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aRect</span>: Qt.rect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aPoint</span>: Qt.point(<span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aSize</span>: Qt.size(<span class="number">10</span>, <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aVector3d</span>: Qt.vector3d(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>)</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var anArray</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">"four"</span>, <span class="string">"five"</span>, (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"six"</span>; &#125;)]</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var anObject</span>: &#123; <span class="string">"foo"</span>: <span class="number">10</span>, <span class="string">"bar"</span>: <span class="number">20</span> &#125;</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var aFunction</span>: (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"one"</span>; &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种坑人的东西也可以（涛哥我是坚决不会这么用的）:</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="keyword">property</span><span class="string"> var first</span>:  &#123;&#125;   <span class="comment">// nothing = undefined</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> var second</span>: &#123;&#123;&#125;&#125; <span class="comment">// empty expression block = undefined</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> var third</span>:  (&#123;&#125;) <span class="comment">// empty object</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>C++自定义类型、js的内置类型，都可以用var。你可以在Qt的帮助文档中找到js内置类型:</p>
+<p><img src="/images/Qml8/5.png" alt="预览"></p>
+<p>这个文档可能不全面，你可以参考第三方js手册,比如<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target="_blank" rel="noopener">mozilla-js-reference</a></p>
+<p>注意，一般将var换成确切的类型会更好一些，Qml引擎处理var有一个转换的过程，会慢一些。</p>
+<p>接下来涛哥说几个var的典型用法：</p>
+<h4 id="var数组"><a href="#var数组" class="headerlink" title="var数组"></a>var数组</h4><p><img src="/images/Qml8/6.png" alt="预览"></p>
+<p>如上图，数组的操作基本和js里的Array一致，参考js的手册就行了。</p>
+<p>但是要注意的一个问题，无论是改变数组中的单个元素的值，还是增加、删除数组中某个元素，都不会触发数组本身的change信号，绑定其length属性也没有用。</p>
+<p>没有change信号，Qml中其它与这个数组关联的地方都没法刷新了。那怎么才能让这个数组刷新呢？</p>
+<p>答案是 修改过后，赋值为自己</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">names = names</span><br></pre></td></tr></table></figure>
+<p><img src="/images/Qml8/7.png" alt="预览"></p>
+<p>原理很简单，拷贝了一个副本，又放回那个地址了，数组本身变了，触发change信号。</p>
+<p>(不得不吐槽，js真挫，居然还拷贝了一份。性能肯定好不到哪去)</p>
+<h4 id="var回调函数"><a href="#var回调函数" class="headerlink" title="var回调函数"></a>var回调函数</h4><p>这个用案例来说：</p>
+<p>如果你使用过Qml性能探查器(Profiler)，就会发现FileDialog这玩意占很多启动时间、占很多内存。</p>
+<p>(涛哥说的是QtQuick.Dialogs里面那个，Qt.labs.platform 那里的实验品从来不用)</p>
+<p>好的做法是，Qml工程中只创建一个，复用它。</p>
+<p>那么问题来了，某个按钮调用了FileDialog， FileDialog按下确定的时候，怎么把结果传回按钮那里？</p>
+<p>这里就要用到回调函数了。按钮调用FileDialog的同时给它一个回调函数，等确定后直接执行回调函数即可。</p>
+<p>下面是涛哥封装的TDialog组件，同时支持创建文件、打开文件、打开多个文件、打开文件夹五种用法。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//TDialog.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.0</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Dialogs <span class="number">1.2</span></span><br><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="comment">//顶层使用Item，不用FileDialog，屏蔽FileDialog内部属性和函数</span></span><br><span class="line">    enum <span class="title">Type</span> &#123;</span><br><span class="line">        CreateFile,</span><br><span class="line">        OpenFile,</span><br><span class="line">        OpenFiles,</span><br><span class="line">        OpenFolder,</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">property</span><span class="string"> int __type </span><span class="comment">//参考Qml源码，人为约定 双下划线开头的属性当作私有属性使用，外部不能用。</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//点击确定后的回调函数</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> var __acceptCallback</span>: <span class="function"><span class="keyword">function</span>(<span class="params">file</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">FileDialog</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> d</span></span><br><span class="line">        <span class="attribute">folder</span>: shortcuts.home</span><br><span class="line">        <span class="attribute">onAccepted</span>: &#123;</span><br><span class="line">            <span class="keyword">switch</span>(__type) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="attribute">TDialog.Type.CreateFile</span>:</span><br><span class="line">                __acceptCallback(d.fileUrl)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">case</span> <span class="attribute">TDialog.Type.OpenFile</span>:</span><br><span class="line">                __acceptCallback(d.fileUrl)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">case</span> <span class="attribute">TDialog.Type.OpenFiles</span>:</span><br><span class="line">                __acceptCallback(d.fileUrls)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">case</span> <span class="attribute">TDialog.Type.OpenFolder</span>:</span><br><span class="line">                __acceptCallback(d.folder)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">createFile</span>(<span class="params">title, nameFilters, callback</span>) </span>&#123;</span><br><span class="line">        __type = TDialog.Type.CreateFile</span><br><span class="line">        d.selectExisting = <span class="literal">false</span></span><br><span class="line">        d.selectFolder = <span class="literal">false</span></span><br><span class="line">        d.selectMultiple = <span class="literal">false</span></span><br><span class="line">        d.title = title</span><br><span class="line">        d.nameFilters = nameFilters</span><br><span class="line">        __acceptCallback = callback</span><br><span class="line">        d.open()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">openFile</span>(<span class="params">title, nameFilters, callback</span>) </span>&#123;</span><br><span class="line">        __type = TDialog.Type.OpenFile</span><br><span class="line">        d.selectExisting = <span class="literal">true</span></span><br><span class="line">        d.selectFolder = <span class="literal">false</span></span><br><span class="line">        d.selectMultiple = <span class="literal">false</span></span><br><span class="line">        d.title = title</span><br><span class="line">        d.nameFilters = nameFilters</span><br><span class="line">        __acceptCallback = callback</span><br><span class="line">        d.open()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">openFiles</span>(<span class="params">title, nameFilters, callback</span>) </span>&#123;</span><br><span class="line">        __type = TDialog.Type.OpenFiles</span><br><span class="line">        d.selectExisting = <span class="literal">true</span></span><br><span class="line">        d.selectFolder = <span class="literal">false</span></span><br><span class="line">        d.selectMultiple = <span class="literal">true</span></span><br><span class="line">        d.title = title</span><br><span class="line">        d.nameFilters = nameFilters</span><br><span class="line">        __acceptCallback = callback</span><br><span class="line">        d.open()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">openFolder</span>(<span class="params">title, callback</span>) </span>&#123;</span><br><span class="line">        __type = TDialog.Type.OpenFolder</span><br><span class="line">        d.selectExisting = <span class="literal">true</span></span><br><span class="line">        d.selectFolder = <span class="literal">true</span></span><br><span class="line">        d.selectMultiple = <span class="literal">false</span></span><br><span class="line">        d.title = title</span><br><span class="line">        __acceptCallback = callback</span><br><span class="line">        d.open()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是使用的示例：</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.12</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Window <span class="number">2.12</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.5</span></span><br><span class="line"><span class="title">Window</span> &#123;</span><br><span class="line">    <span class="attribute">visible</span>: <span class="literal">true</span></span><br><span class="line">    <span class="attribute">width</span>: <span class="number">640</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">480</span></span><br><span class="line">    <span class="attribute">title</span>: qsTr(<span class="string">"Hello Dialog"</span>)</span><br><span class="line">    <span class="title">TDialog</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> globalDialog</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">Row</span> &#123;</span><br><span class="line">        <span class="attribute">spacing</span>: <span class="number">10</span></span><br><span class="line">        <span class="title">Button</span> &#123;</span><br><span class="line">            <span class="attribute">text</span>: <span class="string">"create file"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                globalDialog.createFile(<span class="string">"create"</span>, [<span class="string">"All files (*.*)"</span>], <span class="function"><span class="keyword">function</span>(<span class="params">file</span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"create file"</span>, file)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">Button</span> &#123;</span><br><span class="line">            <span class="attribute">text</span>: <span class="string">"open Image"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                globalDialog.openFile(<span class="string">"Open one image"</span>, [<span class="string">"Image files (*.png *.jpg *.bmp)"</span>], <span class="function"><span class="keyword">function</span>(<span class="params">file</span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"Open one image"</span>, file)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">Button</span> &#123;</span><br><span class="line">            <span class="attribute">text</span>: <span class="string">"open Image"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                globalDialog.openFiles(<span class="string">"Open mulit images"</span>, [<span class="string">"Image files (*.png *.jpg *.bmp)"</span>], <span class="function"><span class="keyword">function</span>(<span class="params">files</span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"Open mulit images"</span>, files)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">Button</span> &#123;</span><br><span class="line">            <span class="attribute">text</span>: <span class="string">"open folder"</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                globalDialog.openFolder(<span class="string">"Open one folder"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">file</span>)</span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"Open one folder"</span>, file)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>TDialog功能收录在最新的<a href="https://github.com/jaredtao/TaoQuick" target="_blank" rel="noopener">TaoQuick</a>项目中，</p>
+<p>可以参考源代码，或者到github Release页面下载发布包进行体验。(之前MacOS不能用的问题已经修复)</p>
+<h2 id="Qml模块扩展类型"><a href="#Qml模块扩展类型" class="headerlink" title="Qml模块扩展类型"></a>Qml模块扩展类型</h2><p>Qml扩展类型有很多，比如QtQuick模块提供的类型如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">date  Date value</span><br><span class="line">point Value with x and y attributes</span><br><span class="line">rect Value with x, y, width and height attributes</span><br><span class="line">size Value with width and height attributes</span><br></pre></td></tr></table></figure>
+<p>还有一个非常有用的类型，是QtQml模块提供的Qt：</p>
+<p><img src="/images/Qml8/8.png" alt="预览"></p>
+<p>这个Qt自带了很多方法，前面几章提到的Qt.darker和Qt.lighter都是来自这里。</p>
+<p>还有这几个也很实用：</p>
+<p>Qt.openUrlExternally 可以直接打开一个网址，会自动调用系统的默认浏览器，并跳转到相应的界面</p>
+<p>也可以打开一个本地的文件或文件夹，会自动调用系统程序。比如打开一个.txt文件会自动用记事本打开，打开一个文件夹会自动用文件管理器。</p>
+<p>Qt.callLater 可以延迟执行，延迟到Qml引擎的事件循环返回(可以用来规避一些隐藏的bug)。</p>
+<h2 id="Qml属性"><a href="#Qml属性" class="headerlink" title="Qml属性"></a>Qml属性</h2><p>前面介绍类型的过程中，其实已经用了简单的属性定义。</p>
+<p>这里再补充一些前面没有提到的。</p>
+<h3 id="属性的change信号"><a href="#属性的change信号" class="headerlink" title="属性的change信号"></a>属性的change信号</h3><p>写一个普通的属性，隐含的自动生成了一个change信号，信号名字一般是onXxxChanged</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Item &#123;</span><br><span class="line">    property int value: 12  &#x2F;&#x2F;这里定义一个属性，并赋初值</span><br><span class="line">    &#x2F;&#x2F;隐含的已经定义了一个change信号: onValueChanged</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="属性绑定"><a href="#属性绑定" class="headerlink" title="属性绑定"></a>属性绑定</h3><figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int value1</span>: <span class="number">12</span>  </span><br><span class="line"></span><br><span class="line">    <span class="title">Item</span> &#123;</span><br><span class="line">        <span class="keyword">property</span><span class="string"> int value2</span>: root.value1 * <span class="number">10</span> + <span class="number">4</span>   <span class="comment">//属性初值，依赖另一个属性。这就形成了一种绑定关系</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的value2依赖于value1的值，就产生了绑定</p>
+<p>所谓的绑定，就是Qml引擎自动做了一个 信号-槽 连接：当onValue1Changed信号发出时，执行 value2 = value1 * 10  + 4。</p>
+<p>就是说value1变了，value2会自动跟着变。</p>
+<h3 id="动态解绑、动态绑定"><a href="#动态解绑、动态绑定" class="headerlink" title="动态解绑、动态绑定"></a>动态解绑、动态绑定</h3><p>有时候并不希望两个属性之间，一直是这种绑定状态，需要暂时断开一下绑定关系(解绑)。</p>
+<p>这时候只要重新赋值即可解绑，比如</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> item1</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int value1</span>: <span class="number">12</span>  </span><br><span class="line"></span><br><span class="line">    <span class="title">Item</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> item2</span></span><br><span class="line">        <span class="keyword">property</span><span class="string"> int value2</span>: item1.value1 * <span class="number">10</span> + <span class="number">4</span>   <span class="comment">//属性初值，依赖另一个属性。这就形成了一种绑定关系</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">Button</span> &#123;</span><br><span class="line">        <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">            item2.value = <span class="number">1024</span>; <span class="comment">//重新赋值，绑定关系被破坏，不会再随着value1的改变而改变。</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解绑后，又需要再次绑定，是不是重新赋值回item1.value1就行了呢？</p>
+<p>答案是不对的，再次绑定要用绑定表达式Qt.binding() </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Item &#123;</span><br><span class="line">    id: item1</span><br><span class="line">    property int value1: 12  </span><br><span class="line"></span><br><span class="line">    Item &#123;</span><br><span class="line">        id: item2</span><br><span class="line">        property int value2: item1.value1 * 10 + 4   &#x2F;&#x2F;属性初值，依赖另一个属性。这就形成了一种绑定关系</span><br><span class="line">    &#125;</span><br><span class="line">    Button &#123;</span><br><span class="line">        onClicked: &#123;</span><br><span class="line">            item2.value &#x3D; 1024; &#x2F;&#x2F;重新赋值，绑定关系被破坏，不会再随着value1的改变而改变。</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Button &#123;</span><br><span class="line">        onClicked: &#123;</span><br><span class="line">            item2.value &#x3D; item1.value1 * 10 + 4 &#x2F;&#x2F;这个是赋值表达式，只执行一次，不是绑定表达式。</span><br><span class="line">            item2.value &#x3D; Qt.binding(function() &#123; return item1.value1 * 10 + 4;&#125;) &#x2F;&#x2F;这个是绑定表达式。</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件绑定"><a href="#条件绑定" class="headerlink" title="条件绑定"></a>条件绑定</h3><p>Qml中还提供了一种功能，叫条件绑定 Binding。前面的动态解绑、再绑定可以用下面的方式实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Item &#123;</span><br><span class="line">    id: item1</span><br><span class="line">    property int value1: 12  </span><br><span class="line"></span><br><span class="line">    Item &#123;</span><br><span class="line">        id: item2</span><br><span class="line">        property int value2</span><br><span class="line">    &#125;</span><br><span class="line">    Binding &#123;</span><br><span class="line">        target: item2</span><br><span class="line">        property: &quot;value2&quot;</span><br><span class="line">        value: item1.value1 * 10 + 4</span><br><span class="line">        when: needBind</span><br><span class="line">    &#125;</span><br><span class="line">    property bool needBind: true</span><br><span class="line">    Button &#123;</span><br><span class="line">        onClicked: &#123;</span><br><span class="line">            needBind &#x3D; false;   &#x2F;&#x2F;条件绑定 关闭</span><br><span class="line">            item2.value &#x3D; 1024; &#x2F;&#x2F;重新赋值。</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Button &#123;</span><br><span class="line">        onClicked: &#123;</span><br><span class="line">            needBind &#x3D; true;   &#x2F;&#x2F;条件绑定打开</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="只读属性"><a href="#只读属性" class="headerlink" title="只读属性"></a>只读属性</h3><p>只读属性就是只能读，不能修改，不产出Change信号。只要在前面写上readonly即可</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readonly <span class="keyword">property</span><span class="string"> int maxCPUCount</span>: <span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="默认属性"><a href="#默认属性" class="headerlink" title="默认属性"></a>默认属性</h3><p>默认属性一般用在组件封装中,比如要封装一个TaoLabel的组件,这个组件有个Text类型的默认属性叫someText</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TaoLabel.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.0</span></span><br><span class="line"><span class="title">Text</span> &#123;</span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">property</span><span class="string"> Text someText</span></span><br><span class="line">    <span class="attribute">text</span>: <span class="string">"Hello, "</span> + someText.text</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么在外面实例化组件的时候，就可以在TaoLabel内部放一个子Text组件，它会自动关联到someText。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Item &#123;</span><br><span class="line">    TaoLable &#123;</span><br><span class="line">        Text &#123;text: &quot;world&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="属性别名"><a href="#属性别名" class="headerlink" title="属性别名"></a>属性别名</h3><p>别名属性一般用来导出组件内部的属性给外部直接修改</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias text</span>: t.text</span><br><span class="line">    <span class="title">Text</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> t</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果与下面的等价，但是别名少一层变量的声明和绑定，效率更高一些。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> string text</span></span><br><span class="line">    <span class="title">Text</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> t</span></span><br><span class="line">        <span class="attribute">text</span>: root.text</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="QQmlProperty"><a href="#QQmlProperty" class="headerlink" title="QQmlProperty"></a>QQmlProperty</h3><p>《Qml组件化编程5-Qml与C++交互》一文中，提到了C++访问Qml的两种方式，这里再补充第三种，就是QQmlProperty</p>
+<p>假如有这样的Qml文件，</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyItem.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.0</span></span><br><span class="line"></span><br><span class="line"><span class="title">Text</span> &#123; <span class="attribute">text</span>: <span class="string">"A bit of text"</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>那么在c++种，就可以通过QQmlProperty访问其属性</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QQmlProperty&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QGraphicsObject&gt;</span></span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function">QQuickView <span class="title">view</span><span class="params">(QUrl::fromLocalFile(<span class="string">"MyItem.qml"</span>))</span></span>;</span><br><span class="line"><span class="function">QQmlProperty <span class="title">property</span><span class="params">(view.rootObject(), <span class="string">"font.pixelSize"</span>)</span></span>;</span><br><span class="line">qWarning() &lt;&lt; <span class="string">"Current pixel size:"</span> &lt;&lt; property.read().toInt();</span><br><span class="line">property.write(<span class="number">24</span>);</span><br><span class="line">qWarning() &lt;&lt; <span class="string">"Pixel size should now be 24:"</span> &lt;&lt; property.read().toInt();</span><br></pre></td></tr></table></figure>
+<p>  QQmlProperty不仅可以用来访问Qml中的属性，还可以调用其信号、js函数。</p>
+<h2 id="下期预告"><a href="#下期预告" class="headerlink" title="下期预告"></a>下期预告</h2><p>下一篇文章，将会介绍C++中的属性导出，重点讲解ListView、TableView、TreeView能用的属性。</p>
+<p>敬请期待。</p>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019/05/24/%E7%8E%A9%E8%BD%ACQml(9)-Model%E5%92%8CView/" class="pre-post btn btn-default" title='玩转Qml(9)-Model和View'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转Qml(9)-Model和View</span>
+    </a>
+    
+    
+    <a href="/2019/05/19/%E7%8E%A9%E8%BD%ACQml(7)-%E8%87%AA%E7%BB%98%E7%BB%84%E4%BB%B6/" class="next-post btn btn-default" title='玩转Qml(7)-自绘组件'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qml(7)-自绘组件</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qml内置类型"><span class="toc-text">Qml内置类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单类型"><span class="toc-text">简单类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#枚举"><span class="toc-text">枚举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#list"><span class="toc-text">list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#var"><span class="toc-text">var</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#var数组"><span class="toc-text">var数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#var回调函数"><span class="toc-text">var回调函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qml模块扩展类型"><span class="toc-text">Qml模块扩展类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qml属性"><span class="toc-text">Qml属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#属性的change信号"><span class="toc-text">属性的change信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#属性绑定"><span class="toc-text">属性绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态解绑、动态绑定"><span class="toc-text">动态解绑、动态绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#条件绑定"><span class="toc-text">条件绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#只读属性"><span class="toc-text">只读属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#默认属性"><span class="toc-text">默认属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#属性别名"><span class="toc-text">属性别名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QQmlProperty"><span class="toc-text">QQmlProperty</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下期预告"><span class="toc-text">下期预告</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

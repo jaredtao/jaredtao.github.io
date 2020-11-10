@@ -122,23 +122,13 @@
                         </li>
                         
                         <li role="presentation" class="text-center">
-                            <a href="/categories/Qt进阶之路/"><i class="fa "></i>
-                                Qt进阶之路</a>
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
                         </li>
                         
                         <li role="presentation" class="text-center">
-                            <a href="/categories/Qml组件化编程/"><i class="fa "></i>
-                                Qml组件化编程</a>
-                        </li>
-                        
-                        <li role="presentation" class="text-center">
-                            <a href="/categories/Qml特效/"><i class="fa "></i>
-                                Qml特效</a>
-                        </li>
-                        
-                        <li role="presentation" class="text-center">
-                            <a href="/categories/C-修炼之路/"><i class="fa "></i>
-                                C++修炼之路</a>
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
                         </li>
                         
                         <li role="presentation" class="text-center">
@@ -174,20 +164,20 @@
 <article class="post">
     
     <div class="post-media">
-        <a href="/2019/06/22/Qml%E7%89%B9%E6%95%88-%E7%9D%80%E8%89%B2%E5%99%A8%E6%95%88%E6%9E%9CShaderEffect/">
-            <img class="img-ajax" src="/img/loading.gif" data-src="/images/ShaderEffect/2.png" alt="Qml特效-着色器效果ShaderEffect">
+        <a href="/2019/06/09/%E7%8E%A9%E8%BD%ACQml(14)-%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88-%E6%A2%AF%E5%BA%A6/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Animation/2.gif" alt="玩转Qml(14)-动画特效-梯度">
         </a>
     </div>
     
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2019/06/22/Qml%E7%89%B9%E6%95%88-%E7%9D%80%E8%89%B2%E5%99%A8%E6%95%88%E6%9E%9CShaderEffect/">
-                    Qml特效-着色器效果ShaderEffect</a>
+                <a href="/2019/06/09/%E7%8E%A9%E8%BD%ACQml(14)-%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88-%E6%A2%AF%E5%BA%A6/">
+                    玩转Qml(14)-动画特效-梯度</a>
             </h1>
             <div class="post-meta"> &bull;
                 <time class="post-date" datetime="" title="">
-                    2019年06月22日
+                    2019年06月09日
                 </time>
             </div>
         </div>
@@ -196,24 +186,297 @@
             
 简介
 关于文章
+梯度效果预览
+实现原理
+
+简介这是《Qml特效-进场动画》系列文章的第二篇，涛哥将会教大家一些Qml进场动画相关的知识。
+源码《玩转Qml》系列文章，配套了一个优秀的开源项目:TaoQuick
+github http...
+            
+        </p>
+    </div>
+    
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
+            
+        </span>
+    </span>
+    
+    
+</div>
+        </div>
+        <div class="post-permalink">
+            <a href="/2019/06/09/%E7%8E%A9%E8%BD%ACQml(14)-%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88-%E6%A2%AF%E5%BA%A6/" class="btn btn-default">
+                阅读全文</a>
+        </div>
+    </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-media">
+        <a href="/2019/06/08/%E7%8E%A9%E8%BD%ACQml(13)-%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88-%E9%A3%9E%E5%85%A5/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Animation/1.gif" alt="玩转Qml(13)-动画特效-飞入">
+        </a>
+    </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2019/06/08/%E7%8E%A9%E8%BD%ACQml(13)-%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88-%E9%A3%9E%E5%85%A5/">
+                    玩转Qml(13)-动画特效-飞入</a>
+            </h1>
+            <div class="post-meta"> &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月08日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+            
+简介
+关于文章
+飞入效果预览
+实现原理
+QtQuick动画系统
+动画组件
+动画的使用
+用例一 直接声明动画
+用例二 on语法
+用例三 Transitions或状态机
+
+
+
+
 ShaderEffect
-显示器如何显示色彩
-GPU渲染流程
-渲染管线图
-并行管线示意图
+飞入效果源码
+
+简介这次涛哥将会...
+            
+        </p>
+    </div>
+    
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
+            
+        </span>
+    </span>
+    
+    
+</div>
+        </div>
+        <div class="post-permalink">
+            <a href="/2019/06/08/%E7%8E%A9%E8%BD%ACQml(13)-%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88-%E9%A3%9E%E5%85%A5/" class="btn btn-default">
+                阅读全文</a>
+        </div>
+    </footer>
+    
+</article>
 
 
-着色器语言编码规范
-着色器代码示例
+<article class="post">
+    
+    <div class="post-media">
+        <a href="/2019/06/03/%E7%8E%A9%E8%BD%ACQml(12)-%E5%86%8D%E8%B0%88%E5%8A%A8%E6%80%81%E5%9B%BD%E9%99%85%E5%8C%96/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Qml12/1.gif" alt="玩转Qml(12)-再谈动态国际化">
+        </a>
+    </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2019/06/03/%E7%8E%A9%E8%BD%ACQml(12)-%E5%86%8D%E8%B0%88%E5%8A%A8%E6%80%81%E5%9B%BD%E9%99%85%E5%8C%96/">
+                    玩转Qml(12)-再谈动态国际化</a>
+            </h1>
+            <div class="post-meta"> &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月03日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+            
+简介
+源码
+效果预览
+Qt本身的国际化
+存在翻译不全的问题
+新的方案
+关于批量翻译
+总结
+
+简介本文是《玩转Qml》系列文章的第十二篇，主要讨论多国语言动态翻译。
+之前分享过使用Qt自带翻译的方案，但是效果不太好。这次分享一个非官方...
+            
+        </p>
+    </div>
+    
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">组件化编程</a>
+            
+        </span>
+    </span>
+    
+    
+</div>
+        </div>
+        <div class="post-permalink">
+            <a href="/2019/06/03/%E7%8E%A9%E8%BD%ACQml(12)-%E5%86%8D%E8%B0%88%E5%8A%A8%E6%80%81%E5%9B%BD%E9%99%85%E5%8C%96/" class="btn btn-default">
+                阅读全文</a>
+        </div>
+    </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-media">
+        <a href="/2019/06/02/%E7%8E%A9%E8%BD%ACQml(11)-%E6%9B%B4%E5%BC%BA%E7%9A%84%E6%8B%96%E5%8A%A8%E7%BB%84%E4%BB%B6/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Qml11/1.gif" alt="玩转Qml(11)-更强的拖动组件">
+        </a>
+    </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2019/06/02/%E7%8E%A9%E8%BD%ACQml(11)-%E6%9B%B4%E5%BC%BA%E7%9A%84%E6%8B%96%E5%8A%A8%E7%BB%84%E4%BB%B6/">
+                    玩转Qml(11)-更强的拖动组件</a>
+            </h1>
+            <div class="post-meta"> &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月02日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+            简介本文是《玩转Qml》系列文章的第十一篇，之前的&amp;lt;玩转Qml(2)-可以拖动的组件&amp;gt;分享过基本的
+拖动组件，这次涛哥将教大家，实现更多功能的可拖动组件。
+源码《玩转Qml》系列文章，配套了一个优秀的开源项目:TaoQui...
+            
+        </p>
+    </div>
+    
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%8F%91%E5%B8%83/" rel="tag">Qt发布</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+            
+        </span>
+    </span>
+    
+    
+</div>
+        </div>
+        <div class="post-permalink">
+            <a href="/2019/06/02/%E7%8E%A9%E8%BD%ACQml(11)-%E6%9B%B4%E5%BC%BA%E7%9A%84%E6%8B%96%E5%8A%A8%E7%BB%84%E4%BB%B6/" class="btn btn-default">
+                阅读全文</a>
+        </div>
+    </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-media">
+        <a href="/2019/06/01/%E7%8E%A9%E8%BD%ACQml(10)-%E8%87%AA%E5%AE%9A%E4%B9%89Quick%E6%A8%A1%E5%9D%97/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Qml10/1.png" alt="玩转Qml(10)-自定义Quick模块">
+        </a>
+    </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2019/06/01/%E7%8E%A9%E8%BD%ACQml(10)-%E8%87%AA%E5%AE%9A%E4%B9%89Quick%E6%A8%A1%E5%9D%97/">
+                    玩转Qml(10)-自定义Quick模块</a>
+            </h1>
+            <div class="post-meta"> &bull;
+                <time class="post-date" datetime="" title="">
+                    2019年06月01日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+            
+简介
+近期讯息
+Qt Design Studio
+TaoQuick
+
+
+Qt资源管理
+qrc内容
+编译和加载qrc
+资源的引用
+插件中注册资源
+
+
+Qml模块
+qmldir文件
 示例
-着色器代码
-顶点着色器
-片段着色器
+不用开放Qml源码
 
 
-参考文献
 
-简介这是《Qml特效》系列文...
+
+Designer支持...
             
         </p>
     </div>
@@ -224,7 +487,7 @@ GPU渲染流程
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Qml%E7%89%B9%E6%95%88/">Qml特效</a>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
     </span>
     
     
@@ -232,7 +495,7 @@ GPU渲染流程
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">组件化编程</a>
             
         </span>
     </span>
@@ -241,287 +504,7 @@ GPU渲染流程
 </div>
         </div>
         <div class="post-permalink">
-            <a href="/2019/06/22/Qml%E7%89%B9%E6%95%88-%E7%9D%80%E8%89%B2%E5%99%A8%E6%95%88%E6%9E%9CShaderEffect/" class="btn btn-default">
-                阅读全文</a>
-        </div>
-    </footer>
-    
-</article>
-
-
-<article class="post">
-    
-    <div class="post-media">
-        <a href="/2019/06/11/Qml%E7%89%B9%E6%95%8815-%E6%9A%97%E6%B5%81%E6%B6%8C%E5%8A%A8/">
-            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Ani1/Arrow.gif" alt="Qml特效15-暗流涌动">
-        </a>
-    </div>
-    
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2019/06/11/Qml%E7%89%B9%E6%95%8815-%E6%9A%97%E6%B5%81%E6%B6%8C%E5%8A%A8/">
-                    Qml特效15-暗流涌动</a>
-            </h1>
-            <div class="post-meta"> &bull;
-                <time class="post-date" datetime="" title="">
-                    2019年06月11日
-                </time>
-            </div>
-        </div>
-        <p class="brief">
-            
-            
-简介
-关于文章
-暗流涌动 效果预览
-QtQuick动画系统
-动画组件
-动画的使用
-用例一 直接声明动画
-用例二 on语法
-用例三 Transitions或状态机
-
-
-
-
-ShaderEffect
-暗流涌动 效果源码
-组件的封装
-原理...
-            
-        </p>
-    </div>
-    
-    <footer class="post-footer clearfix">
-        <div class="pull-left tag-list">
-            <div class="post-meta">
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Qml%E7%89%B9%E6%95%88/">Qml特效</a>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
-            
-        </span>
-    </span>
-    
-    
-</div>
-        </div>
-        <div class="post-permalink">
-            <a href="/2019/06/11/Qml%E7%89%B9%E6%95%8815-%E6%9A%97%E6%B5%81%E6%B6%8C%E5%8A%A8/" class="btn btn-default">
-                阅读全文</a>
-        </div>
-    </footer>
-    
-</article>
-
-
-<article class="post">
-    
-    <div class="post-media">
-        <a href="/2019/06/11/Qml%E7%89%B9%E6%95%8814-%E8%B7%9F%E4%B8%8A%E8%8A%82%E5%A5%8F/">
-            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Ani1/1.png" alt="Qml特效14-跟上节奏">
-        </a>
-    </div>
-    
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2019/06/11/Qml%E7%89%B9%E6%95%8814-%E8%B7%9F%E4%B8%8A%E8%8A%82%E5%A5%8F/">
-                    Qml特效14-跟上节奏</a>
-            </h1>
-            <div class="post-meta"> &bull;
-                <time class="post-date" datetime="" title="">
-                    2019年06月11日
-                </time>
-            </div>
-        </div>
-        <p class="brief">
-            
-            
-简介
-关于文章
-跟上节奏 效果预览
-QtQuick动画系统
-动画组件
-动画的使用
-用例一 直接声明动画
-用例二 on语法
-用例三 Transitions或状态机
-
-
-
-
-ShaderEffect
-跟上节奏 效果源码
-组件的封装
-大致...
-            
-        </p>
-    </div>
-    
-    <footer class="post-footer clearfix">
-        <div class="pull-left tag-list">
-            <div class="post-meta">
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Qml%E7%89%B9%E6%95%88/">Qml特效</a>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
-            
-        </span>
-    </span>
-    
-    
-</div>
-        </div>
-        <div class="post-permalink">
-            <a href="/2019/06/11/Qml%E7%89%B9%E6%95%8814-%E8%B7%9F%E4%B8%8A%E8%8A%82%E5%A5%8F/" class="btn btn-default">
-                阅读全文</a>
-        </div>
-    </footer>
-    
-</article>
-
-
-<article class="post">
-    
-    <div class="post-media">
-        <a href="/2019/06/09/Qml%E7%89%B9%E6%95%8812-%E8%BF%9B%E5%9C%BA%E5%8A%A8%E7%94%BB-%E6%BA%B6%E8%A7%A3/">
-            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Animation/12.gif" alt="Qml特效12-进场动画-溶解">
-        </a>
-    </div>
-    
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2019/06/09/Qml%E7%89%B9%E6%95%8812-%E8%BF%9B%E5%9C%BA%E5%8A%A8%E7%94%BB-%E6%BA%B6%E8%A7%A3/">
-                    Qml特效12-进场动画-溶解</a>
-            </h1>
-            <div class="post-meta"> &bull;
-                <time class="post-date" datetime="" title="">
-                    2019年06月09日
-                </time>
-            </div>
-        </div>
-        <p class="brief">
-            
-            
-简介
-关于文章
-溶解效果预览
-实现原理
-
-简介这是《Qml特效-进场动画》系列文章的第12篇，涛哥将会教大家一些Qml进场动画相关的知识。
-进场动画效果 参考了WPS版ppt的动画，基本效果已经全部实现，可以到github TaoQ...
-            
-        </p>
-    </div>
-    
-    <footer class="post-footer clearfix">
-        <div class="pull-left tag-list">
-            <div class="post-meta">
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Qml%E7%89%B9%E6%95%88/">Qml特效</a>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
-            
-        </span>
-    </span>
-    
-    
-</div>
-        </div>
-        <div class="post-permalink">
-            <a href="/2019/06/09/Qml%E7%89%B9%E6%95%8812-%E8%BF%9B%E5%9C%BA%E5%8A%A8%E7%94%BB-%E6%BA%B6%E8%A7%A3/" class="btn btn-default">
-                阅读全文</a>
-        </div>
-    </footer>
-    
-</article>
-
-
-<article class="post">
-    
-    <div class="post-media">
-        <a href="/2019/06/09/Qml%E7%89%B9%E6%95%8811-%E8%BF%9B%E5%9C%BA%E5%8A%A8%E7%94%BB-%E6%A3%8B%E7%9B%98/">
-            <img class="img-ajax" src="/img/loading.gif" data-src="/images/Animation/11.gif" alt="Qml特效11-进场动画-棋盘">
-        </a>
-    </div>
-    
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2019/06/09/Qml%E7%89%B9%E6%95%8811-%E8%BF%9B%E5%9C%BA%E5%8A%A8%E7%94%BB-%E6%A3%8B%E7%9B%98/">
-                    Qml特效11-进场动画-棋盘</a>
-            </h1>
-            <div class="post-meta"> &bull;
-                <time class="post-date" datetime="" title="">
-                    2019年06月09日
-                </time>
-            </div>
-        </div>
-        <p class="brief">
-            
-            
-简介
-关于文章
-棋盘效果预览
-实现原理
-
-简介这是《Qml特效-进场动画》系列文章的第11篇，涛哥将会教大家一些Qml进场动画相关的知识。
-进场动画效果 参考了WPS版ppt的动画，基本效果已经全部实现，可以到github TaoQ...
-            
-        </p>
-    </div>
-    
-    <footer class="post-footer clearfix">
-        <div class="pull-left tag-list">
-            <div class="post-meta">
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Qml%E7%89%B9%E6%95%88/">Qml特效</a>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%89%B9%E6%95%88/" rel="tag">特效</a>
-            
-        </span>
-    </span>
-    
-    
-</div>
-        </div>
-        <div class="post-permalink">
-            <a href="/2019/06/09/Qml%E7%89%B9%E6%95%8811-%E8%BF%9B%E5%9C%BA%E5%8A%A8%E7%94%BB-%E6%A3%8B%E7%9B%98/" class="btn btn-default">
+            <a href="/2019/06/01/%E7%8E%A9%E8%BD%ACQml(10)-%E8%87%AA%E5%AE%9A%E4%B9%89Quick%E6%A8%A1%E5%9D%97/" class="btn btn-default">
                 阅读全文</a>
         </div>
     </footer>
@@ -532,7 +515,7 @@ ShaderEffect
 
 <nav class="pagination" role="navigation">
     <div id="page-nav">
-        <a class="extend prev" rel="prev" href="/page/3/">&lt;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/">&gt;</a>
+        <a class="extend prev" rel="prev" href="/page/3/">&lt;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">&gt;</a>
     </div>
 </nav>
 
@@ -630,7 +613,7 @@ ShaderEffect
     <h3 class="title">
         分类
     </h3>
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E4%BF%AE%E7%82%BC%E4%B9%8B%E8%B7%AF/"><i class="fa" aria-hidden="true">C++修炼之路</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Qml%E7%89%B9%E6%95%88/"><i class="fa" aria-hidden="true">Qml特效</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Qml%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/"><i class="fa" aria-hidden="true">Qml组件化编程</i></a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Qt%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF/"><i class="fa" aria-hidden="true">Qt进阶之路</i></a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B6%9B%E5%93%A5%E7%9A%84%E5%8D%9A%E5%AE%A2/"><i class="fa" aria-hidden="true">涛哥的博客</i></a><span class="category-list-count">1</span></li></ul>
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B6%9B%E5%93%A5%E7%9A%84%E5%8D%9A%E5%AE%A2/"><i class="fa" aria-hidden="true">涛哥的博客</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/"><i class="fa" aria-hidden="true">玩转Qml</i></a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%A9%E8%BD%ACQt/"><i class="fa" aria-hidden="true">玩转Qt</i></a><span class="category-list-count">15</span></li></ul>
 </div>
 
     
@@ -639,7 +622,7 @@ ShaderEffect
     <h3 class="title">
         归档
     </h3>
-    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/"><i class="fa" aria-hidden="true">2020年06月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/"><i class="fa" aria-hidden="true">2020年03月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/"><i class="fa" aria-hidden="true">2019年12月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/"><i class="fa" aria-hidden="true">2019年11月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/"><i class="fa" aria-hidden="true">2019年10月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/"><i class="fa" aria-hidden="true">2019年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/"><i class="fa" aria-hidden="true">2019年08月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/"><i class="fa" aria-hidden="true">2019年07月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/"><i class="fa" aria-hidden="true">2019年06月</i></a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/"><i class="fa" aria-hidden="true">2019年05月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/"><i class="fa" aria-hidden="true">2019年04月</i></a><span class="archive-list-count">4</span></li></ul>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/"><i class="fa" aria-hidden="true">2020年11月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/"><i class="fa" aria-hidden="true">2020年06月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/"><i class="fa" aria-hidden="true">2020年03月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/"><i class="fa" aria-hidden="true">2019年12月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/"><i class="fa" aria-hidden="true">2019年11月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/"><i class="fa" aria-hidden="true">2019年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/"><i class="fa" aria-hidden="true">2019年08月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/"><i class="fa" aria-hidden="true">2019年07月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/"><i class="fa" aria-hidden="true">2019年06月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/"><i class="fa" aria-hidden="true">2019年05月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/"><i class="fa" aria-hidden="true">2019年04月</i></a><span class="archive-list-count">3</span></li></ul>
 </div>
 
     
@@ -651,7 +634,7 @@ ShaderEffect
     <div class="content tag-cloud">
         
         <canvas width="300" height="300" id="tag-cloud-3d">
-            <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Log/" style="font-size: 10px;">Log</a> <a href="/tags/Qml/" style="font-size: 18.57px;">Qml</a> <a href="/tags/Qt/" style="font-size: 20px;">Qt</a> <a href="/tags/QtCreator/" style="font-size: 12.86px;">QtCreator</a> <a href="/tags/QtQuick/" style="font-size: 18.57px;">QtQuick</a> <a href="/tags/Qt%E5%8E%9F%E7%90%86/" style="font-size: 10px;">Qt原理</a> <a href="/tags/Qt%E5%8F%91%E5%B8%83/" style="font-size: 11.43px;">Qt发布</a> <a href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" style="font-size: 14.29px;">Qt实用技能</a> <a href="/tags/%E4%BF%A1%E5%8F%B7-%E6%A7%BD/" style="font-size: 11.43px;">信号-槽</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E8%AF%B4%E6%98%8E/" style="font-size: 10px;">博客说明</a> <a href="/tags/%E5%A4%A7%E4%BA%8B%E8%AE%B0/" style="font-size: 10px;">大事记</a> <a href="/tags/%E5%BD%A9%E8%89%B2log/" style="font-size: 10px;">彩色log</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-CI/" style="font-size: 12.86px;">持续集成(CI)</a> <a href="/tags/%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">日志系统</a> <a href="/tags/%E7%89%B9%E6%95%88/" style="font-size: 17.14px;">特效</a> <a href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" style="font-size: 15.71px;">组件化编程</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%BD%BB%E9%87%8F%E7%BA%A7Log%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">轻量级Log系统</a>
+            <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Log/" style="font-size: 10px;">Log</a> <a href="/tags/Qml/" style="font-size: 18.57px;">Qml</a> <a href="/tags/Qt/" style="font-size: 20px;">Qt</a> <a href="/tags/QtCreator/" style="font-size: 12.86px;">QtCreator</a> <a href="/tags/QtQuick/" style="font-size: 18.57px;">QtQuick</a> <a href="/tags/Qt%E5%8E%9F%E7%90%86/" style="font-size: 10px;">Qt原理</a> <a href="/tags/Qt%E5%8F%91%E5%B8%83/" style="font-size: 11.43px;">Qt发布</a> <a href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" style="font-size: 15.71px;">Qt实用技能</a> <a href="/tags/%E4%BF%A1%E5%8F%B7-%E6%A7%BD/" style="font-size: 11.43px;">信号-槽</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E8%AF%B4%E6%98%8E/" style="font-size: 10px;">博客说明</a> <a href="/tags/%E5%A4%A7%E4%BA%8B%E8%AE%B0/" style="font-size: 10px;">大事记</a> <a href="/tags/%E5%BD%A9%E8%89%B2log/" style="font-size: 10px;">彩色log</a> <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-CI/" style="font-size: 12.86px;">持续集成(CI)</a> <a href="/tags/%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">日志系统</a> <a href="/tags/%E7%89%B9%E6%95%88/" style="font-size: 14.29px;">特效</a> <a href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" style="font-size: 17.14px;">组件化编程</a> <a href="/tags/%E8%BD%BB%E9%87%8F%E7%BA%A7Log%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">轻量级Log系统</a>
         </canvas>
         
     </div>

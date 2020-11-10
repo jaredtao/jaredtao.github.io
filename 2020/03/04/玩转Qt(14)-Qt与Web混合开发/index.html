@@ -1,0 +1,622 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,Qt实用技能" />
+
+
+<meta name="description" content="
+前言
+简介
+Qt的Web方案
+Quick WebGL Stream
+Qt WebAssembly
+Qt WebEngine/WebView
+QtWebEngine的更新情况
+WebEngine..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转Qt(14)-Qt与Web混合开发 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转Qt(14)-Qt与Web混合开发">
+            
+            玩转Qt(14)-Qt与Web混合开发
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQt/">玩转Qt</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/03/04</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#简介">简介</a></li>
+<li><a href="#qt的web方案">Qt的Web方案</a><ul>
+<li><a href="#quick-webgl-stream">Quick WebGL Stream</a></li>
+<li><a href="#qt-webassembly">Qt WebAssembly</a></li>
+<li><a href="#qt-webenginewebview">Qt WebEngine/WebView</a></li>
+<li><a href="#qtwebengine的更新情况">QtWebEngine的更新情况</a></li>
+<li><a href="#webengine的架构">WebEngine的架构</a></li>
+<li><a href="#webengine的平台要求">WebEngine的平台要求</a><ul>
+<li><a href="#windows">Windows</a></li>
+<li><a href="#macos">MacOS</a></li>
+<li><a href="#linux">Linux</a></li>
+</ul>
+</li>
+<li><a href="#webview">WebView</a></li>
+<li><a href="#webengine的使用">WebEngine的使用</a><ul>
+<li><a href="#webengine-widget最简demo">WebEngine Widget最简Demo</a><ul>
+<li><a href="#源代码">源代码</a></li>
+<li><a href="#运行结果">运行结果</a></li>
+<li><a href="#最小发布包">最小发布包</a></li>
+</ul>
+</li>
+<li><a href="#webengine-qml最简demo">WebEngine Qml最简Demo</a><ul>
+<li><a href="#源码">源码</a></li>
+<li><a href="#运行结果-1">运行结果</a></li>
+<li><a href="#最小发布包-1">最小发布包</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这次讨论Qt与Web混合开发相关技术。</p>
+<p>这类技术存在适用场景，例如：Qt项目使用Web大量现成的组件/方案做功能扩展，</p>
+<p>Qt项目中性能无关/频繁更新迭代的页面用html单独实现，Qt项目提供Web形式的SDK给</p>
+<p>用户做二次开发等等，或者是Web开发人员齐全而Qt/C++人手不足，此类非技术问题，</p>
+<p>都可以使用Qt + Web混合开发。</p>
+<p>(不适用的请忽略本文)</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>这篇文章，会先整体介绍一下Qt的各种Web方案,再提供简单的Demo，并做一些简要的说明。</p>
+<p>之后的一篇文章，会通过一个Web控制Qt端小车的案例，来做进一步讨论。</p>
+<h1 id="Qt的Web方案"><a href="#Qt的Web方案" class="headerlink" title="Qt的Web方案"></a>Qt的Web方案</h1><p>Qt提供的Web方案主要包括 WebEngine/WebView、Quick WebGL Stream、QtWebAssembly三种。</p>
+<h2 id="Quick-WebGL-Stream"><a href="#Quick-WebGL-Stream" class="headerlink" title="Quick WebGL Stream"></a>Quick WebGL Stream</h2><p>可以参考Qt官方的WebGL Stream介绍文档</p>
+<p><a href="https://resources.qt.io/cn/qt-quick-webgl-release-512" target="_blank" rel="noopener">https://resources.qt.io/cn/qt-quick-webgl-release-512</a><br>​<br>resources.qt.io<br>WebGL Stream在5.12中正式发布，其本质是一种通信技术，将已有的QtQuick程序中渲染指令和数据，通过socket传输给Web端，由WebGL实现界面渲染。</p>
+<p>其使用方式非常的简单，无需修改源码，应用程序启动时，带上端口参数，例如：</p>
+<p>./your-qt-application -platform webgl:port=8998<br>(相当于应用程序变成了一个服务器端程序)</p>
+<p>这样程序就在后端运行，看不到界面了，之后浏览器打开本地网址 localhost:8998 或者内网地址/映射后的公网地址，就能在浏览器中看到程序页面。</p>
+<p>WebGL Stream的应用不多，Qt官方给的案例是：欧洲某工厂的大量传感器监测设备，都以WebGL Stream的方式运行Qt 程序，本身都不带显卡和显示器，而在控制中心的显卡/显示器上，通过Web打开网页的方式，查看每个设备的运行状况。因此节约了大量显卡/显示器的成本。类比于网吧的无硬盘系统。</p>
+<p>涛哥相信，未来结合5G技术会有不错的应用场景。</p>
+<h2 id="Qt-WebAssembly"><a href="#Qt-WebAssembly" class="headerlink" title="Qt WebAssembly"></a>Qt WebAssembly</h2><p>Qt WebAssembly技术，在5.13中正式发布。本质是把Qt程序编译成浏览器支持的二进制文件，由浏览器加载运行。</p>
+<p>一方面可以将现有的Qt程序编译成Web，另一方面可以用Qt/C++来弥补Web程序的性能短板。</p>
+<p>Qt WebAssembly在使用细节上还有一些坑的地方，需要踩一踩。后续我再写文章吧。</p>
+<h2 id="Qt-WebEngine-WebView"><a href="#Qt-WebEngine-WebView" class="headerlink" title="Qt WebEngine/WebView"></a>Qt WebEngine/WebView</h2><p>Qt提供了WebEngine模块以支持Web功能。</p>
+<p>Qt WebEngine基于google的开源浏览器chromium实现，类似的项目还有<a href="https://github.com/chromiumembedded/cef" target="_blank" rel="noopener">cef</a>、<a href="https://github.com/weolar/miniblink49" target="_blank" rel="noopener">miniblink</a>等等。</p>
+<p>QtWebEngine可以看作是一个完整的chromium浏览器。</p>
+<p>（WebView是同类的方案，稍微有些区别。后文再说。）</p>
+<h2 id="QtWebEngine的更新情况"><a href="#QtWebEngine的更新情况" class="headerlink" title="QtWebEngine的更新情况"></a>QtWebEngine的更新情况</h2><p>浏览器技术十分的庞大，这里先不深入展开，先来关注一下Qt WebEngine对chromium的跟进情况。</p>
+<p>数据来源于<a href="https://wiki.qt.io/" target="_blank" rel="noopener">Qt wiki</a>，Qt每个版本的change log</p>
+<table>
+<thead>
+<tr>
+<th>Qt版本</th>
+<th>chromium后端</th>
+<th>chromium安全更新</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5.9.0</td>
+<td>56</td>
+<td></td>
+</tr>
+<tr>
+<td>5.9.1</td>
+<td>-</td>
+<td>59.0.3071.104</td>
+</tr>
+<tr>
+<td>5.9.2</td>
+<td>-</td>
+<td>61.0.3163.79</td>
+</tr>
+<tr>
+<td>5.9.3</td>
+<td>-</td>
+<td>62.0.3202.89</td>
+</tr>
+<tr>
+<td>5.9.4</td>
+<td>-</td>
+<td>63.0.3239.132</td>
+</tr>
+<tr>
+<td>5.9.5</td>
+<td>-</td>
+<td>65.0.3325.146</td>
+</tr>
+<tr>
+<td>5.9.6</td>
+<td>-</td>
+<td>66.0.3359.170</td>
+</tr>
+<tr>
+<td>5.9.7</td>
+<td>-</td>
+<td>69.0.3497.113</td>
+</tr>
+<tr>
+<td>5.9.8</td>
+<td>-</td>
+<td>72.0.3626.121</td>
+</tr>
+<tr>
+<td>5.9.9</td>
+<td>-</td>
+<td>78.0.3904.108</td>
+</tr>
+<tr>
+<td>5.12.0</td>
+<td>69</td>
+<td></td>
+</tr>
+<tr>
+<td>5.12.1</td>
+<td></td>
+<td>71.0.3578.94</td>
+</tr>
+<tr>
+<td>5.12.2</td>
+<td></td>
+<td>72.0.3626.121</td>
+</tr>
+<tr>
+<td>5.12.3</td>
+<td></td>
+<td>73.0.3683.75</td>
+</tr>
+<tr>
+<td>5.12.4</td>
+<td></td>
+<td>74.0.3729.157</td>
+</tr>
+<tr>
+<td>5.12.5</td>
+<td></td>
+<td>76.0.3809.87</td>
+</tr>
+<tr>
+<td>5.12.6</td>
+<td></td>
+<td>77.0.3865.120</td>
+</tr>
+<tr>
+<td>5.12.7</td>
+<td></td>
+<td>79.0.3945.130</td>
+</tr>
+<tr>
+<td>5.14.0</td>
+<td>77</td>
+<td></td>
+</tr>
+<tr>
+<td>5.14.1</td>
+<td></td>
+<td>79.0.3945.117</td>
+</tr>
+</tbody></table>
+<p>可以看到Qt在WebEngine模块，一直持续跟进Chromium的更新。</p>
+<p>当前(2020/3/4)最新的chromium版本是80。</p>
+<h2 id="WebEngine的架构"><a href="#WebEngine的架构" class="headerlink" title="WebEngine的架构"></a>WebEngine的架构</h2><p>QtWebEngine提供了C++和Qml的接口，可以在Widget/Qml中渲染HTML、XHTML、SVG，</p>
+<p>也支持CSS样式表和JavaScript脚本。</p>
+<p>QtWebEngine的架构图如下</p>
+<p><img src="/images/Web/1.png" alt=""></p>
+<p>基于Chromium封装了一个WebEngineCore模块，在此之上，</p>
+<p>WebEngine Widgets模块专门用于Widget项目，</p>
+<p>WebEngine 模块用于Qml项目，</p>
+<p>WebEngineProcess则是一个单独的进程，用来渲染页面、运行js脚本。</p>
+<p>Web在单独的进程里，我们开发的时候知道这一点就好了，不需要额外关注，</p>
+<p>只要在发布的时候，带上QTDIR目录下的可执行程序QtWebEngineProcess即可。</p>
+<p>(这里提一下底层实现原理，使用了进程间共享OpenGL上下文的方式, 实现多个进程的UI混合在一起)</p>
+<h2 id="WebEngine的平台要求"><a href="#WebEngine的平台要求" class="headerlink" title="WebEngine的平台要求"></a>WebEngine的平台要求</h2><p>(以Qt5.12为参考)</p>
+<p>首先一条是：不支持静态编译 (因为依赖的chromium、chromium本身的依赖库 不能静态编译)</p>
+<p>接下来再看看各平台的要求和限制：</p>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>编译器要 Visual Studio 2017 version 15.8 以上</p>
+<p>系统环境要 Windows 10 SDK</p>
+<p>默认只支持X64版本，如果要x86版本，要自己编译qt源码。</p>
+<h3 id="MacOS"><a href="#MacOS" class="headerlink" title="MacOS"></a>MacOS</h3><ul>
+<li><p>MacOS 10.12以上</p>
+</li>
+<li><p>XCode 8.3.3以上</p>
+</li>
+<li><p>MacOS 10.12以上 SDK</p>
+</li>
+</ul>
+<p>不支持32-bit</p>
+<p>不兼容 Mac App Store (chromium使用了私有api，App Sandbox和chromium Sandbox优先级问题)</p>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><p>编译器要 clang， 或者 gcc 5以上</p>
+<p>需要pkg-config来探测依赖库，dbus-1和 fontconfig是必须的。</p>
+<p>如果配置了xcb，还要额外配置相关库。</p>
+<h2 id="WebView"><a href="#WebView" class="headerlink" title="WebView"></a>WebView</h2><p>Qt还提供了一个WebView组件，可以用来将Web内容嵌入到Qml程序中。(这个没有提供Widget的接口)</p>
+<p>WebView组件的实现，使用了平台原生api，在移动端意义重大，特别是在ios平台，使用</p>
+<p>原生的web view，这样就能兼容App Store了。</p>
+<p>在Windows/MacOS/Linux平台，则是渲染部分还是使用了WebEngine。</p>
+<p>WebView的使用可以参考官方例子Minibrowser</p>
+<p><img src="/images/Web/6.png" alt=""></p>
+<h2 id="WebEngine的使用"><a href="#WebEngine的使用" class="headerlink" title="WebEngine的使用"></a>WebEngine的使用</h2><h3 id="WebEngine-Widget最简Demo"><a href="#WebEngine-Widget最简Demo" class="headerlink" title="WebEngine Widget最简Demo"></a>WebEngine Widget最简Demo</h3><h4 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h4><p>这里示例一个最简单的demo, 使用WebEngine Widget模块提供的QWebEngineView：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Demo.pro</span></span><br><span class="line">QT += core gui webenginewidgets</span><br><span class="line"></span><br><span class="line">CONFIG += c++<span class="number">11</span></span><br><span class="line"></span><br><span class="line">SOURCES += \</span><br><span class="line">        main.cpp</span><br></pre></td></tr></table></figure>
+<p>注意pro文件中包含的Qt模块</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QApplication&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QWebEngineView&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;</span><br><span class="line"></span><br><span class="line">    QWebEngineView view;</span><br><span class="line">    view.load(QUrl(<span class="string">"https://www.zhihu.com/"</span>));</span><br><span class="line">    view.show();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> app.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h4><p>上面代码以打开知乎首页为例，运行结果如下 </p>
+<p><img src="/images/Web/2.png" alt=""></p>
+<h4 id="最小发布包"><a href="#最小发布包" class="headerlink" title="最小发布包"></a>最小发布包</h4><p>涛哥尝试了在Windows平台，做出可用的最小发布包:</p>
+<p><img src="/images/Web/3.png" alt=""></p>
+<p>尺寸在170M左右。这些依赖项中，除了常见的Qt必备项platforms、Qt5Core、Qt5Gui等，</p>
+<p>Qt5WebEngineCore是最大的一个，有70M。QtWebEngineProcess.exe是新增加的一个exe程序，</p>
+<p>前文说架构图时提到的单独进程就是这个程序实现。</p>
+<p>resources/icudtl.dat在其它浏览器引擎中也常看到。</p>
+<p>translations/qtwebengine_locales是WebEngine的翻译项，不带可能会发生翻译问题。</p>
+<p>Qt5Positioning、Qt5PrintSupport一般不怎么用，但是不带这两个程序起不来。</p>
+<p>同时发现Qml和Quick模块也是必须的，Qt5QuickWidgets也用上了。</p>
+<p>涛哥查看源码后发现WebEngineCore模块依赖Quick和Qml模块。</p>
+<h3 id="WebEngine-Qml最简Demo"><a href="#WebEngine-Qml最简Demo" class="headerlink" title="WebEngine Qml最简Demo"></a>WebEngine Qml最简Demo</h3><p>再做一个纯Qml的Demo</p>
+<h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><p>pro中增加webengine模块即可</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//WebQml.pro</span></span><br><span class="line">QT += core gui quick qml webengine</span><br><span class="line"></span><br><span class="line">CONFIG += c++<span class="number">11</span></span><br><span class="line"></span><br><span class="line">SOURCES += \</span><br><span class="line">        main.cpp</span><br><span class="line"></span><br><span class="line">RESOURCES += \</span><br><span class="line">    Qrc.qrc</span><br></pre></td></tr></table></figure>
+<p>注意初始化。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QGuiApplication&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QQuickView&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QtWebEngine&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);</span><br><span class="line"></span><br><span class="line">    <span class="function">QGuiApplication <span class="title">a</span><span class="params">(argc, argv)</span></span>;</span><br><span class="line">    <span class="comment">//初始化。时机在QApp之后，Window/View构造之前。</span></span><br><span class="line">    QtWebEngine::initialize();</span><br><span class="line"></span><br><span class="line">    QQuickView view;</span><br><span class="line">    view.setSource(QUrl(<span class="string">"qrc:/main.qml"</span>));</span><br><span class="line">    view.show();</span><br><span class="line">    <span class="keyword">return</span> a.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>qml导入模块，填入url</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.0</span></span><br><span class="line"><span class="keyword">import</span> QtWebEngine <span class="number">1.8</span></span><br><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">800</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">600</span></span><br><span class="line">    <span class="title">WebEngineView</span> &#123;</span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">        <span class="attribute">url</span>: <span class="string">"https://www.zhihu.com"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="运行结果-1"><a href="#运行结果-1" class="headerlink" title="运行结果"></a>运行结果</h4><p>运行结果和上一个Demo一样</p>
+<p><img src="/images/Web/4.png" alt=""></p>
+<h4 id="最小发布包-1"><a href="#最小发布包-1" class="headerlink" title="最小发布包"></a>最小发布包</h4><p>这回可以去掉Widget模块</p>
+<p><img src="/images/Web/5.png" alt=""></p>
+<p>同时也去掉不必要的翻译文件。包大小160M左右，和前面的差别不大。</p>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/03/12/%E7%8E%A9%E8%BD%ACQt(15)-Web%E6%93%8D%E6%8E%A7%E5%B0%8F%E8%BD%A6%E6%A1%88%E4%BE%8B/" class="pre-post btn btn-default" title='玩转Qt(15)-操控Web小车案例'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(15)-操控Web小车案例</span>
+    </a>
+    
+    
+    <a href="/2019/12/08/%E7%8E%A9%E8%BD%ACQt(13)-%E5%AE%89%E5%8D%935.12.4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="next-post btn btn-default" title='玩转Qt(13)-安卓5.12.4环境搭建'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(13)-安卓5.12.4环境搭建</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Qt的Web方案"><span class="toc-text">Qt的Web方案</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-WebGL-Stream"><span class="toc-text">Quick WebGL Stream</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt-WebAssembly"><span class="toc-text">Qt WebAssembly</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt-WebEngine-WebView"><span class="toc-text">Qt WebEngine&#x2F;WebView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtWebEngine的更新情况"><span class="toc-text">QtWebEngine的更新情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebEngine的架构"><span class="toc-text">WebEngine的架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebEngine的平台要求"><span class="toc-text">WebEngine的平台要求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MacOS"><span class="toc-text">MacOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux"><span class="toc-text">Linux</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebView"><span class="toc-text">WebView</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebEngine的使用"><span class="toc-text">WebEngine的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WebEngine-Widget最简Demo"><span class="toc-text">WebEngine Widget最简Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源代码"><span class="toc-text">源代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行结果"><span class="toc-text">运行结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#最小发布包"><span class="toc-text">最小发布包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebEngine-Qml最简Demo"><span class="toc-text">WebEngine Qml最简Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码"><span class="toc-text">源码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行结果-1"><span class="toc-text">运行结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#最小发布包-1"><span class="toc-text">最小发布包</span></a></li></ol></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

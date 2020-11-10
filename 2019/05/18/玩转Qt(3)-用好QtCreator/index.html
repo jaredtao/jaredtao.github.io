@@ -1,0 +1,464 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,Qt实用技能,QtCreator" />
+
+
+<meta name="description" content="
+简介
+环境说明
+QtCreator折叠全部代码
+QtCreator属性生成
+QtCreator注释代码
+QtCreator代码片段
+QtCreator代码格式化
+QtCreator会话管理
+结..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转Qt(3)-用好QtCreator |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转Qt(3)-用好QtCreator">
+            
+            玩转Qt(3)-用好QtCreator
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQt/">玩转Qt</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtCreator/" rel="tag">QtCreator</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/18</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+        <p class="fa fa-exclamation-triangle warning">
+            本文于<strong>
+                541</strong>
+            天之前发表，文中内容可能已经过时。
+        </p>
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#简介">简介</a></li>
+<li><a href="#环境说明">环境说明</a></li>
+<li><a href="#qtcreator折叠全部代码">QtCreator折叠全部代码</a></li>
+<li><a href="#qtcreator属性生成">QtCreator属性生成</a></li>
+<li><a href="#qtcreator注释代码">QtCreator注释代码</a></li>
+<li><a href="#qtcreator代码片段">QtCreator代码片段</a></li>
+<li><a href="#qtcreator代码格式化">QtCreator代码格式化</a></li>
+<li><a href="#qtcreator会话管理">QtCreator会话管理</a></li>
+<li><a href="#结尾">结尾</a></li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这次涛哥将教大家，一些QtCreator的实用技巧。</p>
+<p>工欲善其事，必先利其器。</p>
+<h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><p>下文以Windows平台的QtCreator为参考，其它平台的菜单栏入口和快捷键 请以实际为准。</p>
+<p>QtCreator版本以Qt5.6.x及以上安装包所带的都行，再旧的版本不讨论。</p>
+<h2 id="QtCreator折叠全部代码"><a href="#QtCreator折叠全部代码" class="headerlink" title="QtCreator折叠全部代码"></a>QtCreator折叠全部代码</h2><p>折叠全部代码,支持C++和Qml。操作方式为：</p>
+<p>光标焦点放在代码文本中，之后 菜单栏: 编辑-&gt;Advanced-&gt;Toggle Fold All</p>
+<p>这个功能没有快捷键</p>
+<h2 id="QtCreator属性生成"><a href="#QtCreator属性生成" class="headerlink" title="QtCreator属性生成"></a>QtCreator属性生成</h2><p>经常需要给自定义的QObject类写一些属性，QtCreator是可以自动生成get、set函数以及change信号的。</p>
+<p>只要写上Q_PROPERTY那一行，光标放在Q_PROPERTY上, 用右键菜单 -&gt; Refactor -&gt; Generate Missing Q_PROPERTY Memory 即可生成。</p>
+<p>也可以使用快捷键，光标放在Q_PROPERTY上，按Alt + Enter。</p>
+<p><img src="/images/Qml3/1.gif" alt="预览"></p>
+<h2 id="QtCreator注释代码"><a href="#QtCreator注释代码" class="headerlink" title="QtCreator注释代码"></a>QtCreator注释代码</h2><p>快捷键，注释当前行代码或者当前选中的多行代码</p>
+<p>Ctrl + /</p>
+<p>已经注释掉的，再按一次取消注释。</p>
+<h2 id="QtCreator代码片段"><a href="#QtCreator代码片段" class="headerlink" title="QtCreator代码片段"></a>QtCreator代码片段</h2><p>前面的Q_PROPERTY自动生成，其实就是一种代码片段。</p>
+<p>比如经常要写这样一段代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pObj) &#123;</span><br><span class="line">    <span class="keyword">delete</span> pObj;</span><br><span class="line">    pObj = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的pObj出现了多次，在不同的地方只是pObj这个名字不同，其它if 和 delete操作一模一样。</p>
+<p>可以把这段代码封装成模板函数，也可以做成QtCreator的代码片段。(不建议定义宏, 不类型安全和不方便调试)</p>
+<p>模板是这样的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">safeDelete</span> (<span class="title">T</span> *<span class="title">pObj</span>) </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">if</span> (pObj) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span> pObj;</span><br><span class="line">        pObj = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码片段是在写代码时就把实际的代码生成出来了，模板是编译的时候才去生成。所以代码片段可以加快编译速度。</p>
+<p>代码片段是这么做的，在菜单的 工具-&gt;选项 弹出选项窗口，然后到文本编辑器-&gt;片段-&gt;下拉选C++</p>
+<p><img src="/images/Qt1/3.png" alt="预览"></p>
+<p>添加一个片段，起名字叫safeD，并填上内容</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($$) &#123;</span><br><span class="line">    <span class="keyword">delete</span> $$;</span><br><span class="line">    $$ = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/Qt1/4.png" alt="预览"></p>
+<p>写好后点击确定。再回到代码中，输入safeD，按回车就会自动补全前面的片段。</p>
+<p>光标出现在$$的地方，有一个高亮颜色，此时只要输入一个名字，按下回车键，后续的地方自动替换成输入的名字了。</p>
+<p><img src="/images/Qt1/5.gif" alt="预览"></p>
+<h2 id="QtCreator代码格式化"><a href="#QtCreator代码格式化" class="headerlink" title="QtCreator代码格式化"></a>QtCreator代码格式化</h2><p>都9102年了，如果还有人跟你计较大括号要不要换行、指针符号靠左还是靠右这种问题，请用自动格式化工具怼他/她。</p>
+<p>QtCreator支持很多种格式化工具，涛哥用的是clang-format。VisualStudio 2017、2019、以及VSCode也支持clang-format</p>
+<p>的,都不需要额外安装任何插件。配置起来很简单，只要在项目pro文件同级目录下，放一个配置好的.clang-format的文件就行了。</p>
+<p>团队合作的时候，使用同一个.clang-format配置文件，大家的代码格式就都一致了。</p>
+<p>clang-format有默认的google、llvm等格式可选，也可以自定义。下面是一个涛哥使用的自定义配置文件，并做了详细的注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"># 语言: None, Cpp, Java, JavaScript, ObjC, Proto, TableGen, TextProto</span><br><span class="line">Language:        Cpp</span><br><span class="line"># BasedOnStyle:  WebKit</span><br><span class="line"># 访问说明符(public、private等)的偏移</span><br><span class="line">AccessModifierOffset: -4</span><br><span class="line"># 开括号(开圆括号、开尖括号、开方括号)后的对齐: Align, DontAlign, AlwaysBreak(总是在开括号后换行)</span><br><span class="line">AlignAfterOpenBracket: AlwaysBreak</span><br><span class="line"># 连续赋值时，对齐所有等号</span><br><span class="line">AlignConsecutiveAssignments: false</span><br><span class="line"># 连续声明时，对齐所有声明的变量名</span><br><span class="line">AlignConsecutiveDeclarations: false</span><br><span class="line"># 左对齐逃脱换行(使用反斜杠换行)的反斜杠</span><br><span class="line">AlignEscapedNewlines: Right</span><br><span class="line"># 水平对齐二元和三元表达式的操作数</span><br><span class="line">AlignOperands:   true</span><br><span class="line"># 对齐连续的尾随的注释</span><br><span class="line">AlignTrailingComments: true</span><br><span class="line"># 允许函数声明的所有参数在放在下一行</span><br><span class="line">AllowAllParametersOfDeclarationOnNextLine: true</span><br><span class="line"># 允许短的块放在同一行</span><br><span class="line">AllowShortBlocksOnASingleLine: false</span><br><span class="line"># 允许短的case标签放在同一行</span><br><span class="line">AllowShortCaseLabelsOnASingleLine: false</span><br><span class="line"># 允许短的函数放在同一行: None, InlineOnly(定义在类中), Empty(空函数), Inline(定义在类中，空函数), All</span><br><span class="line">AllowShortFunctionsOnASingleLine: Empty</span><br><span class="line"># 允许短的if语句保持在同一行</span><br><span class="line">AllowShortIfStatementsOnASingleLine: false</span><br><span class="line"># 允许短的循环保持在同一行</span><br><span class="line">AllowShortLoopsOnASingleLine: false</span><br><span class="line"># 总是在定义返回类型后换行(deprecated)</span><br><span class="line">AlwaysBreakAfterDefinitionReturnType: None</span><br><span class="line"># 总是在返回类型后换行: None, All, TopLevel(顶级函数，不包括在类中的函数),</span><br><span class="line">#   AllDefinitions(所有的定义，不包括声明), TopLevelDefinitions(所有的顶级函数的定义)</span><br><span class="line">AlwaysBreakAfterReturnType: None</span><br><span class="line"># 总是在多行string字面量前换行</span><br><span class="line">AlwaysBreakBeforeMultilineStrings: false</span><br><span class="line"># 总是在template声明后换行</span><br><span class="line">AlwaysBreakTemplateDeclarations: true</span><br><span class="line"># false表示函数实参要么都在同一行，要么都各自一行</span><br><span class="line">BinPackArguments: false</span><br><span class="line"># false表示所有形参要么都在同一行，要么都各自一行</span><br><span class="line">BinPackParameters: false</span><br><span class="line"># 大括号换行，只有当BreakBeforeBraces设置为Custom时才有效</span><br><span class="line">BraceWrapping:   </span><br><span class="line">  # class定义后面</span><br><span class="line">  AfterClass:      true</span><br><span class="line">  # 控制语句后面</span><br><span class="line">  AfterControlStatement: true</span><br><span class="line">  # enum定义后面</span><br><span class="line">  AfterEnum:       true</span><br><span class="line">  # 函数定义后面</span><br><span class="line">  AfterFunction:   true</span><br><span class="line">  # 命名空间定义后面</span><br><span class="line">  AfterNamespace:  true</span><br><span class="line">  # ObjC定义后面</span><br><span class="line">  AfterObjCDeclaration: false</span><br><span class="line">  # struct定义后面</span><br><span class="line">  AfterStruct:     true</span><br><span class="line">  # union定义后面</span><br><span class="line">  AfterUnion:      true</span><br><span class="line">  # extern 定义后面</span><br><span class="line">  AfterExternBlock: true</span><br><span class="line">  # catch之前</span><br><span class="line">  BeforeCatch:     true</span><br><span class="line">  # else 之前</span><br><span class="line">  BeforeElse:      true</span><br><span class="line">  # 缩进大括号</span><br><span class="line">  IndentBraces:    false</span><br><span class="line"></span><br><span class="line">  SplitEmptyFunction: true</span><br><span class="line"></span><br><span class="line">  SplitEmptyRecord: true</span><br><span class="line"></span><br><span class="line">  SplitEmptyNamespace: true</span><br><span class="line"># 在二元运算符前换行: None(在操作符后换行), NonAssignment(在非赋值的操作符前换行), All(在操作符前换行)</span><br><span class="line">BreakBeforeBinaryOperators: All</span><br><span class="line"># 在大括号前换行: Attach(始终将大括号附加到周围的上下文), Linux(除函数、命名空间和类定义，与Attach类似),</span><br><span class="line">#   Mozilla(除枚举、函数、记录定义，与Attach类似), Stroustrup(除函数定义、catch、else，与Attach类似),</span><br><span class="line">#   Allman(总是在大括号前换行), GNU(总是在大括号前换行，并对于控制语句的大括号增加额外的缩进), WebKit(在函数前换行), Custom</span><br><span class="line">#   注：这里认为语句块也属于函数</span><br><span class="line">BreakBeforeBraces: Allman</span><br><span class="line"># 继承列表的逗号前换行</span><br><span class="line">BreakBeforeInheritanceComma: false</span><br><span class="line"># 在三元运算符前换行</span><br><span class="line">BreakBeforeTernaryOperators: true</span><br><span class="line"># 在构造函数的初始化列表的逗号前换行</span><br><span class="line">BreakConstructorInitializersBeforeComma: false</span><br><span class="line"># 初始化列表前换行</span><br><span class="line">BreakConstructorInitializers: BeforeComma</span><br><span class="line"># Java注解后换行</span><br><span class="line">BreakAfterJavaFieldAnnotations: false</span><br><span class="line"></span><br><span class="line">BreakStringLiterals: true</span><br><span class="line"># 每行字符的限制，0表示没有限制</span><br><span class="line">ColumnLimit:     160</span><br><span class="line"># 描述具有特殊意义的注释的正则表达式，它不应该被分割为多行或以其它方式改变</span><br><span class="line">CommentPragmas:  &#39;^ IWYU pragma:&#39;</span><br><span class="line"># 紧凑 命名空间</span><br><span class="line">CompactNamespaces: false</span><br><span class="line"># 构造函数的初始化列表要么都在同一行，要么都各自一行</span><br><span class="line">ConstructorInitializerAllOnOneLineOrOnePerLine: true</span><br><span class="line"># 构造函数的初始化列表的缩进宽度</span><br><span class="line">ConstructorInitializerIndentWidth: 4</span><br><span class="line"># 延续的行的缩进宽度</span><br><span class="line">ContinuationIndentWidth: 4</span><br><span class="line"># 去除C++11的列表初始化的大括号&#123;后和&#125;前的空格</span><br><span class="line">Cpp11BracedListStyle: false</span><br><span class="line"># 继承最常用的指针和引用的对齐方式</span><br><span class="line">DerivePointerAlignment: false</span><br><span class="line"># 关闭格式化</span><br><span class="line">DisableFormat:   false</span><br><span class="line"># 自动检测函数的调用和定义是否被格式为每行一个参数(Experimental)</span><br><span class="line">ExperimentalAutoDetectBinPacking: false</span><br><span class="line"># 固定命名空间注释</span><br><span class="line">FixNamespaceComments: true</span><br><span class="line"># 需要被解读为foreach循环而不是函数调用的宏</span><br><span class="line">ForEachMacros:   </span><br><span class="line">  - foreach</span><br><span class="line">  - Q_FOREACH</span><br><span class="line">  - BOOST_FOREACH</span><br><span class="line"></span><br><span class="line">IncludeBlocks:   Preserve</span><br><span class="line"># 对#include进行排序，匹配了某正则表达式的#include拥有对应的优先级，匹配不到的则默认优先级为INT_MAX(优先级越小排序越靠前)，</span><br><span class="line">#   可以定义负数优先级从而保证某些#include永远在最前面</span><br><span class="line">IncludeCategories: </span><br><span class="line">  - Regex:           &#39;^&quot;(llvm|llvm-c|clang|clang-c)&#x2F;&#39;</span><br><span class="line">    Priority:        2</span><br><span class="line">  - Regex:           &#39;^(&lt;|&quot;(gtest|gmock|isl|json)&#x2F;)&#39;</span><br><span class="line">    Priority:        3</span><br><span class="line">  - Regex:           &#39;.*&#39;</span><br><span class="line">    Priority:        1</span><br><span class="line">IncludeIsMainRegex: &#39;(Test)?$&#39;</span><br><span class="line"># 缩进case标签</span><br><span class="line">IndentCaseLabels: true</span><br><span class="line"></span><br><span class="line">IndentPPDirectives: None</span><br><span class="line"># 缩进宽度</span><br><span class="line">IndentWidth:     4</span><br><span class="line"># 函数返回类型换行时，缩进函数声明或函数定义的函数名</span><br><span class="line">IndentWrappedFunctionNames: false</span><br><span class="line"></span><br><span class="line">JavaScriptQuotes: Leave</span><br><span class="line"></span><br><span class="line">JavaScriptWrapImports: true</span><br><span class="line"># 保留在块开始处的空行</span><br><span class="line">KeepEmptyLinesAtTheStartOfBlocks: true</span><br><span class="line"># 开始一个块的宏的正则表达式</span><br><span class="line">MacroBlockBegin: &#39;&#39;</span><br><span class="line"># 结束一个块的宏的正则表达式</span><br><span class="line">MacroBlockEnd:   &#39;&#39;</span><br><span class="line"># 连续空行的最大数量</span><br><span class="line">MaxEmptyLinesToKeep: 1</span><br><span class="line"></span><br><span class="line"># 命名空间的缩进: None, Inner(缩进嵌套的命名空间中的内容), All</span><br><span class="line">NamespaceIndentation: All</span><br><span class="line"># 使用ObjC块时缩进宽度</span><br><span class="line">ObjCBlockIndentWidth: 4</span><br><span class="line"># 在ObjC的@property后添加一个空格</span><br><span class="line">ObjCSpaceAfterProperty: true</span><br><span class="line"># 在ObjC的protocol列表前添加一个空格</span><br><span class="line">ObjCSpaceBeforeProtocolList: true</span><br><span class="line"></span><br><span class="line">PenaltyBreakAssignment: 2</span><br><span class="line"></span><br><span class="line">PenaltyBreakBeforeFirstCallParameter: 19</span><br><span class="line"># 在一个注释中引入换行的penalty</span><br><span class="line">PenaltyBreakComment: 300</span><br><span class="line"># 第一次在&lt;&lt;前换行的penalty</span><br><span class="line">PenaltyBreakFirstLessLess: 120</span><br><span class="line"># 在一个字符串字面量中引入换行的penalty</span><br><span class="line">PenaltyBreakString: 1000</span><br><span class="line"># 对于每个在行字符数限制之外的字符的penalty</span><br><span class="line">PenaltyExcessCharacter: 1000000</span><br><span class="line"># 将函数的返回类型放到它自己的行的penalty</span><br><span class="line">PenaltyReturnTypeOnItsOwnLine: 60</span><br><span class="line"># 指针和引用的对齐: Left, Right, Middle</span><br><span class="line">PointerAlignment: Right</span><br><span class="line"></span><br><span class="line">#RawStringFormats: </span><br><span class="line">#  - Delimiter:       pb</span><br><span class="line">#    Language:        TextProto</span><br><span class="line">#    BasedOnStyle:    google</span><br><span class="line"># 允许重新排版注释</span><br><span class="line">ReflowComments:  false</span><br><span class="line"># 允许排序#include</span><br><span class="line">SortIncludes:    true</span><br><span class="line"></span><br><span class="line">SortUsingDeclarations: true</span><br><span class="line"># 在C风格类型转换后添加空格</span><br><span class="line">SpaceAfterCStyleCast: false</span><br><span class="line"># 模板关键字后面添加空格</span><br><span class="line">SpaceAfterTemplateKeyword: true</span><br><span class="line"># 在赋值运算符之前添加空格</span><br><span class="line">SpaceBeforeAssignmentOperators: true</span><br><span class="line"># 开圆括号之前添加一个空格: Never, ControlStatements, Always</span><br><span class="line">SpaceBeforeParens: ControlStatements</span><br><span class="line"># 在空的圆括号中添加空格</span><br><span class="line">SpaceInEmptyParentheses: false</span><br><span class="line"># 在尾随的评论前添加的空格数(只适用于&#x2F;&#x2F;)</span><br><span class="line">SpacesBeforeTrailingComments: 1</span><br><span class="line"># 在尖括号的&lt;后和&gt;前添加空格</span><br><span class="line">SpacesInAngles:  false</span><br><span class="line"># 在容器(ObjC和JavaScript的数组和字典等)字面量中添加空格</span><br><span class="line">SpacesInContainerLiterals: true</span><br><span class="line"># 在C风格类型转换的括号中添加空格</span><br><span class="line">SpacesInCStyleCastParentheses: false</span><br><span class="line"># 在圆括号的(后和)前添加空格</span><br><span class="line">SpacesInParentheses: false</span><br><span class="line"># 在方括号的[后和]前添加空格，lamda表达式和未指明大小的数组的声明不受影响</span><br><span class="line">SpacesInSquareBrackets: false</span><br><span class="line"># 标准: Cpp03, Cpp11, Auto</span><br><span class="line">Standard:        Cpp11</span><br><span class="line"># tab宽度</span><br><span class="line">TabWidth:        4</span><br><span class="line"># 使用tab字符: Never, ForIndentation, ForContinuationAndIndentation, Always</span><br><span class="line">UseTab:          Never</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>怎么使用呢？QtCreator中打开要格式化的代码文件，按快捷键 Ctrl + I 就是格式化当前行。</p>
+<p>Ctrl + A选中全部内容，再按Ctrl + I就是格式化全部。</p>
+<p>VS是把.clang-format文件放在和sln文件同级目录即可，快捷键一般是 先按Ctrl + K 再按Ctrl + D</p>
+<p>VSCode是打开的文件夹根目录有.clang-format即可，格式化一般在右键菜单。</p>
+<h2 id="QtCreator会话管理"><a href="#QtCreator会话管理" class="headerlink" title="QtCreator会话管理"></a>QtCreator会话管理</h2><p>QtCreator的”会话管理”和”最近使用”功能配合，是涛哥接触过的所有IDE/Editor中，管理项目最好用的，没有之一。</p>
+<p>包括VisualStudio、VSCode、AndroidStudio、XCode、Unity3D Editor等等，都只有”最近使用”，没有”会话管理”。</p>
+<p><img src="/images/Qt1/6.png" alt="预览"></p>
+<p>如上图，左边是会话列表，右边是最近使用列表。</p>
+<p>会话管理的最大用处是，同时打开多个Qt项目，以及快速切换并还原状态。</p>
+<p>涛哥用示例来说明:</p>
+<p>涛哥正在开发TaoQuick项目，这个项目包含两个不同路径下的pro项目, 每个项目分别有自己的子项目。</p>
+<p><img src="/images/Qt1/session1.png" alt="预览"></p>
+<p>当我正在调试TaoView.cpp文件，并且打了断点的时候，有小伙伴来问我关于另一个项目HelloCI的一些问题。</p>
+<p>这时候我需要把代码切换到HelloCI项目，有些人可能会想着再打开一个QtCreator，当然这样也行，就是</p>
+<p>窗口太多了容易搞混了。涛哥更信赖“会话管理”功能，切换到HelloCI这个会话，做了一些处理。</p>
+<p>完了之后，涛哥又切换回了TaoQuick这个会话，QtCreator就自动恢复到了刚才看的代码TaoView.cpp，而且断点也还在。</p>
+<p>又过了一段时间，涛哥需要重启一下电脑，重启后打开QtCreator，直接点开TaoQuick这个会话，又给我切换回</p>
+<p>刚才调试的TaoQuick.cpp文件了，项目结构展开和重启之前是一样的,只有断点没有了。</p>
+<p>简而言之，大家把平常用的多个相关的项目，放进一个会话里面，就可以放心地关掉QtCreator。下一次想打开的时候，只要点一下会话就可以了。</p>
+<p><img src="/images/Qt1/7.gif" alt="预览"></p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>这次就分享这么多了，以上内容，大部分都可以在TaoQuick的代码仓库中看到</p>
+<p><a href="https://github.com/jaredtao/taoquick" target="_blank" rel="noopener">https://github.com/jaredtao/taoquick</a></p>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019/05/19/%E7%8E%A9%E8%BD%ACQml(7)-%E8%87%AA%E7%BB%98%E7%BB%84%E4%BB%B6/" class="pre-post btn btn-default" title='玩转Qml(7)-自绘组件'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转Qml(7)-自绘组件</span>
+    </a>
+    
+    
+    <a href="/2019/05/18/%E7%8E%A9%E8%BD%ACQml(6)-%E8%BF%9B%E5%BA%A6%E6%9D%A1%E5%AE%9A%E5%88%B6/" class="next-post btn btn-default" title='玩转Qml(6)-进度条定制'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qml(6)-进度条定制</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境说明"><span class="toc-text">环境说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtCreator折叠全部代码"><span class="toc-text">QtCreator折叠全部代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtCreator属性生成"><span class="toc-text">QtCreator属性生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtCreator注释代码"><span class="toc-text">QtCreator注释代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtCreator代码片段"><span class="toc-text">QtCreator代码片段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtCreator代码格式化"><span class="toc-text">QtCreator代码格式化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QtCreator会话管理"><span class="toc-text">QtCreator会话管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结尾"><span class="toc-text">结尾</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

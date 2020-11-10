@@ -1,0 +1,453 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,持续集成(CI)" />
+
+
+<meta name="description" content="
+简介
+原理
+缓存actions模板
+缓存文档
+缓存大小限制
+缓存运作流程
+
+
+Qt项目的缓存优化
+无缓存的配置
+加缓存
+环境变量还原
+最终配置
+
+
+
+简介在之前两篇文章《github-Acti..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转Qt(12)-github-Actions缓存优化 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转Qt(12)-github-Actions缓存优化">
+            
+            玩转Qt(12)-github-Actions缓存优化
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQt/">玩转Qt</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90-CI/" rel="tag">持续集成(CI)</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/12/04</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%e7%ae%80%e4%bb%8b">简介</a></li>
+<li><a href="#%e5%8e%9f%e7%90%86">原理</a><ul>
+<li><a href="#%e7%bc%93%e5%ad%98actions%e6%a8%a1%e6%9d%bf">缓存actions模板</a></li>
+<li><a href="#%e7%bc%93%e5%ad%98%e6%96%87%e6%a1%a3">缓存文档</a></li>
+<li><a href="#%e7%bc%93%e5%ad%98%e5%a4%a7%e5%b0%8f%e9%99%90%e5%88%b6">缓存大小限制</a></li>
+<li><a href="#%e7%bc%93%e5%ad%98%e8%bf%90%e4%bd%9c%e6%b5%81%e7%a8%8b">缓存运作流程</a></li>
+</ul>
+</li>
+<li><a href="#qt%e9%a1%b9%e7%9b%ae%e7%9a%84%e7%bc%93%e5%ad%98%e4%bc%98%e5%8c%96">Qt项目的缓存优化</a><ul>
+<li><a href="#%e6%97%a0%e7%bc%93%e5%ad%98%e7%9a%84%e9%85%8d%e7%bd%ae">无缓存的配置</a></li>
+<li><a href="#%e5%8a%a0%e7%bc%93%e5%ad%98">加缓存</a></li>
+<li><a href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e8%bf%98%e5%8e%9f">环境变量还原</a></li>
+<li><a href="#%e6%9c%80%e7%bb%88%e9%85%8d%e7%bd%ae">最终配置</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在之前两篇文章《github-Actions自动化编译》《github-Actions自动化发行》中，</p>
+<p>介绍了github-Actions的一些用法，其中有部分配置，已经有了缓存相关的步骤。</p>
+<p>这里专门开一篇文章，来记录github-Actions的缓存优化相关的知识。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="缓存actions模板"><a href="#缓存actions模板" class="headerlink" title="缓存actions模板"></a>缓存actions模板</h3><p>github-Actions提供了缓存模板<a href="https://github.com/actions/cache" target="_blank" rel="noopener">cache</a></p>
+<h3 id="缓存文档"><a href="#缓存文档" class="headerlink" title="缓存文档"></a>缓存文档</h3><p>官方文档也有说明 <a href="https://help.github.com/cn/actions/automating-your-workflow-with-github-actions/caching-dependencies-to-speed-up-workflows" target="_blank" rel="noopener">缓存文档</a></p>
+<p>缓存大致原理就是把目标路径打包存储下来，并记录一个唯一key。</p>
+<p>下次启动时，根据key去查找。找到了就再按路径解压开。</p>
+<h3 id="缓存大小限制"><a href="#缓存大小限制" class="headerlink" title="缓存大小限制"></a>缓存大小限制</h3><p>注意缓存有大小限制。对于免费用户，单个包不能超过500MB，整个仓库的缓存不能超过2G。</p>
+<h3 id="缓存运作流程"><a href="#缓存运作流程" class="headerlink" title="缓存运作流程"></a>缓存运作流程</h3><p>一般我们在任务步骤中增加一个cache</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">steps:</span><br><span class="line">  ...</span><br><span class="line">  - use: actions&#x2F;cache@v1</span><br><span class="line">    with:</span><br><span class="line">      ...</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+
+<p>那么在这个地方，缓存执行的操作是restore。</p>
+<p>在steps的末尾，会自动增加一个PostCache，执行的操作是record。</p>
+<h2 id="Qt项目的缓存优化"><a href="#Qt项目的缓存优化" class="headerlink" title="Qt项目的缓存优化"></a>Qt项目的缓存优化</h2><p>Qt项目每次运行Actions时，都是先通过<a href="https://github.com/jurplel/install-qt-action" target="_blank" rel="noopener">install-qt-action</a>模板，安装Qt，之后再获取代码，编译运行。</p>
+<p>安装Qt这个步骤，可快可慢，涛哥在windows平台测试下来，平均要1分30秒左右。</p>
+<p>加上cache后，平均只有25秒。</p>
+<h3 id="无缓存的配置"><a href="#无缓存的配置" class="headerlink" title="无缓存的配置"></a>无缓存的配置</h3><p>先看一个Qt项目的编译配置</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Windows</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">[push,pull_request]</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">  build:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">Build</span></span><br><span class="line"><span class="attr">    runs-on:</span> <span class="string">windows-latest</span></span><br><span class="line"><span class="attr">    strategy:</span></span><br><span class="line"><span class="attr">      matrix:</span></span><br><span class="line"><span class="attr">        qt_ver:</span> <span class="string">[5.12.6]</span></span><br><span class="line"><span class="attr">        qt_target:</span> <span class="string">[desktop]</span></span><br><span class="line"><span class="attr">        qt_arch:</span> <span class="string">[win64_msvc2017_64,</span> <span class="string">win32_msvc2017]</span></span><br><span class="line"><span class="attr">        include:</span></span><br><span class="line"><span class="attr">          - qt_arch:</span> <span class="string">win64_msvc2017_64</span></span><br><span class="line"><span class="attr">            msvc_arch:</span> <span class="string">x64</span></span><br><span class="line"><span class="attr">          - qt_arch:</span> <span class="string">win32_msvc2017</span></span><br><span class="line"><span class="attr">            msvc_arch:</span> <span class="string">x86</span></span><br><span class="line">    <span class="comment"># 步骤</span></span><br><span class="line"><span class="attr">    steps:</span></span><br><span class="line">      <span class="comment"># 安装Qt</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">Install</span> <span class="string">Qt</span></span><br><span class="line"><span class="attr">        uses:</span> <span class="string">jurplel/install-qt-action@v2.0.0</span></span><br><span class="line"><span class="attr">        with:</span></span><br><span class="line"><span class="attr">          version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.qt_ver</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">          target:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.qt_target</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">          arch:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.qt_arch</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="comment"># 拉取代码</span></span><br><span class="line"><span class="attr">      - uses:</span> <span class="string">actions/checkout@v1</span></span><br><span class="line"><span class="attr">        with:</span></span><br><span class="line"><span class="attr">          fetch-depth:</span> <span class="number">1</span></span><br><span class="line">      <span class="comment"># 编译msvc</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">build-msvc</span></span><br><span class="line"><span class="attr">        shell:</span> <span class="string">cmd</span></span><br><span class="line"><span class="attr">        env:</span></span><br><span class="line"><span class="attr">          vc_arch:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.msvc_arch</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">        run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%</span></span><br><span class="line"><span class="string">          qmake</span></span><br><span class="line"><span class="string">          nmake</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="加缓存"><a href="#加缓存" class="headerlink" title="加缓存"></a>加缓存</h3><p>缓存步骤，一般尽量写steps最前面。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 步骤</span></span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="comment"># 缓存</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">cacheQt</span></span><br><span class="line"><span class="attr">    id:</span> <span class="string">WindowsCacheQt</span></span><br><span class="line"><span class="attr">    uses:</span> <span class="string">actions/cache@v1</span></span><br><span class="line"><span class="attr">    with:</span></span><br><span class="line"><span class="attr">      path:</span> <span class="string">../Qt/$&#123;&#123;matrix.qt_ver&#125;&#125;/$&#123;&#123;matrix.qt_arch_install&#125;&#125;</span></span><br><span class="line"><span class="attr">      key:</span> <span class="string">$&#123;&#123;</span> <span class="string">runner.os</span> <span class="string">&#125;&#125;-Qt/$&#123;&#123;matrix.qt_ver&#125;&#125;/$&#123;&#123;matrix.qt_arch&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>install-qt-action有默认的Qt安装路径${RUNNER_WORKSPACE}，不过这个环境变量不一定能取到。</p>
+<p>涛哥实际测试下来，以当前路径的上一级作为Qt路径即可。</p>
+<h3 id="环境变量还原"><a href="#环境变量还原" class="headerlink" title="环境变量还原"></a>环境变量还原</h3><p>缓存只是把文件还原了，环境变量并没有还原，我们还需要手动还原环境变量。</p>
+<p>install-qt-action这个模板增加了一个环境变量Qt5_Dir,值为Qt的安装路径,并把对应的bin添加到了Path。</p>
+<p>我们要做的，就是在缓存恢复成功后，重新设置这两个变量，并去掉install-qt的步骤。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">- name:</span> <span class="string">setupQt</span></span><br><span class="line"><span class="attr">  if:</span> <span class="string">steps.WindowsCacheQt.outputs.cache-hit</span> <span class="string">==</span> <span class="string">'true'</span></span><br><span class="line"><span class="attr">  shell:</span> <span class="string">pwsh</span></span><br><span class="line"><span class="attr">  env:</span></span><br><span class="line"><span class="attr">    QtPath:</span> <span class="string">../Qt/$&#123;&#123;matrix.qt_ver&#125;&#125;/$&#123;&#123;matrix.qt_arch_install&#125;&#125;</span></span><br><span class="line"><span class="attr">  run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    $qt_Path=$&#123;env:QtPath&#125;</span></span><br><span class="line"><span class="string">    echo "::set-env name=Qt5_Dir::$qt_Path"</span></span><br><span class="line"><span class="string">    echo "::add-path::$qt_Path/bin"</span></span><br></pre></td></tr></table></figure>
+
+<p>steps.WindowsCacheQt.outputs.cache-hit == ‘true’</p>
+<p>是缓存模板的输出值，可以作为后续步骤的条件判断。</p>
+<h3 id="最终配置"><a href="#最终配置" class="headerlink" title="最终配置"></a>最终配置</h3><p>写个伪配置，简单示例一下缓存流程</p>
+<p>steps:</p>
+<ul>
+<li>cache</li>
+<li>setupQt<br>if: cache-hit == ‘true’</li>
+<li>installQt<br>if: cache-hit = ‘false’</li>
+</ul>
+<p>实际配置</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Windows</span></span><br><span class="line"><span class="attr">on:</span> </span><br><span class="line">  <span class="comment"># push代码时触发workflow</span></span><br><span class="line"><span class="attr">  push:</span></span><br><span class="line">    <span class="comment"># 忽略README.md</span></span><br><span class="line"><span class="attr">    paths-ignore:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">'README.md'</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">'LICENSE'</span></span><br><span class="line">  <span class="comment"># pull_request时触发workflow</span></span><br><span class="line"><span class="attr">  pull_request:</span></span><br><span class="line">    <span class="comment"># 忽略README.md</span></span><br><span class="line"><span class="attr">    paths-ignore:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">'README.md'</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">'LICENSE'</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">  build:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">Build</span></span><br><span class="line">    <span class="comment"># 运行平台， windows-latest目前是windows server 2019</span></span><br><span class="line"><span class="attr">    runs-on:</span> <span class="string">windows-latest</span></span><br><span class="line"><span class="attr">    strategy:</span></span><br><span class="line">      <span class="comment"># 矩阵配置</span></span><br><span class="line"><span class="attr">      matrix:</span></span><br><span class="line"><span class="attr">        qt_ver:</span> <span class="string">[5.12.6]</span></span><br><span class="line"><span class="attr">        qt_target:</span> <span class="string">[desktop]</span></span><br><span class="line">        <span class="comment"># mingw用不了</span></span><br><span class="line">        <span class="comment"># qt_arch: [win64_msvc2017_64, win32_msvc2017, win32_mingw53,win32_mingw73]</span></span><br><span class="line"><span class="attr">        qt_arch:</span> <span class="string">[win64_msvc2017_64,</span> <span class="string">win32_msvc2017]</span></span><br><span class="line">        <span class="comment"># 额外设置msvc_arch</span></span><br><span class="line"><span class="attr">        include:</span></span><br><span class="line"><span class="attr">          - qt_arch:</span> <span class="string">win64_msvc2017_64</span></span><br><span class="line"><span class="attr">            msvc_arch:</span> <span class="string">x64</span></span><br><span class="line"><span class="attr">            qt_arch_install:</span> <span class="string">msvc2017_64</span></span><br><span class="line"><span class="attr">          - qt_arch:</span> <span class="string">win32_msvc2017</span></span><br><span class="line"><span class="attr">            msvc_arch:</span> <span class="string">x86</span></span><br><span class="line"><span class="attr">            qt_arch_install:</span> <span class="string">msvc2017</span></span><br><span class="line"><span class="attr">    env:</span></span><br><span class="line"><span class="attr">      targetName:</span> <span class="string">HelloActions-Qt.exe</span></span><br><span class="line">    <span class="comment"># 步骤</span></span><br><span class="line"><span class="attr">    steps:</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">cacheQt</span></span><br><span class="line"><span class="attr">        id:</span> <span class="string">WindowsCacheQt</span></span><br><span class="line"><span class="attr">        uses:</span> <span class="string">actions/cache@v1</span></span><br><span class="line"><span class="attr">        with:</span></span><br><span class="line"><span class="attr">          path:</span> <span class="string">../Qt/$&#123;&#123;matrix.qt_ver&#125;&#125;/$&#123;&#123;matrix.qt_arch_install&#125;&#125;</span></span><br><span class="line"><span class="attr">          key:</span> <span class="string">$&#123;&#123;</span> <span class="string">runner.os</span> <span class="string">&#125;&#125;-Qt/$&#123;&#123;matrix.qt_ver&#125;&#125;/$&#123;&#123;matrix.qt_arch&#125;&#125;</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">setupQt</span></span><br><span class="line"><span class="attr">        if:</span> <span class="string">steps.WindowsCacheQt.outputs.cache-hit</span> <span class="string">==</span> <span class="string">'true'</span></span><br><span class="line"><span class="attr">        shell:</span> <span class="string">pwsh</span></span><br><span class="line"><span class="attr">        env:</span></span><br><span class="line"><span class="attr">          QtPath:</span> <span class="string">../Qt/$&#123;&#123;matrix.qt_ver&#125;&#125;/$&#123;&#123;matrix.qt_arch_install&#125;&#125;</span></span><br><span class="line"><span class="attr">        run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          $qt_Path=$&#123;env:QtPath&#125;</span></span><br><span class="line"><span class="string">          echo "::set-env name=Qt5_Dir::$qt_Path"</span></span><br><span class="line"><span class="string">          echo "::add-path::$qt_Path/bin"          </span></span><br><span class="line"><span class="string">      # 安装Qt</span></span><br><span class="line"><span class="string"></span><span class="attr">      - name:</span> <span class="string">Install</span> <span class="string">Qt</span></span><br><span class="line"><span class="attr">        if:</span> <span class="string">steps.WindowsCacheQt.outputs.cache-hit</span> <span class="string">!=</span> <span class="string">'true'</span></span><br><span class="line">        <span class="comment"># 使用外部action。这个action专门用来安装Qt</span></span><br><span class="line"><span class="attr">        uses:</span> <span class="string">jurplel/install-qt-action@v2.0.0</span></span><br><span class="line"><span class="attr">        with:</span></span><br><span class="line">          <span class="comment"># Version of Qt to install</span></span><br><span class="line"><span class="attr">          version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.qt_ver</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="comment"># Target platform for build</span></span><br><span class="line"><span class="attr">          target:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.qt_target</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="comment"># Architecture for Windows/Android</span></span><br><span class="line"><span class="attr">          arch:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.qt_arch</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="comment"># 拉取代码</span></span><br><span class="line"><span class="attr">      - uses:</span> <span class="string">actions/checkout@v1</span></span><br><span class="line"><span class="attr">        with:</span></span><br><span class="line"><span class="attr">          fetch-depth:</span> <span class="number">1</span></span><br><span class="line">      <span class="comment"># 编译msvc</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">build-msvc</span></span><br><span class="line"><span class="attr">        shell:</span> <span class="string">cmd</span></span><br><span class="line"><span class="attr">        env:</span></span><br><span class="line"><span class="attr">          vc_arch:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.msvc_arch</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">        run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%</span></span><br><span class="line"><span class="string">          qmake</span></span><br><span class="line"><span class="string">          nmake</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019/12/08/%E7%8E%A9%E8%BD%ACQt(13)-%E5%AE%89%E5%8D%935.12.4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="pre-post btn btn-default" title='玩转Qt(13)-安卓5.12.4环境搭建'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(13)-安卓5.12.4环境搭建</span>
+    </a>
+    
+    
+    <a href="/2019/12/03/%E7%8E%A9%E8%BD%ACQt(11)-github-Actions%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E8%A1%8C/" class="next-post btn btn-default" title='玩转Qt(11)-github-Actions自动化发行'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(11)-github-Actions自动化发行</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存actions模板"><span class="toc-text">缓存actions模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存文档"><span class="toc-text">缓存文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存大小限制"><span class="toc-text">缓存大小限制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存运作流程"><span class="toc-text">缓存运作流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt项目的缓存优化"><span class="toc-text">Qt项目的缓存优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#无缓存的配置"><span class="toc-text">无缓存的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加缓存"><span class="toc-text">加缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量还原"><span class="toc-text">环境变量还原</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最终配置"><span class="toc-text">最终配置</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

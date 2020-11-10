@@ -1,0 +1,589 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,Qt实用技能" />
+
+
+<meta name="description" content="
+前言
+简介
+Qt与Web嵌套
+MiniBrowser
+半透明测试
+渲染原理
+小结
+
+
+Qt与Web分离
+Qt小车
+原版小车
+改进小车
+
+
+必要的知识
+WebSocket和 QWebSocket..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转Qt(15)-操控Web小车案例 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转Qt(15)-操控Web小车案例">
+            
+            玩转Qt(15)-操控Web小车案例
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQt/">玩转Qt</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/03/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#简介">简介</a></li>
+<li><a href="#qt与web嵌套">Qt与Web嵌套</a><ul>
+<li><a href="#minibrowser">MiniBrowser</a></li>
+<li><a href="#半透明测试">半透明测试</a></li>
+<li><a href="#渲染原理">渲染原理</a></li>
+<li><a href="#小结">小结</a></li>
+</ul>
+</li>
+<li><a href="#qt与web分离">Qt与Web分离</a><ul>
+<li><a href="#qt小车">Qt小车</a><ul>
+<li><a href="#原版小车">原版小车</a></li>
+<li><a href="#改进小车">改进小车</a></li>
+</ul>
+</li>
+<li><a href="#必要的知识">必要的知识</a><ul>
+<li><a href="#websocket和-qwebsocket">WebSocket和 QWebSocket</a></li>
+<li><a href="#webchannel">WebChannel</a></li>
+<li><a href="#qt启动系统浏览器">Qt启动系统浏览器</a><ul>
+<li><a href="#qt的openurl">Qt的OpenUrl</a></li>
+<li><a href="#c-net的-processstart">C# .net的 Process::Start</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#web控制端">Web控制端</a><ul>
+<li><a href="#目录结构">目录结构</a></li>
+<li><a href="#html">Html</a></li>
+<li><a href="#typescript">TypeScript</a><ul>
+<li><a href="#typescript中的qobject">TypeScript中的QObject</a></li>
+<li><a href="#typescript中连接websocket">TypeScript中连接websocket</a></li>
+<li><a href="#typescript中的qwebchannel">TypeScript中的QWebChannel</a><ul>
+<li><a href="#typescript中使用javascript">TypeScript中使用javaScript</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#改进qwebchanneljs以支持await">改进qwebchannel.js以支持await</a></li>
+<li><a href="#qobject-to-typescript">QObject to Typescript</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这次讨论Qt与Web混合开发相关技术。</p>
+<p>这类技术存在适用场景，例如：Qt项目使用Web大量现成的组件/方案做功能扩展，</p>
+<p>Qt项目中性能无关/频繁更新迭代的页面用html单独实现，Qt项目提供Web形式的SDK给</p>
+<p>用户做二次开发等等，或者是Web开发人员齐全而Qt/C++人手不足，此类非技术问题，</p>
+<p>都可以使用Qt + Web混合开发。</p>
+<p>(不适用的请忽略本文)</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>上次的文章《Qt与Web混合开发》，讨论了Qt与Web混合开发相关技术。</p>
+<p>这次通过一个web控制小车的案例，继续讨论相关技术。</p>
+<p>本文会先介绍Qt与Web嵌套使用,再介绍Qt与Web分开使用，之后着重讨论分开使用</p>
+<p>的一些实现细节，特别是WebChannel通信、WebChannel在Web/typescript中的使用。</p>
+<h1 id="Qt与Web嵌套"><a href="#Qt与Web嵌套" class="headerlink" title="Qt与Web嵌套"></a>Qt与Web嵌套</h1><h2 id="MiniBrowser"><a href="#MiniBrowser" class="headerlink" title="MiniBrowser"></a>MiniBrowser</h2><p>这里以Qt官方的例子MiniBrowser来说明吧。</p>
+<p>打开方式如下：</p>
+<p><img src="/images/Web2/example.png" alt=""></p>
+<p>运行效果如下：</p>
+<p><img src="/images/Web2/minibowser0.png" alt=""></p>
+<p>这个例子是在Qml中嵌套了WebView。</p>
+<h2 id="半透明测试"><a href="#半透明测试" class="headerlink" title="半透明测试"></a>半透明测试</h2><p>涛哥做了一个简单的半透明测试。</p>
+<p>增加了两个半透明的小方块，蓝色的在WebView上面，红色的在WebView下面。</p>
+<p>运行效果也是正确的:</p>
+<p><img src="/images/Web2/minibowser.png" alt=""></p>
+<p>代码是这样的：</p>
+<p><img src="/images/Web2/code1.png" alt=""></p>
+<p>红色框中是我增加的代码。</p>
+<p>为什么要做半透明测试呢？根据以往的经验,不同渲染方式的两种窗口/组件嵌套在一起，总会出现透明失效之类的问题，例如 qml与Widget嵌套。</p>
+<h2 id="渲染原理"><a href="#渲染原理" class="headerlink" title="渲染原理"></a>渲染原理</h2><p>涛哥翻了一下Qt源码，了解到渲染的实现方式，Windows平台大致如下：</p>
+<p>chromium在单独的进程处理html渲染，并将渲染结果存储在共享内存中；主窗口在需要重绘的时候，从共享内存中获取内容并渲染。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这里的WebView内部封装好了WebEngine，其本身也是一个Item，就和普通的Qml一样，属性绑定、js function都可以正常使用，暂时不深入讨论了。</p>
+<h1 id="Qt与Web分离"><a href="#Qt与Web分离" class="headerlink" title="Qt与Web分离"></a>Qt与Web分离</h1><p>Qt与Web分离，就是字面意思，Web在单独的浏览器或者App中运行，不和Qt堆在一起。两者通过socket进行通信。</p>
+<p>这里用我自己做的例子来说明吧。</p>
+<p>先看看效果：</p>
+<p><img src="/images/Web2/WebChannel.gif" alt=""></p>
+<p>左边是Qt实现的一个简易小车，可以前进和转向。右边是Html5实现的控制端，控制左边的小车。</p>
+<p>源码在github上: <a href="https://github.com/jaredtao/QtWeb" target="_blank" rel="noopener">https://github.com/jaredtao/QtWeb</a></p>
+<h2 id="Qt小车"><a href="#Qt小车" class="headerlink" title="Qt小车"></a>Qt小车</h2><h3 id="原版小车"><a href="#原版小车" class="headerlink" title="原版小车"></a>原版小车</h3><p>小车来自Qt的D-Bus Remote Controller 例子</p>
+<p><img src="/images/Web2/dbus.png" alt=""></p>
+<p>原版的例子，实现了通过QDBus 跨进程 控制小车。</p>
+<p>(吐槽：这是一个古老的例子,使用了GraphicsView 和QDBus)</p>
+<p>(知识拓展1： DBus是unix系统特有的一种进程间通信机制，使用有些复杂。Qt对DBus机制进行了封装/简化，即QDBus模块，</p>
+<p>通过xml文件的配置后，把DBus的使用转换成了信号-槽的形式。类似于现在的Qt Remote Objects)</p>
+<p>(知识拓展2： Windows本身不支持DBus，网上有socket模拟DBus的方案。参考: <a href="https://www.freedesktop.org/wiki/Software/dbus/" target="_blank" rel="noopener">https://www.freedesktop.org/wiki/Software/dbus/</a>)</p>
+<h3 id="改进小车"><a href="#改进小车" class="headerlink" title="改进小车"></a>改进小车</h3><p>我做了一些修改，主要如下：</p>
+<ul>
+<li>去掉了DBus</li>
+<li>增加控制按钮</li>
+<li>增加WebChannel</li>
+<li>修改Car的实现，导出一些属性和函数。</li>
+<li>注册Car到WebChannel</li>
+</ul>
+<p>这里贴一些关键代码</p>
+<p>Car的头文件：</p>
+<p><img src="/images/Web2/car.h.png" alt=""></p>
+<p>其中要说明的是：</p>
+<p>  speed和angle属性具备  读、写、change信号。</p>
+<p>  还有加速、减速、左转、右转四个公开的槽函数。</p>
+<h2 id="必要的知识"><a href="#必要的知识" class="headerlink" title="必要的知识"></a>必要的知识</h2><h3 id="WebSocket和-QWebSocket"><a href="#WebSocket和-QWebSocket" class="headerlink" title="WebSocket和 QWebSocket"></a>WebSocket和 QWebSocket</h3><p>WebSocket 是 HTML5 开始提供的一种在单个 TCP 连接上进行全双工通讯的协议。</p>
+<p>WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p>
+<p>Qt为我们封装好了WebSocket，即QWebSocket和QWebSocketServer，简单易用。</p>
+<p>如果你了解socket编程，就看作TCP好了；如果不了解，请先去补充一下知识吧。</p>
+<h3 id="WebChannel"><a href="#WebChannel" class="headerlink" title="WebChannel"></a>WebChannel</h3><p>按涛哥的理解，WebChannel是在socket上建立的一种通信协议，这个协议的作用是把QObject暴露给远端的HTML。</p>
+<p>大致使用流程：</p>
+<ol>
+<li><p>Qt程序中，要暴露的QObject全部注册到WebChannel。</p>
+</li>
+<li><p>Qt程序中，启动一个WebSocketServer，等待Html的连接。</p>
+</li>
+<li><p>Html加载好qwebchannel.js文件, 然后去连接WebSocket。</p>
+</li>
+<li><p>连接建立以后，Qt程序中，由WebChannel接手这个WebSocket，按协议将QObject的各种“元数据”传输给远端Html。</p>
+</li>
+<li><p>Html端，qwebchannel.js处理WebSocket收到的各种“元数据”，用js的Object 动态创建出对应的QObject。</p>
+<p>到这里两边算是做好了准备，可以互相调用了。</p>
+<p>Qt端QObject数据变化只要发出信号，就会由WebChannel自动通知Web端；</p>
+<p>Web端可以主动调用QObject的public的 invok函数、槽函数，以及读、写属性。</p>
+</li>
+</ol>
+<h3 id="Qt启动系统浏览器"><a href="#Qt启动系统浏览器" class="headerlink" title="Qt启动系统浏览器"></a>Qt启动系统浏览器</h3><p>在使用WebChannel的时候，Qt端建立了WebSocketServer，之后要把server的路径(例如：ws://127.0.0.1:12345)告诉Html。</p>
+<p>一般就是在打开Html的时候带上Query参数，例如： F:\QtWeb\index.html?webChannelBaseUrl=ws://127.0.0.1:12345</p>
+<h4 id="Qt的OpenUrl"><a href="#Qt的OpenUrl" class="headerlink" title="Qt的OpenUrl"></a>Qt的OpenUrl</h4><p>Qml中有 Qt.openUrlExternally, C++ 中有 QDesktopServices::openUrl，本质一样， 都可以打开一个本地的html网页。</p>
+<p>其在Windows平台的底层实现是Win32 API。这里有个Win32 API的缺陷，传Query参数会被丢掉。</p>
+<h4 id="C-net的-Process-Start"><a href="#C-net的-Process-Start" class="headerlink" title="C# .net的 Process::Start"></a>C# .net的 Process::Start</h4><p>涛哥找到了替代的方案:</p>
+<p> .net framework / .net core有个启动进程的函数： System.Diagnostics.Process::Start, 可以调用浏览器并传query参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;C# 启动chrome</span><br><span class="line">System.Diagnostics.Process.Start(&#39;chrome&#39;, &#39;F:\QtWeb\index.html?webChannelBaseUrl&#x3D;ws:&#x2F;&#x2F;127.0.0.1:12345&#39;);</span><br><span class="line">&#x2F;&#x2F;C# 启动firefox</span><br><span class="line">System.Diagnostics.Process.Start(&#39;firefox&#39;, &#39;F:\QtWeb\index.html?webChannelBaseUrl&#x3D;ws:&#x2F;&#x2F;127.0.0.1:12345&#39;);</span><br><span class="line">&#x2F;&#x2F;C# 启动IE</span><br><span class="line">System.Diagnostics.Process.Start(&#39;IExplore&#39;, &#39;F:\QtWeb\index.html?webChannelBaseUrl&#x3D;ws:&#x2F;&#x2F;127.0.0.1:12345&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>Qt中直接写C#当然不太好，不过呢，Win7/Win10 系统都带有Powershell，而powershell依赖于.net framework, 我们可以调用powershell来间接使用.net framework。</p>
+<p>所以有了下面的代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">QString psCmd = QString(<span class="string">"powershell -noprofile -command \"[void][System.Diagnostics.Process]::Start('%1', '%2')\""</span>).arg(browser).arg(url.toString());</span><br><span class="line"><span class="keyword">bool</span> ok = QProcess::startDetached(psCmd);</span><br><span class="line">qWarning() &lt;&lt; psCmd;</span><br><span class="line"><span class="keyword">if</span> (!ok) &#123;</span><br><span class="line">    qWarning() &lt;&lt; <span class="string">"failed"</span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>结果完美运行。</p>
+<h2 id="Web控制端"><a href="#Web控制端" class="headerlink" title="Web控制端"></a>Web控制端</h2><h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>Web端就按照Web常规流程开发。</p>
+<p>Web部分的源码也在前文提到的github仓库，子路径是QtWeb\WebChannelCar\Web</p>
+<p>如下是Web部分的目录结构：</p>
+<p><img src="/images/Web2/web.png" alt=""></p>
+<p>脚本用typescript，包管理用npm，打包用webpack，编辑器用vs code, 都中规中矩。</p>
+<p>内容比较简单，暂时不需要前端框架，手(复)写(制)的html和css。</p>
+<h3 id="Html"><a href="#Html" class="headerlink" title="Html"></a>Html</h3><p>html部分比较简单</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">//index.html</span><br><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; chartset=utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"../style/style.css"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"../style/layout.css"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"up"</span> <span class="attr">class</span>=<span class="string">"green button"</span>&gt;</span>加速<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"down"</span> <span class="attr">class</span>=<span class="string">"red button"</span>&gt;</span>减速<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"left"</span> <span class="attr">class</span>=<span class="string">"blue button"</span>&gt;</span>左转<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"right"</span> <span class="attr">class</span>=<span class="string">"blue button"</span>&gt;</span>右转<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>=<span class="string">"img"</span> <span class="attr">src</span>=<span class="string">"../img/disconnected.svg"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span>速度: <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span> <span class="attr">id</span>=<span class="string">"speed"</span>&gt;</span>0<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span>角度: <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span> <span class="attr">id</span>=<span class="string">"angle"</span>&gt;</span>0<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../out/main.js"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>样式和布局全靠css,这里就不贴了。</p>
+<h3 id="TypeScript"><a href="#TypeScript" class="headerlink" title="TypeScript"></a>TypeScript</h3><p>脚本部分需要细说了。</p>
+<p>src文件夹为全部脚本，目录结构如下：</p>
+<p><img src="/images/Web2/src.png" alt=""></p>
+<h4 id="TypeScript中的QObject"><a href="#TypeScript中的QObject" class="headerlink" title="TypeScript中的QObject"></a>TypeScript中的QObject</h4><p>从main开始, 加点注释：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.ts</span></span><br><span class="line"><span class="keyword">import</span> WebChannelCore <span class="keyword">from</span> <span class="string">"./webchannelCore"</span>;</span><br><span class="line"><span class="comment">//window加载时回调，入口</span></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//初始化WebChannel，传参为两个回调，分别对应WebChannel建立连接和连接断开。</span></span><br><span class="line">    WebChannelCore.initialize(onInit, onUninit);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//WebChannel建立连接的处理</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onInit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//换图标</span></span><br><span class="line">    (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"img"</span>).src = <span class="string">"../img/connected.svg"</span>;</span><br><span class="line">    <span class="comment">//获取QObject对象</span></span><br><span class="line">    <span class="keyword">let</span> car = WebChannelCore.SDK.car;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//取dom树上的组件</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> upBtn = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"up"</span>);</span><br><span class="line">    <span class="keyword">let</span> downBtn = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"down"</span>);</span><br><span class="line">    <span class="keyword">let</span> leftBtn = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"left"</span>);</span><br><span class="line">    <span class="keyword">let</span> rightBtn = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"right"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> speedLabel = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"speed"</span>);</span><br><span class="line">    <span class="keyword">let</span> angleLabel = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"angle"</span>);</span><br><span class="line">    <span class="comment">//绑定按钮点击事件</span></span><br><span class="line">    upBtn.onclick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">//调用QObject的接口</span></span><br><span class="line">        car.accelerate();</span><br><span class="line">    &#125;</span><br><span class="line">    downBtn.onclick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        car.decelerate();</span><br><span class="line">    &#125;</span><br><span class="line">    leftBtn.onclick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        car.turnLeft();</span><br><span class="line">    &#125;</span><br><span class="line">    rightBtn.onclick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        car.turnRight();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//QObject的信号连接到js 回调</span></span><br><span class="line">    car.speedChanged.connect(onSpeedChanged);</span><br><span class="line">    car.angleChanged.connect(onAngleChanged);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//WebChannel断开连接的处理</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onUninit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//换图标</span></span><br><span class="line">    (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"img"</span>).src = <span class="string">"../img/disconnected.svg"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//异步更新 speed</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">onSpeedChanged</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> speedLabel = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"speed"</span>);</span><br><span class="line">    <span class="keyword">let</span> car = WebChannelCore.SDK.car;</span><br><span class="line">    <span class="comment">//获取speed，异步等待。</span></span><br><span class="line">    <span class="comment">//注意这里改造过qwebchannel.js，才能使用await。</span></span><br><span class="line">    speedLabel.textContent = <span class="keyword">await</span> car.getSpeed();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//异步更新 angle</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">onAngleChanged</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> angleLabel = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"angle"</span>);</span><br><span class="line">    <span class="keyword">let</span> car = WebChannelCore.SDK.car;</span><br><span class="line">    <span class="comment">//获取angle，异步等待。</span></span><br><span class="line">    <span class="comment">//注意这里改造过qwebchannel.js，才能使用await。</span></span><br><span class="line">    angleLabel.textContent = <span class="keyword">await</span> car.getAngle();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到我们从WebChannelCore.SDK 中获取了一个car对象，之后就当作QObject来用了，包括调用它的函数、连接change信号、访问属性等。</p>
+<p>这一切都得益于WebSocket/WebChannel.</p>
+<h4 id="TypeScript中连接websocket"><a href="#TypeScript中连接websocket" class="headerlink" title="TypeScript中连接websocket"></a>TypeScript中连接websocket</h4><p>接下来看一下WebChannelCore的实现</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//WebChannelCore.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; QWebChannel &#125; <span class="keyword">from</span> <span class="string">'./qwebchannel'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> callback = <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> WebChannelCore &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> SDK: <span class="built_in">any</span> = <span class="literal">undefined</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> connectedCb: callback;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> disconnectedCb: callback;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> socket: WebSocket;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//初始化函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> initialize(connectedCb: callback = <span class="function"><span class="params">()</span> =&gt;</span> &#123; &#125;, disconnectedCb: callback = <span class="function"><span class="params">()</span> =&gt;</span> &#123; &#125;) &#123;</span><br><span class="line">        <span class="keyword">if</span> (WebChannelCore.SDK != <span class="literal">undefined</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//保存两个回调</span></span><br><span class="line">        WebChannelCore.connectedCb = connectedCb;</span><br><span class="line">        WebChannelCore.disconnectedCb = disconnectedCb;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//调用link，并传入两个回调参数</span></span><br><span class="line">            WebChannelCore.link(</span><br><span class="line">                (socket) =&gt; &#123;</span><br><span class="line">                  <span class="comment">//socket连接成功时，创建QWebChannel</span></span><br><span class="line">                    QWebChannel(socket, <span class="function">(<span class="params">channel: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">                        WebChannelCore.SDK = channel.objects;</span><br><span class="line">                        WebChannelCore.connectedCb();</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">                , <span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">                  <span class="comment">//socket出错</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"socket error"</span>, error);</span><br><span class="line">                    WebChannelCore.disconnectedCb();</span><br><span class="line">                &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"socket exception:"</span>, error);</span><br><span class="line">            WebChannelCore.disconnectedCb();</span><br><span class="line">            WebChannelCore.SDK = <span class="literal">undefined</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> link(resolve: <span class="function">(<span class="params">socket: WebSocket</span>) =&gt;</span> <span class="built_in">void</span>, reject: <span class="function">(<span class="params">error: Event | CloseEvent</span>) =&gt;</span> <span class="built_in">void</span>) &#123;</span><br><span class="line">        <span class="comment">//获取Query参数中的websocket地址</span></span><br><span class="line">        <span class="keyword">let</span> baseUrl = <span class="string">"ws://localhost:12345"</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">window</span>.location.search != <span class="string">""</span>) &#123;</span><br><span class="line">            baseUrl = (<span class="regexp">/[?&amp;]webChannelBaseUrl=([A-Za-z0-9\-:/\.]+)/</span>.exec(<span class="built_in">window</span>.location.search)![<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Connectiong to WebSocket server at: "</span>, baseUrl);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//创建WebSocket</span></span><br><span class="line">        <span class="keyword">let</span> socket = <span class="keyword">new</span> WebSocket(baseUrl);</span><br><span class="line">        WebChannelCore.socket = socket;</span><br><span class="line">        <span class="comment">//WebSocket的事件处理</span></span><br><span class="line">        socket.onopen = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            resolve(socket);</span><br><span class="line">        &#125;;</span><br><span class="line">        socket.onerror = <span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">            reject(error);</span><br><span class="line">        &#125;;</span><br><span class="line">        socket.onclose = <span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">            reject(error);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">(<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).SDK = WebChannelCore.SDK;</span><br></pre></td></tr></table></figure>
+
+<p>这部分代码不复杂，主要是连接WebSocket，连接好之后创建一个QWebChannel。</p>
+<h4 id="TypeScript中的QWebChannel"><a href="#TypeScript中的QWebChannel" class="headerlink" title="TypeScript中的QWebChannel"></a>TypeScript中的QWebChannel</h4><p>观察仔细的同学会发现，src文件夹下面，没有叫‘qwebchannel.ts’的文件，而是‘qwebchannel.js’,和一个‘qwebchannel.d.ts’</p>
+<p>这涉及到另一个话题：</p>
+<h5 id="TypeScript中使用javaScript"><a href="#TypeScript中使用javaScript" class="headerlink" title="TypeScript中使用javaScript"></a>TypeScript中使用javaScript</h5><p>‘qwebchannel.js’是Qt官方提供的，在js中用足够了。</p>
+<p>而我们这里是用TypeScript，按照TypeScript的规则，直接引入js是不行的，需要一个声明文件 xxx.d.ts</p>
+<p>所以我们增加了一个qwebchannel.d.ts文件。 </p>
+<p>（熟悉C/C++的同学，可以把d.ts看作typescript的头文件）</p>
+<p>内容如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//qwebchannel.d.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">declare</span> <span class="function"><span class="keyword">function</span> <span class="title">QWebChannel</span>(<span class="params">transport: <span class="built_in">any</span>, initCallback: <span class="built_in">Function</span></span>): <span class="title">void</span></span>;</span><br></pre></td></tr></table></figure>
+<p>只是导出了一个函数。</p>
+<p>这个函数的实现在‘qwebchannel.js’中:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//qwebchannel.js</span></span><br><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> QWebChannelMessageTypes = &#123;</span><br><span class="line">    signal: <span class="number">1</span>,</span><br><span class="line">    propertyUpdate: <span class="number">2</span>,</span><br><span class="line">    init: <span class="number">3</span>,</span><br><span class="line">    idle: <span class="number">4</span>,</span><br><span class="line">    debug: <span class="number">5</span>,</span><br><span class="line">    invokeMethod: <span class="number">6</span>,</span><br><span class="line">    connectToSignal: <span class="number">7</span>,</span><br><span class="line">    disconnectFromSignal: <span class="number">8</span>,</span><br><span class="line">    setProperty: <span class="number">9</span>,</span><br><span class="line">    response: <span class="number">10</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> QWebChannel = <span class="function"><span class="keyword">function</span>(<span class="params">transport, initCallback</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> transport !== <span class="string">"object"</span> || <span class="keyword">typeof</span> transport.send !== <span class="string">"function"</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.error(<span class="string">"The QWebChannel expects a transport object with a send function and onmessage callback property."</span> +</span><br><span class="line">                      <span class="string">" Given is: transport: "</span> + <span class="keyword">typeof</span>(transport) + <span class="string">", transport.send: "</span> + <span class="keyword">typeof</span>(transport.send));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">QObject</span>(<span class="params">name, data, webChannel</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个代码比较长，就不全部贴出来了。主要实现了两个类，QWebChannel和QObject。</p>
+<p>QWebChannel就是用来接管websocket的，而QObject是用js Object模拟的 Qt的 QObject。</p>
+<p>这一块不细说了，感兴趣的同学可以自己去研究源码。</p>
+<h3 id="改进qwebchannel-js以支持await"><a href="#改进qwebchannel-js以支持await" class="headerlink" title="改进qwebchannel.js以支持await"></a>改进qwebchannel.js以支持await</h3><p>Qt默认的qwebchannel.js在实际使用过程中，有些不好的地方，就是函数的返回值不是直接返回，而是要在回调函数中获取。</p>
+<p>比如car.getAngle要这样用：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> angle = <span class="number">0</span>;</span><br><span class="line">car.getAngle(<span class="function">(<span class="params">value:<span class="built_in">number</span></span>)=&gt;</span> &#123;</span><br><span class="line">  angle = value;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>我们的实际项目中，有大量带返回值的api，这样的用法每次都嵌套一个回调函数，很不友好，容易造成回调地狱。</p>
+<p>我们同事的解决方案是，在typescript中把这些api再用Promise封装一层，外面用await调用。</p>
+<p>例如这样封装一层：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getAngle</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>)=&gt;</span>&#123;</span><br><span class="line">        car.getAngle(<span class="function">(<span class="params">value:<span class="built_in">number</span></span>)=&gt;</span> &#123;</span><br><span class="line">            resolve(value);</span><br><span class="line">        &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用和前面的代码一样：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//异步更新 angle</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">onAngleChanged</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> angleLabel = (<span class="built_in">window</span> <span class="keyword">as</span> <span class="built_in">any</span>).document.getElementById(<span class="string">"angle"</span>);</span><br><span class="line">    <span class="keyword">let</span> car = WebChannelCore.SDK.car;</span><br><span class="line">    <span class="comment">//获取angle，异步等待。</span></span><br><span class="line">    <span class="comment">//注意这里改造过qwebchannel.js，才能使用await。</span></span><br><span class="line">    angleLabel.textContent = <span class="keyword">await</span> car.getAngle();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种解决方案规避了回调地狱，但是工作量增加了。</p>
+<p>涛哥思考良久，稍微改造一下qwebchannel.js，自动把Promise加进去，也不需要再额外封装了。</p>
+<p>改动如下：</p>
+<p><img src="../images/Web2/webchannel.png" alt=""></p>
+<h3 id="QObject-to-Typescript"><a href="#QObject-to-Typescript" class="headerlink" title="QObject to Typescript"></a>QObject to Typescript</h3><p>我们在Qt 程序中写了QObject，然后暴露给了ts。</p>
+<p>在ts这边，一般也需要提供一个声明文件，明确有哪些api可用。</p>
+<p>例如我们的car声明：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//CarObject.ts</span></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">class</span> Car &#123;</span><br><span class="line">    <span class="keyword">get</span> speed():<span class="built_in">number</span>;</span><br><span class="line">    <span class="keyword">set</span> speed(value:<span class="built_in">number</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">get</span> angle():<span class="built_in">number</span>;</span><br><span class="line">    <span class="keyword">set</span> angle(vlaue:<span class="built_in">number</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> accelerate():<span class="built_in">void</span>;</span><br><span class="line">    <span class="keyword">public</span> decelerate():<span class="built_in">void</span>;</span><br><span class="line">    <span class="keyword">public</span> turnLeft():<span class="built_in">void</span>;</span><br><span class="line">    <span class="keyword">public</span> turnRight():<span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里涛哥写了一个小工具，能够解析Qt中的QObject，并生成对应的ts文件。</p>
+<p>当然还是实验阶段，有兴趣的也可以关注一下</p>
+<p><a href="https://github.com/jaredtao/QObject2TypeScript" target="_blank" rel="noopener">https://github.com/jaredtao/QObject2TypeScript</a></p>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/06/15/%E7%8E%A9%E8%BD%ACQml(17)-%E6%A0%91%E7%BB%84%E4%BB%B6%E7%9A%84%E5%AE%9A%E5%88%B6%20copy/" class="pre-post btn btn-default" title='玩转Qml(17)-树组件的定制'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转Qml(17)-树组件的定制</span>
+    </a>
+    
+    
+    <a href="/2020/03/04/%E7%8E%A9%E8%BD%ACQt(14)-Qt%E4%B8%8EWeb%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91/" class="next-post btn btn-default" title='玩转Qt(14)-Qt与Web混合开发'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(14)-Qt与Web混合开发</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Qt与Web嵌套"><span class="toc-text">Qt与Web嵌套</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MiniBrowser"><span class="toc-text">MiniBrowser</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#半透明测试"><span class="toc-text">半透明测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#渲染原理"><span class="toc-text">渲染原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Qt与Web分离"><span class="toc-text">Qt与Web分离</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt小车"><span class="toc-text">Qt小车</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原版小车"><span class="toc-text">原版小车</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改进小车"><span class="toc-text">改进小车</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#必要的知识"><span class="toc-text">必要的知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WebSocket和-QWebSocket"><span class="toc-text">WebSocket和 QWebSocket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebChannel"><span class="toc-text">WebChannel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Qt启动系统浏览器"><span class="toc-text">Qt启动系统浏览器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Qt的OpenUrl"><span class="toc-text">Qt的OpenUrl</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-net的-Process-Start"><span class="toc-text">C# .net的 Process::Start</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web控制端"><span class="toc-text">Web控制端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录结构"><span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Html"><span class="toc-text">Html</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TypeScript"><span class="toc-text">TypeScript</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TypeScript中的QObject"><span class="toc-text">TypeScript中的QObject</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TypeScript中连接websocket"><span class="toc-text">TypeScript中连接websocket</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TypeScript中的QWebChannel"><span class="toc-text">TypeScript中的QWebChannel</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#TypeScript中使用javaScript"><span class="toc-text">TypeScript中使用javaScript</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改进qwebchannel-js以支持await"><span class="toc-text">改进qwebchannel.js以支持await</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QObject-to-Typescript"><span class="toc-text">QObject to Typescript</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

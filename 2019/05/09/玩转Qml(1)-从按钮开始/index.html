@@ -1,0 +1,517 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,Qml,QtQuick,组件化编程" />
+
+
+<meta name="description" content="
+简介
+写作背景
+文章定位
+我眼中的QQuick
+Qt版本的选择
+默认按钮
+Qml版本混用
+按钮的本质
+按钮的演变
+组件化按钮
+组件化图片按钮
+组件化图文按钮
+
+简介本文是《玩转Qml》系列文章..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转Qml(1)-从按钮开始 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转Qml(1)-从按钮开始">
+            
+            玩转Qml(1)-从按钮开始
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a> <a class="tag-link" href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="tag">组件化编程</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/09</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+        <p class="fa fa-exclamation-triangle warning">
+            本文于<strong>
+                550</strong>
+            天之前发表，文中内容可能已经过时。
+        </p>
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#%E5%86%99%E4%BD%9C%E8%83%8C%E6%99%AF">写作背景</a></li>
+<li><a href="#%E6%96%87%E7%AB%A0%E5%AE%9A%E4%BD%8D">文章定位</a></li>
+<li><a href="#%E6%88%91%E7%9C%BC%E4%B8%AD%E7%9A%84qquick">我眼中的QQuick</a></li>
+<li><a href="#qt%E7%89%88%E6%9C%AC%E7%9A%84%E9%80%89%E6%8B%A9">Qt版本的选择</a></li>
+<li><a href="#%E9%BB%98%E8%AE%A4%E6%8C%89%E9%92%AE">默认按钮</a></li>
+<li><a href="#qml%E7%89%88%E6%9C%AC%E6%B7%B7%E7%94%A8">Qml版本混用</a></li>
+<li><a href="#%E6%8C%89%E9%92%AE%E7%9A%84%E6%9C%AC%E8%B4%A8">按钮的本质</a></li>
+<li><a href="#%E6%8C%89%E9%92%AE%E7%9A%84%E6%BC%94%E5%8F%98">按钮的演变</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E5%8C%96%E6%8C%89%E9%92%AE">组件化按钮</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E5%8C%96%E5%9B%BE%E7%89%87%E6%8C%89%E9%92%AE">组件化图片按钮</a></li>
+<li><a href="#%E7%BB%84%E4%BB%B6%E5%8C%96%E5%9B%BE%E6%96%87%E6%8C%89%E9%92%AE">组件化图文按钮</a></li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文是《玩转Qml》系列文章的第一篇，涛哥将教大家，如何在Qml中实现各种功能的按钮，</p>
+<p>同时也会教大家一些组件化编程的思想，如何将做好的功能封装成一个个组件，以便在工程中复用。</p>
+<h2 id="写作背景"><a href="#写作背景" class="headerlink" title="写作背景"></a>写作背景</h2><p>作者“武威的涛哥”，从2015年开始参加工作，便入手了Qml，参与了很多大大小小的Qml项目，</p>
+<p>至今已有五年多实战经验。</p>
+<p>2019年，涛哥决定把自己掌握的很多知识都总结整理出来，以《Qml组件化编程》系列文章的形式分享给广大Qml</p>
+<p>爱好者和开发者。</p>
+<p>涛哥会坚持高质量和深入浅出的原则，将文章写好，让支持涛哥的读者能够受益匪浅。</p>
+<p>系列文章中涉及的源代码，绝大部分涛哥都会在github上开源。</p>
+<p>如果觉得涛哥写的还不错，还请为涛哥打个赏，您的赞赏是涛哥持续创作的源泉。</p>
+<p>有时也难免会犯一些错误，希望看到的读者能够热心指出。有任何相关的问题，也欢迎与涛</p>
+<p>哥交流，向涛哥提出建议和意见。</p>
+<p>感谢大家！</p>
+<h2 id="文章定位"><a href="#文章定位" class="headerlink" title="文章定位"></a>文章定位</h2><p>涛哥写的是进阶教程，教大家如何从新手成长为高手，要理解文章中的内容，需要有一点儿Qml基础。</p>
+<p>关于基础教程，网络上有很多，涛哥推荐以下几个质量比较高的：</p>
+<ul>
+<li><p><a href="https://qmlbook.github.io/index.html" target="_blank" rel="noopener">QmlBook</a> </p>
+</li>
+<li><p><a href="https://cwc1987.gitbooks.io/qmlbook-in-chinese/content" target="_blank" rel="noopener">QmlBook中文翻译</a></p>
+</li>
+<li><p>豆子的系列文章《Qt学习之路》 76章开始 <a href="https://www.devbean.net/2012/08/qt-study-road-2-catelog/" target="_blank" rel="noopener">《Qt学习之路》</a></p>
+</li>
+</ul>
+<p>豆子的文章前75章关于Widget部分也很不错。</p>
+<ul>
+<li>还有一本安晓辉的书《QtQuick核心编程》</li>
+</ul>
+<h2 id="我眼中的QQuick"><a href="#我眼中的QQuick" class="headerlink" title="我眼中的QQuick"></a>我眼中的QQuick</h2><p>QQuick使用Qml来描述界面，Qml是可以与html5媲美的存在，其开发效率、舒适度、描述能力和定制化能力已经远远超</p>
+<p>过了QWidget，配合各种属性动画、粒子系统和Effects特效可以轻易做出各种酷炫、现代化的UI，不规则的图形可以通</p>
+<p>过Painter的方式实现，对于渲染有性能要求的地方可以通过集成OpenGL、Vulkan等图形API的方式来处理。</p>
+<p>Qml的特性是自由和灵活，这也是它的缺点，上手Qml需要一小段时间的适应，之后就会大量的造轮子，造的多了就轻车</p>
+<p>熟路了，常见的各种二维界面或效果基本上都能造出来。</p>
+<p>(当然Qml中也有些bug，需要一定的经验和技巧才能解决。话说回来，哪个框架没点Bug呢？)</p>
+<p>再久一点，可以考虑考虑Qml中的设计模式（或者叫惯用手法），如何抽象出通用Qml库、如何最大程度地复用Qml</p>
+<p>代码、如何让Qml代码更容易维护等。</p>
+<h2 id="Qt版本的选择"><a href="#Qt版本的选择" class="headerlink" title="Qt版本的选择"></a>Qt版本的选择</h2><p>Qt发布的版本有很多，一般稳妥的做法是使用LTS（长期支持版）版本的最后一个修正版本。</p>
+<p>当前已知的LTS最新修正版本是5.9.8和5.12.3 , 涛哥会优先使用这两个版本，后续有版本</p>
+<p>要求的地方，涛哥都会进行额外的说明。</p>
+<h2 id="默认按钮"><a href="#默认按钮" class="headerlink" title="默认按钮"></a>默认按钮</h2><p>开始进入正题了</p>
+<p>Qml中已经有了现成的按钮，在QtQuick.Controls模块中, 目前有两个版本:</p>
+<ul>
+<li>QtQuick.Controls 1.x </li>
+</ul>
+<p><img src="/images/Qml1/1.png" alt="预览"></p>
+<p>1.x的版本是通过style的方式进行定制</p>
+<p><img src="/images/Qml1/2.png" alt="预览"></p>
+<ul>
+<li>QtQuick.Controls 2.x</li>
+</ul>
+<p><img src="/images/Qml1/3.png" alt="预览"></p>
+<p>2.x的版本则是通过修改Control属性的方式进行定制</p>
+<p><img src="/images/Qml1/4.png" alt="预览"></p>
+<p>2.x版本的默认风格，还可以通过修改配置文件qtquickcontrols2.conf中的style来修改</p>
+<p>可参考<a href="https://doc.qt.io/qt-5/qtquickcontrols2-styles.html" target="_blank" rel="noopener">Qt在线文档- style配置</a></p>
+<h2 id="Qml版本混用"><a href="#Qml版本混用" class="headerlink" title="Qml版本混用"></a>Qml版本混用</h2><p>这里顺便说一个经常有人问到的问题: 2.x版本中能否混用1.x版本的控件?</p>
+<p>答案是可以。只需要使用别名机制即可。（如果你看过Qml的源代码，就能轻易发现这个用法）</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MixControls.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.0</span>                              </span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.0</span>                    <span class="comment">//导入Controls 2.0模块</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">1.4</span> <span class="keyword">as</span> QC14            <span class="comment">//导入Controls 1.4模块，取别名QC14</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls.Styles <span class="number">1.4</span> <span class="keyword">as</span> QCS14    <span class="comment">//导入Controls.Styles 1.4模块，取别名QCS14</span></span><br><span class="line"></span><br><span class="line"><span class="title">Rectange</span> &#123;</span><br><span class="line">    <span class="title">Button</span> &#123;        <span class="comment">//默认使用2.0的Button</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">QC14.Button</span> &#123;   <span class="comment">//通过别名使用1.4的Button</span></span><br><span class="line">        <span class="attribute">style</span>: <span class="title">QCS14.ButtonStyle</span> &#123;  <span class="comment">//通过别名使用1.4的style</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="按钮的本质"><a href="#按钮的本质" class="headerlink" title="按钮的本质"></a>按钮的本质</h2><p>默认的按钮，很多时候并不能达到想要的效果，比如圆角、贴图片、渐变色的按钮等等，还需要做很多的定制化工作</p>
+<p>其实按钮的本质，就是一个可以点击的区域(MouseArea)，附带颜色(Rectangle)、图片(Image)或文字(Text)。</p>
+<p>涛哥教大家造第一个轮子，一个带文字的按钮。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Taobutton.qml</span></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.0</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.0</span></span><br><span class="line"><span class="title">Item</span>  &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">800</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">600</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> color btnColor</span>: <span class="string">"#009688"</span></span><br><span class="line">    <span class="title">Rectangle</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">140</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">40</span></span><br><span class="line">        <span class="attribute">anchors.centerIn</span>: <span class="built_in">parent</span></span><br><span class="line"></span><br><span class="line">        <span class="attribute">color</span>: btnArea.pressed ? Qt.darker(btnColor, <span class="number">1.2</span>) : (btnArea.containsMouse ? Qt.lighter(btnColor, <span class="number">1.2</span>) : btnColor)</span><br><span class="line">        <span class="title">Text</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> btnText</span></span><br><span class="line">            <span class="attribute">anchors.centerIn</span>: <span class="built_in">parent</span></span><br><span class="line">            <span class="attribute">text</span>: qsTr(<span class="string">"我是一个按钮"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title">MouseArea</span> &#123;</span><br><span class="line">            <span class="attribute">id:</span><span class="string"> btnArea</span></span><br><span class="line">            <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">            <span class="attribute">hoverEnabled</span>: <span class="literal">true</span>  <span class="comment">//打开悬浮</span></span><br><span class="line">            <span class="attribute">onClicked</span>: &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(qsTr(<span class="string">"按钮被按了"</span>))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用qmlscene预览一下效果</p>
+<p><img src="/images/Qml1/5.gif" alt="预览"></p>
+<p>（gif录制工具不能鼠标悬浮，所以悬浮效果看不到，实际上是有悬浮效果的，可自行尝试）</p>
+<p>说明一下，qml中有个全局的对象Qt，它有一组调颜色的函数，Qt.lighter和Qt.darker，分别可以按系数来变浅和加深</p>
+<p>一个颜色值，这样只要有了一个颜色值，就能自动计算出深一点或者浅一点的颜色，可以减少很多配颜色的工作哦</p>
+<p>再看一下这个表达式，当鼠标按下去的时候，使用深一点的颜色，鼠标悬浮的时候使用浅一点的颜色，其它情况就用设定的颜色</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">color</span>: btnArea.pressed ? Qt.darker(btnColor, <span class="number">1.2</span>) : (btnArea.containsMouse ? Qt.lighter(btnColor, <span class="number">1.2</span>) : btnColor)</span><br></pre></td></tr></table></figure>
+<p>这里的1.2是试出来的值，也可以使用其它值。</p>
+<h2 id="按钮的演变"><a href="#按钮的演变" class="headerlink" title="按钮的演变"></a>按钮的演变</h2><p>如果要带个边框呢？只要给Rectange设置边框的宽度和颜色就行了</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">property</span><span class="string"> color btnBorderColor</span>: <span class="string">"orange"</span></span><br><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="attribute">border.width</span>: btnArea.containsMouse ? <span class="number">2</span> : <span class="number">0</span> <span class="comment">//鼠标悬浮时有宽度，才能看到边框</span></span><br><span class="line">    <span class="attribute">border.color</span>: btnBorderColor</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果要圆角呢? 只要给Rectangle 设置radius就行了</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Rectangle</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="attribute">radius</span>: <span class="number">5</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果要圆形呢？只要给Rectangle设置宽度和高度相等（正方形），radius是宽度的一半即可</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Rectangle</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">120</span></span><br><span class="line">    <span class="attribute">height</span>: width</span><br><span class="line">    <span class="attribute">radius</span>: width / <span class="number">2</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果要背景色做成渐变的呢？</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">Rectangle</span>&#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> gradientBtn</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">property</span><span class="string"> color btnColor</span>: containsMouse ? Qt.darker(<span class="string">"#009688"</span>) : <span class="string">"#009688"</span></span><br><span class="line">    <span class="attribute">color</span>: btnColor</span><br><span class="line">    <span class="attribute">gradient</span>: <span class="title">Gradient</span> &#123;</span><br><span class="line">        <span class="title">GradientStop</span> &#123; <span class="attribute">position</span>: <span class="number">0</span> ; <span class="attribute">color</span>: Qt.darker(gradientBtn.btnColor, <span class="number">1.2</span>) &#125;</span><br><span class="line">        <span class="title">GradientStop</span> &#123; <span class="attribute">position</span>: <span class="number">0.5</span> ; <span class="attribute">color</span>:  Qt.darker(gradientBtn.btnColor, <span class="number">1.4</span>)  &#125;</span><br><span class="line">        <span class="title">GradientStop</span> &#123; <span class="attribute">position</span>: <span class="number">1</span> ; <span class="attribute">color</span>:  Qt.darker(gradientBtn.btnColor, <span class="number">1.6</span>) &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>顺带提一下，5.12的Rectangle,有了新的渐变色 <a href="https://webgradients.com" target="_blank" rel="noopener">渐变色网站</a>,大约有180种</p>
+<p>可以直接在Qml中使用。</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">gradient</span>: Gradient.NightFade <span class="comment">//通过枚举使用</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">gradient</span>: <span class="string">"SugarLollipop"</span>       <span class="comment">//通过字符串名字使用</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Qml1/6.gif" alt="预览"></p>
+<p>（gif录制工具不能鼠标悬浮，所以悬浮效果看不到，实际上是有悬浮效果的，可自行尝试）</p>
+<h2 id="组件化按钮"><a href="#组件化按钮" class="headerlink" title="组件化按钮"></a>组件化按钮</h2><p>为了能够复用我们的按钮，需要将它做成一个组件。</p>
+<p>这里以文本按钮为例：</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TTextBtn.qml</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.9</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.0</span></span><br><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias textItem</span>: t      <span class="comment">//导出Text实例，方便外部直接修改</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias text</span>: t.text     <span class="comment">//导出文本</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias textColor</span>: t.color   <span class="comment">//导出文本颜色</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias containsMouse</span>: area.containsMouse    <span class="comment">//导出鼠标悬浮</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias containsPress</span>: area.containsPress    <span class="comment">//导出鼠标按下</span></span><br><span class="line">    <span class="keyword">signal</span><span class="string"> clicked</span>();               <span class="comment">//自定义点击信号</span></span><br><span class="line">    <span class="attribute">color</span>: <span class="string">"transparent"</span></span><br><span class="line">    <span class="title">Text</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> t</span></span><br><span class="line">        <span class="comment">//默认坐标居中</span></span><br><span class="line">        <span class="attribute">anchors.centerIn</span>: <span class="built_in">parent</span></span><br><span class="line">        <span class="comment">//默认文字对齐方式为水平和垂直居中</span></span><br><span class="line">        <span class="attribute">verticalAlignment</span>: Text.AlignVCenter</span><br><span class="line">        <span class="attribute">horizontalAlignment</span>: Text.AlignHCenter</span><br><span class="line">        <span class="comment">//默认宽度为parent的宽度，这样字太长超出范围时自动显示省略号</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="built_in">parent</span>.width</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">MouseArea</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> area</span></span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span>;</span><br><span class="line">        <span class="attribute">hoverEnabled</span>: <span class="built_in">parent</span>.enabled;</span><br><span class="line">        <span class="attribute">onClicked</span>: root.clicked();  <span class="comment">//点击时触发自定义点击信号</span></span><br><span class="line">        <span class="attribute">cursorShape</span>: Qt.PointingHandCursor  <span class="comment">//悬浮或点击时的鼠标样式</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Qml组件，先以最简单的方式理解，就是放在一个单独的Qml文件中，声明一些属性导出，由使用者去实例化并设置属性</p>
+<p>比如这样:</p>
+<p><img src="/images/Qml1/7.png" alt="预览"></p>
+<p>为了和标准的组件区分开，涛哥写的组件名字都以大写的T开头。</p>
+<p>组件化的好处，包括容易复用（如上图，多个实例都不一样）、可以统一修改（后面会有动态换皮肤的方案，依赖于组件化）、</p>
+<p>便于维护和扩展等。后续涛哥还会讲如何做多层抽象的组件、单例组件、如何引用插件中的组件等。</p>
+<h2 id="组件化图片按钮"><a href="#组件化图片按钮" class="headerlink" title="组件化图片按钮"></a>组件化图片按钮</h2><p>带图片的按钮，只需要把Rectangle换成Image即可。</p>
+<p>为了应对各种按钮状态，涛哥做了以下的属性扩展</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TImageBtn.qml</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.9</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.0</span></span><br><span class="line"><span class="title">Item</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url normalUrl      </span><span class="comment">//常规状态下的图片路径</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url hoveredUrl     </span><span class="comment">//悬浮</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url pressedUrl     </span><span class="comment">//按下</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url disabledUrl    </span><span class="comment">//禁用</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageItem</span>: img           <span class="comment">//直接别名导出Image实例，外面可以修改其任意属性</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageUrl</span>: img.source     <span class="comment">//别名导出图片路径</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageWidth</span>: img.width</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageHeight</span>: img.height</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageAnchors</span>: img.anchors</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias containsMouse</span>: area.containsMouse</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias containsPress</span>: area.containsPress</span><br><span class="line">    <span class="comment">//点击信号</span></span><br><span class="line">    <span class="keyword">signal</span><span class="string"> clicked</span>();</span><br><span class="line">    <span class="title">Image</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> img</span></span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">        <span class="comment">//默认按鼠标状态选取不同的图片</span></span><br><span class="line">        <span class="attribute">source</span>: root.enabled ? (containsPress ? <span class="attribute">pressedUrl</span> : (containsMouse ? <span class="attribute">hoveredUrl</span> : normalUrl)) : disabledUrl</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">MouseArea</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> area</span></span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span>;</span><br><span class="line">        <span class="attribute">hoverEnabled</span>: <span class="built_in">parent</span>.enabled;</span><br><span class="line">        <span class="attribute">onClicked</span>: root.clicked();</span><br><span class="line">        <span class="attribute">cursorShape</span>: Qt.PointingHandCursor</span><br><span class="line">        <span class="attribute">preventStealing</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="组件化图文按钮"><a href="#组件化图文按钮" class="headerlink" title="组件化图文按钮"></a>组件化图文按钮</h2><p>有了前面的文字按钮和图片按钮，我们可以做一个图片和文字都有的按钮。</p>
+<p>图片和文字同时显示，那么就有了布局问题。图片在左？还是在右？在上？还是在下？</p>
+<p>涛哥这里用了点技巧，封装了一个同时支持四种布局的图文按钮</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TImgTextBtn.qml</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.9</span></span><br><span class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">2.0</span></span><br><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    <span class="attribute">id:</span><span class="string"> root</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url normalUrl</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url hoveredUrl</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url pressedUrl</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> url disabledUrl</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageItem</span>: img</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageUrl</span>: img.source</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageWidth</span>: img.width</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias imageHeight</span>: img.height</span><br><span class="line"></span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias textItem</span>: t</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias text</span>: t.text</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias textColor</span>: t.color</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias containsMouse</span>: area.containsMouse</span><br><span class="line">    <span class="keyword">property</span><span class="string"> alias containsPress</span>: area.containsPress</span><br><span class="line">    <span class="keyword">signal</span><span class="string"> clicked</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//5.10以前的版本，Qml中没有枚举，用int属性代替枚举</span></span><br><span class="line">    <span class="keyword">property</span><span class="string"> int layoutType</span>: layoutImageLeft    <span class="comment">//布局类型,默认图片在左，外部可修改</span></span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int layoutImageLeft</span>: <span class="number">0</span>    <span class="comment">//图片在左 只读属性，代替枚举</span></span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int layoutImageRight</span>: <span class="number">1</span>   <span class="comment">//图片在右 只读属性，代替枚举</span></span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int layoutImageUp</span>: <span class="number">2</span>      <span class="comment">//图片在上 只读属性，代替枚举</span></span><br><span class="line">    readonly <span class="keyword">property</span><span class="string"> int layoutImageDown</span>: <span class="number">3</span>    <span class="comment">//图片在下 只读属性，代替枚举</span></span><br><span class="line">    <span class="attribute">color</span>: <span class="string">"transparent"</span></span><br><span class="line">    <span class="title">Image</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> img</span></span><br><span class="line">        <span class="attribute">source</span>: root.enabled ? (containsPress ? <span class="attribute">pressedUrl</span> : (containsMouse ? <span class="attribute">hoveredUrl</span> : normalUrl)) : disabledUrl</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">Text</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> t</span></span><br><span class="line">        <span class="comment">//默认文字对齐方式为水平和垂直居中</span></span><br><span class="line">        <span class="attribute">verticalAlignment</span>: Text.AlignVCenter</span><br><span class="line">        <span class="attribute">horizontalAlignment</span>: Text.AlignHCenter</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//按布局类型 处理布局</span></span><br><span class="line">    <span class="attribute">Component.onCompleted</span>: &#123;</span><br><span class="line">        <span class="keyword">switch</span> (layoutType) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="attribute">layoutImageLeft</span>:</span><br><span class="line">            img.anchors.verticalCenter = root.verticalCenter</span><br><span class="line">            t.anchors.verticalCenter = root.verticalCenter</span><br><span class="line">            img.anchors.left = root.left</span><br><span class="line">            t.anchors.left = img.right</span><br><span class="line">            t.anchors.leftMargin = <span class="number">6</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="attribute">layoutImageRight</span>:</span><br><span class="line">            img.anchors.verticalCenter = root.verticalCenter</span><br><span class="line">            t.anchors.verticalCenter = root.verticalCenter</span><br><span class="line">            t.anchors.left = root.left</span><br><span class="line">            img.anchors.left = t.right</span><br><span class="line">            img.anchors.leftMargin = <span class="number">6</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">case</span> <span class="attribute">layoutImageUp</span>:</span><br><span class="line">            img.anchors.horizontalCenter = root.horizontalCenter</span><br><span class="line">            t.anchors.horizontalCenter = root.horizontalCenter</span><br><span class="line">            img.anchors.top = root.top</span><br><span class="line">            t.anchors.top = img.bottom</span><br><span class="line">            t.anchors.topMargin = <span class="number">6</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">case</span> <span class="attribute">layoutImageDown</span>:</span><br><span class="line">            img.anchors.horizontalCenter = root.horizontalCenter</span><br><span class="line">            t.anchors.horizontalCenter = root.horizontalCenter</span><br><span class="line">            t.anchors.top = root.top</span><br><span class="line">            img.anchors.top = t.bottom</span><br><span class="line">            img.anchors.topMargin = <span class="number">6</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title">MouseArea</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> area</span></span><br><span class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span>;</span><br><span class="line">        <span class="attribute">hoverEnabled</span>: <span class="built_in">parent</span>.enabled;</span><br><span class="line">        <span class="attribute">onClicked</span>: root.clicked();</span><br><span class="line">        <span class="attribute">cursorShape</span>: Qt.PointingHandCursor</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，我们来看看效果吧</p>
+<p><img src="/images/Qml1/8.gif" alt="预览"></p>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019/05/11/%E7%8E%A9%E8%BD%ACQml(2)-%E5%8F%AF%E4%BB%A5%E6%8B%96%E5%8A%A8%E7%9A%84%E7%BB%84%E4%BB%B6/" class="pre-post btn btn-default" title='玩转Qml(2)-可以拖动的组件'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转Qml(2)-可以拖动的组件</span>
+    </a>
+    
+    
+    <a href="/2019/04/30/%E7%8E%A9%E8%BD%ACQt(2)-%E8%87%AA%E5%88%B6%E7%AE%80%E6%98%93%E5%A5%BD%E7%9C%8B%E7%9A%84%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" class="next-post btn btn-default" title='玩转Qt(2)-自制简易好看的日志系统'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qt(2)-自制简易好看的日志系统</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写作背景"><span class="toc-text">写作背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文章定位"><span class="toc-text">文章定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我眼中的QQuick"><span class="toc-text">我眼中的QQuick</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt版本的选择"><span class="toc-text">Qt版本的选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#默认按钮"><span class="toc-text">默认按钮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qml版本混用"><span class="toc-text">Qml版本混用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按钮的本质"><span class="toc-text">按钮的本质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#按钮的演变"><span class="toc-text">按钮的演变</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件化按钮"><span class="toc-text">组件化按钮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件化图片按钮"><span class="toc-text">组件化图片按钮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件化图文按钮"><span class="toc-text">组件化图文按钮</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>
