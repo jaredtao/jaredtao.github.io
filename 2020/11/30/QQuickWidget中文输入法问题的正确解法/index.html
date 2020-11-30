@@ -19,14 +19,19 @@
     <link rel="dns-prefetch" href="https://jaredtao.github.io">
     <!--SEO-->
 
-<meta name="keywords" content="C++ Qt Quick Qml" />
+<meta name="keywords" content="Qt,Qt实用技能" />
 
 
 <meta name="description" content="
-title: QQuickWidget中文输入法问题的正确解法photos: /img/avatar.jpgtags:
+QQuickWidget中文输入法问题的正确解法
+Qt的bug
+旧的解法
+正确的解法
 
-Qt
-Qt实用技能categories: 玩转Qtabbrlink: ..." />
+
+
+QQuickWidget中文输入法问题的正确解法本文分享特定问题的解法,用不到的可以忽略。
+Qt的b..." />
 
 
 <meta name="robots" content="all" />
@@ -169,13 +174,15 @@ Qt实用技能categories: 玩转Qtabbrlink: ..." />
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQt/">玩转Qt</a>
     </span>
     
     
     <span class="fa-wrap">
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/Qt%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" rel="tag">Qt实用技能</a>
             
         </span>
     </span>
@@ -199,12 +206,20 @@ Qt实用技能categories: 玩转Qtabbrlink: ..." />
         
     </div>
     
+<div id="post-gallery">
+    
+    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    
+</div>
+
     <div class="post-body post-content">
-        <hr>
-<p>title: QQuickWidget中文输入法问题的正确解法<br>photos: /img/avatar.jpg<br>tags:</p>
-<ul>
-<li>Qt</li>
-<li>Qt实用技能<br>categories: 玩转Qt<br>abbrlink: 39038<br>date: 2020-11-30 12:44:23</li>
+        <ul>
+<li><a href="#qquickwidget中文输入法问题的正确解法">QQuickWidget中文输入法问题的正确解法</a><ul>
+<li><a href="#qt的bug">Qt的bug</a></li>
+<li><a href="#旧的解法">旧的解法</a></li>
+<li><a href="#正确的解法">正确的解法</a></li>
+</ul>
+</li>
 </ul>
 <h1 id="QQuickWidget中文输入法问题的正确解法"><a href="#QQuickWidget中文输入法问题的正确解法" class="headerlink" title="QQuickWidget中文输入法问题的正确解法"></a>QQuickWidget中文输入法问题的正确解法</h1><p>本文分享特定问题的解法,用不到的可以忽略。</p>
 <h2 id="Qt的bug"><a href="#Qt的bug" class="headerlink" title="Qt的bug"></a>Qt的bug</h2><p>使用QQuickWidget的时候，遇到过这个问题：界面的TextInput 或者TextEdit, 鼠标点击聚焦后，切换为光标输入状态，此时切换系统中文输入法，会发现无法输入。</p>
