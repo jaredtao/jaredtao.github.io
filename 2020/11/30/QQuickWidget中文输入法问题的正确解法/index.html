@@ -19,13 +19,14 @@
     <link rel="dns-prefetch" href="https://jaredtao.github.io">
     <!--SEO-->
 
-<meta name="keywords" content="博客说明,大事记" />
+<meta name="keywords" content="C++ Qt Quick Qml" />
 
 
-<meta name="description" content="欢迎来到涛哥的博客。
-涛哥在这里主要发布技术相关的文章、教程，偶尔也会分享一些奇思妙想。 
-涛哥出生于甘肃-武威-凉州，属于西凉人士。
-目前在上海工作，从事Qt相关的软件开发，主要使用C++做为..." />
+<meta name="description" content="
+title: QQuickWidget中文输入法问题的正确解法photos: /img/avatar.jpgtags:
+
+Qt
+Qt实用技能categories: 玩转Qtabbrlink: ..." />
 
 
 <meta name="robots" content="all" />
@@ -36,7 +37,7 @@
 
 <title>
     
-    涛哥博客杂谈 |
+    QQuickWidget中文输入法问题的正确解法 |
     
     涛哥的博客
 </title>
@@ -159,24 +160,22 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="涛哥博客杂谈">
+        <h1 id="QQuickWidget中文输入法问题的正确解法">
             
-            涛哥博客杂谈
+            QQuickWidget中文输入法问题的正确解法
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/%E6%B6%9B%E5%93%A5%E7%9A%84%E5%8D%9A%E5%AE%A2/">涛哥的博客</a>
+        
     </span>
     
     
     <span class="fa-wrap">
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
-            
-            <a class="tag-link" href="/tags/%E5%8D%9A%E5%AE%A2%E8%AF%B4%E6%98%8E/" rel="tag">博客说明</a> <a class="tag-link" href="/tags/%E5%A4%A7%E4%BA%8B%E8%AE%B0/" rel="tag">大事记</a>
             
         </span>
     </span>
@@ -186,7 +185,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2019/04/29</span>
+            2020/11/30</span>
     </span>
     
     <span class="fa-wrap">
@@ -198,33 +197,31 @@
 </div>
         
         
-        <p class="fa fa-exclamation-triangle warning">
-            本文于<strong>
-                580</strong>
-            天之前发表，文中内容可能已经过时。
-        </p>
-        
     </div>
     
-<div id="post-gallery">
-    
-    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
-    
-</div>
-
     <div class="post-body post-content">
-        <p>欢迎来到涛哥的博客。</p>
-<p>涛哥在这里主要发布技术相关的文章、教程，偶尔也会分享一些奇思妙想。 </p>
-<p>涛哥出生于甘肃-武威-凉州，属于西凉人士。</p>
-<p>目前在上海工作，从事Qt相关的软件开发，主要使用C++做为开发工具，</p>
-<p>特别是Qt/Qml已经使用有五年多(偶尔也会使用C#、golang、js、java等)</p>
-<p>已经积攒了很多的经验，现在准备整理并分享出来，一方面是想构建自己的知识体系，</p>
-<p>另一方面也希望能帮助到其他需要的人。在这个过程中，涛哥会努力做到</p>
-<p>抽丝剥茧、深入浅出，揭露事物的本质。有时候也难免会犯一些错误，希望</p>
-<p>看到的读者能够热心指出。有任何相关的问题，也欢迎与涛哥</p>
-<p>交流，向涛哥提出建议和意见。</p>
-<h2 id="时间轴"><a href="#时间轴" class="headerlink" title="时间轴"></a>时间轴</h2><p>2019-4-29 涛哥博客正式开通</p>
+        <hr>
+<p>title: QQuickWidget中文输入法问题的正确解法<br>photos: /img/avatar.jpg<br>tags:</p>
+<ul>
+<li>Qt</li>
+<li>Qt实用技能<br>categories: 玩转Qt<br>abbrlink: 39038<br>date: 2020-11-30 12:44:23</li>
+</ul>
+<h1 id="QQuickWidget中文输入法问题的正确解法"><a href="#QQuickWidget中文输入法问题的正确解法" class="headerlink" title="QQuickWidget中文输入法问题的正确解法"></a>QQuickWidget中文输入法问题的正确解法</h1><p>本文分享特定问题的解法,用不到的可以忽略。</p>
+<h2 id="Qt的bug"><a href="#Qt的bug" class="headerlink" title="Qt的bug"></a>Qt的bug</h2><p>使用QQuickWidget的时候，遇到过这个问题：界面的TextInput 或者TextEdit, 鼠标点击聚焦后，切换为光标输入状态，此时切换系统中文输入法，会发现无法输入。</p>
+<p>(系统任务栏的输入法状态是正确的,界面上输入字符，直接显示英文，无法显示输入法的候选框)</p>
+<p>需要把界面切到其它软件，再切换回来，之后就能够输入了。</p>
+<p>可以参考Qt官方bug报告:</p>
+<p><a href="https://bugreports.qt.io/browse/QTBUG-61475" target="_blank" rel="noopener">https://bugreports.qt.io/browse/QTBUG-61475</a></p>
+<h2 id="旧的解法"><a href="#旧的解法" class="headerlink" title="旧的解法"></a>旧的解法</h2><p>这个Bug是2018年报告的，我们当时做项目，也被这个Bug坑到了。</p>
+<p>当时我给出了一个弱化版本的解法，原理是在第一次聚焦的时候，清理掉QQuickWidget的焦点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">QuickWidget::QuickWidget(QWidget *parent)</span><br><span class="line">    : QQuickWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    connect(quickWindow(), &amp;QQuickWindow::activeFocusItemChanged, <span class="keyword">this</span>, &amp;QuickWidget::onClearFocus);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> QuickWidget::onClearFocus()</span><br><span class="line">&#123;</span><br><span class="line">    QQuickItem *pItem = quickWindow()-&gt;activeFocusItem();</span><br><span class="line">    <span class="keyword">if</span> (pItem &amp;&amp; (pItem-&gt;inherits(<span class="string">"QQuickTextInput"</span>) || pItem-&gt;inherits(<span class="string">"QQuickTextField"</span>))) </span><br><span class="line">    &#123;</span><br><span class="line">        disconnect(quickWindow(), &amp;QQuickWindow::activeFocusItemChanged, <span class="keyword">this</span>, &amp;QuickWidget::onClearFocus);</span><br><span class="line">        QuickWidget::clearFocus();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>此方法勉强能用，一些细节上体验不太好。</p>
+<p>当时找不到更好的方法，就这样用着了。</p>
+<h2 id="正确的解法"><a href="#正确的解法" class="headerlink" title="正确的解法"></a>正确的解法</h2><p>2020年Qt官方终于派出了资深的专家，在Qt5.15.2中，彻底解决了这个问题。</p>
+<p>(看到有不少博客、论坛，还在流传我提供的旧版本，于心不忍)</p>
+<p>于是我从新版本里面，提炼出来了代码，给使用旧版本的同学解决此问题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">QuickWidget::QuickWidget(QWidget *parent)</span><br><span class="line">    : QQuickWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> QT_VERSION &lt; QT_VERSION_CHECK(5, 15, 2)</span></span><br><span class="line">    connect(quickWindow(), &amp;QQuickWindow::focusObjectChanged, <span class="keyword">this</span>, &amp;QuickWidget::propagateFocusObjectChanged);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> QT_VERSION &lt; QT_VERSION_CHECK(5, 15, 2)</span></span><br><span class="line"><span class="keyword">bool</span> QuickWidget::event(QEvent *e)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">switch</span> (e-&gt;type())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> QEvent::FocusAboutToChange:</span><br><span class="line">            <span class="keyword">return</span> QCoreApplication::sendEvent(quickWindow(), e);</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Super::event(e);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> QuickWidget::propagateFocusObjectChanged(QObject *focusObject)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (QApplication::focusObject() != <span class="keyword">this</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;window()-&gt;windowHandle()) &#123;</span><br><span class="line">        emit <span class="keyword">this</span>-&gt;window()-&gt;windowHandle()-&gt;focusObjectChanged(focusObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
     </div>
     
     <div class="reward" ontouchstart>
@@ -262,12 +259,12 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/2019/04/29/%E7%8E%A9%E8%BD%ACQt(1)-%E8%BE%93%E5%87%BA%E5%BD%A9%E8%89%B2log/" class="pre-post btn btn-default" title='玩转Qt(1)-输出彩色log'>
-        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
-        <span class="hidden-xs">
-            玩转Qt(1)-输出彩色log</span>
-    </a>
     
+    <a href="/2020/11/10/%E7%8E%A9%E8%BD%ACQml(18)-%E7%94%A8%E6%88%B7%E5%90%91%E5%AF%BC/" class="next-post btn btn-default" title='玩转Qml(18)-用户向导'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转Qml(18)-用户向导</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
     
 </div>
 
@@ -308,7 +305,7 @@ new Valine({
             文章目录
         </h3>
         
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#时间轴"><span class="toc-text">时间轴</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#QQuickWidget中文输入法问题的正确解法"><span class="toc-text">QQuickWidget中文输入法问题的正确解法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt的bug"><span class="toc-text">Qt的bug</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#旧的解法"><span class="toc-text">旧的解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正确的解法"><span class="toc-text">正确的解法</span></a></li></ol></li></ol>
         
     </div>
 </aside>
