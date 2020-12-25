@@ -218,7 +218,7 @@ Qml中切换语言
     
 <div id="post-gallery">
     
-    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    <img src="/images/Qml4/1.gif" alt="gallery-img" class="gallery">
     
 </div>
 
@@ -264,9 +264,9 @@ Qml中切换语言
 <p>涛哥对阿拉伯也不是很熟，就不深入研究了。)</p>
 <h2 id="源码中输出中文"><a href="#源码中输出中文" class="headerlink" title="源码中输出中文"></a>源码中输出中文</h2><p>先说一下源码中输出中文的问题。</p>
 <p>在文件本身的编码是utf-8的前提下，以下三种方式都可以直接输出中文。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qInfo() &lt;&lt; u8&quot;山有木兮木有枝，心悦君兮君不知。&quot;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qInfo() &lt;&lt; QStringLiteral(&quot;黄河远上白云间，一片孤城万仞山。&quot;);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qInfo() &lt;&lt; QString::fromLocal8Bit(&quot;人生若只如初见，何事秋风悲画扇。&quot;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qInfo() &lt;&lt; u8<span class="string">"山有木兮木有枝，心悦君兮君不知。"</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">qInfo</span>() &lt;&lt; <span class="title">QStringLiteral</span>(<span class="string">"黄河远上白云间，一片孤城万仞山。"</span>);</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">qInfo</span>() &lt;&lt; <span class="variable">QString</span>::<span class="title">fromLocal8Bit</span>(<span class="string">"人生若只如初见，何事秋风悲画扇。"</span>);</span></span><br></pre></td></tr></table></figure>
 
 <p>u8是c++11标准支持的字符串字面量写法，可以参考<a href="https://zh.cppreference.com/w/cpp/language/string_literal" target="_blank" rel="noopener">https://zh.cppreference.com/w/cpp/language/string_literal</a></p>
 <p>QStringLiteral是Qt特有的宏，用来在编译期生成字符串字面量，效果和u8类似。</p>

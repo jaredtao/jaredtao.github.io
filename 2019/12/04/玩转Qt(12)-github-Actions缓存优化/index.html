@@ -216,7 +216,7 @@ Qt项目的缓存优化
     
 <div id="post-gallery">
     
-    <img src="/img/avatar.jpg" alt="gallery-img" class="gallery">
+    <img src="/images/QtActions2/3.png" alt="gallery-img" class="gallery">
     
 </div>
 
@@ -247,7 +247,7 @@ Qt项目的缓存优化
 <p>下次启动时，根据key去查找。找到了就再按路径解压开。</p>
 <h3 id="缓存大小限制"><a href="#缓存大小限制" class="headerlink" title="缓存大小限制"></a>缓存大小限制</h3><p>注意缓存有大小限制。对于免费用户，单个包不能超过500MB，整个仓库的缓存不能超过2G。</p>
 <h3 id="缓存运作流程"><a href="#缓存运作流程" class="headerlink" title="缓存运作流程"></a>缓存运作流程</h3><p>一般我们在任务步骤中增加一个cache</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">steps:</span><br><span class="line">  ...</span><br><span class="line">  - use: actions&#x2F;cache@v1</span><br><span class="line">    with:</span><br><span class="line">      ...</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">steps</span>:</span><br><span class="line">  ...</span><br><span class="line">  - <span class="attribute">use</span>: actions/cache<span class="variable">@v1</span></span><br><span class="line">    <span class="attribute">with</span>:</span><br><span class="line">      ...</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
 
 <p>那么在这个地方，缓存执行的操作是restore。</p>
 <p>在steps的末尾，会自动增加一个PostCache，执行的操作是record。</p>
