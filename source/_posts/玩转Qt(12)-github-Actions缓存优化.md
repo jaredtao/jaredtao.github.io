@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(12)-github-Actions缓存优化
-photos: /img/avatar.jpg
+photos: /images/QtActions2/3.png
 tags:
   - Qt
   - 持续集成(CI)

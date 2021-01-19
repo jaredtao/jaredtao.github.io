@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(11)-github-Actions自动化发行
-photos: /img/avatar.jpg
+photos: /images/QtActions2/2.png
 tags:
   - Qt
   - 持续集成(CI)

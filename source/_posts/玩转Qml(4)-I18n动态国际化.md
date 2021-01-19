@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(4)-I18n动态国际化
-photos: /img/avatar.jpg
+photos: /images/Qml4/1.gif
 tags:
   - Qt
   - Qml

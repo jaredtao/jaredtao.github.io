@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(6)-进度条定制
-photos: /img/avatar.jpg
+photos: /images/Qml6/ProgressBar.gif
 tags:
   - Qt
   - Qml

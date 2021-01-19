@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(12)-再谈动态国际化
-photos: /img/avatar.jpg
+photos: /images/Qml12/1.gif
 tags:
   - Qt
   - Qml

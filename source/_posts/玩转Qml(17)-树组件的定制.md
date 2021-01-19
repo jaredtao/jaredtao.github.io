@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(17)-树组件的定制
-photos: /img/avatar.jpg
+photos: /images/Qml13/1.png
 tags:
   - Qt
   - Qml

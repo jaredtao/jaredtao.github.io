@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(9)-Model和View
-photos: /img/avatar.jpg
+photos: /images/Qml9/1.png
 tags:
   - Qt
   - Qml

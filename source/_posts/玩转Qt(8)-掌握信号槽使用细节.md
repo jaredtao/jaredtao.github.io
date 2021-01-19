@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(8)-掌握信号槽使用细节
-photos: /img/avatar.jpg
+photos: /images/Qt4/signals-slot.png
 tags:
   - Qt
   - 信号-槽

@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(2)-自制简易好看的日志系统
-photos: /img/avatar.jpg
+photos: /images/Logger/1.png
 tags:
   - Qt
   - Log

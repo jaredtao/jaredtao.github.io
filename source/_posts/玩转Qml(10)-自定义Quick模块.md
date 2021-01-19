@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(10)-自定义Quick模块
-photos: /img/avatar.jpg
+photos: /images/Qml10/1.gif
 tags:
   - Qt
   - Qml

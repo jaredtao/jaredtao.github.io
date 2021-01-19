@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(18)-用户向导
-photos: /img/avatar.jpg
+photos: /images/Qml18/wizard.gif
 tags:
   - Qt
   - Qml

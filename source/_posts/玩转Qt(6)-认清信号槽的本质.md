@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(6)-认清信号槽的本质
-photos: /img/avatar.jpg
+photos: /images/Qt4/1.jpg
 tags:
   - Qt
   - QtCreator

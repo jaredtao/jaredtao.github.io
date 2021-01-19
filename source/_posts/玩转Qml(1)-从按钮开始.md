@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(1)-从按钮开始
-photos: /img/avatar.jpg
+photos: /images/Qml1/6.gif
 tags:
   - Qt
   - Qml

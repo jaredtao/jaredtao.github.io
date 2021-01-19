@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(14)-Qt与Web混合开发
-photos: /img/avatar.jpg
+photos: /images/Web/1.png
 tags:
   - Qt
   - Qt实用技能

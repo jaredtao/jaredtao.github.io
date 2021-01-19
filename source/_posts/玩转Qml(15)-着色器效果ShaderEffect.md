@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(15)-着色器效果ShaderEffect
-photos: /img/avatar.jpg
+photos: /images/ShaderEffect/7.png
 tags:
   - Qt
   - Qml

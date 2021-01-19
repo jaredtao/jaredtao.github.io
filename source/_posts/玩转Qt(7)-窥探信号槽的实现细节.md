@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(7)-窥探信号槽的实现细节
-photos: /img/avatar.jpg
+photos: /images/Qt4/signals-slot.png
 tags:
   - Qt
   - 信号-槽

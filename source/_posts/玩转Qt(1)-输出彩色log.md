@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(1)-输出彩色log
-photos: /img/avatar.jpg
+photos: /images/ConsoleColor/Image1.png
 tags:
   - Qt
   - 彩色log

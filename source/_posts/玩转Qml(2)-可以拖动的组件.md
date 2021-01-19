@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(2)-可以拖动的组件
-photos: /img/avatar.jpg
+photos: /images/Qml2/5.gif
 tags:
   - Qt
   - Qml

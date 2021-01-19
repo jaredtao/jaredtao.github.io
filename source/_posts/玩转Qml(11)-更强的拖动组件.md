@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(11)-更强的拖动组件
-photos: /img/avatar.jpg
+photos: /images/Qml11/1.gif
 tags:
   - Qt
   - Qt实用技能

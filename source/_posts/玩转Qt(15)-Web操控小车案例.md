@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(15)-操控Web小车案例
-photos: /img/avatar.jpg
+photos: /images/Web2/WebChannel.gif
 tags:
   - Qt
   - Qt实用技能

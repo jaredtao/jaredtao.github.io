@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(7)-自绘组件
-photos: /img/avatar.jpg
+photos: /images/Qml7/4.gif
 tags:
   - Qt
   - Qml

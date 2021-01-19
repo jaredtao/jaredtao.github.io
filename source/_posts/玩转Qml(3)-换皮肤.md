@@ -1,6 +1,6 @@
 ---
 title: 玩转Qml(3)-换皮肤
-photos: /img/avatar.jpg
+photos: /images/Qml3/1.webp
 tags:
   - Qt
   - Qml

@@ -1,6 +1,6 @@
 ---
 title: 玩转Qt(5)-理解事件循环
-photos: /img/avatar.jpg
+photos: /images/Qt3/1.png
 tags:
   - Qt
   - Qt实用技能
