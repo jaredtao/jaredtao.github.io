@@ -210,7 +210,7 @@ Qt尝试根据平台及可能使用的图形驱动程序选择合适的渲染循
 
 以下是关于OpenGL环境下如何使用线程渲染循环的简单概述。除了OpenGL上下文的特定要求外，其它图形API的步骤也是相同的。
 
-![](images\QtQuick\threadRenderLoop.png)
+![](/images/QtQuick/threadRenderLoop.png)
 
 1. Qml场景中发生变化，触发调用`QQuickItem::update()`， 这可能是动画或者用户操作的结果。
    
@@ -289,7 +289,7 @@ Metal没有这样的限制。
 
 以下是非线程渲染循环中帧渲染序列的简化图示。
 
-![](images\QtQuick\non-threadRenderLoop.png)
+![](/images/QtQuick/non-threadRenderLoop.png)
 
 ### 使用QQuickRenderControl自定义渲染控制
 
