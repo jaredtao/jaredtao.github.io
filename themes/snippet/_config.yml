@@ -14,6 +14,9 @@ menu:
 - page: 玩转Qml
   url: /categories/玩转Qml/
   icon:
+- page: 玩转QtQuick
+  url: /categories/玩转QtQuick/
+  icon:  
 - page: 涛哥的博客
   url: /categories/涛哥的博客/
   icon:
