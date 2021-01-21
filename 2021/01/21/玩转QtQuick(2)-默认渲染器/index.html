@@ -1,0 +1,668 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,Qml,QtQuick" />
+
+
+<meta name="description" content="
+简介
+Qt Quick的默认渲染器
+批次渲染
+不透明图元
+Alpha混合图元
+混合3D图元
+纹理集
+
+
+批次渲染的根节点
+变换的节点
+裁剪
+顶点缓冲
+
+
+抗锯齿
+顶点抗锯齿
+多采样抗锯齿
+
+
+..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转QtQuick(2)-默认渲染器 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转QtQuick/"><i class="fa "></i>
+                                玩转QtQuick</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转QtQuick(2)-默认渲染器">
+            
+            玩转QtQuick(2)-默认渲染器
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQml/">玩转Qml</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2021/01/21</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/images/qt_extended_48x48.png" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#简介">简介</a></li>
+<li><a href="#qt-quick的默认渲染器">Qt Quick的默认渲染器</a><ul>
+<li><a href="#批次渲染">批次渲染</a><ul>
+<li><a href="#不透明图元">不透明图元</a></li>
+<li><a href="#alpha混合图元">Alpha混合图元</a></li>
+<li><a href="#混合3d图元">混合3D图元</a></li>
+<li><a href="#纹理集">纹理集</a></li>
+</ul>
+</li>
+<li><a href="#批次渲染的根节点">批次渲染的根节点</a><ul>
+<li><a href="#变换的节点">变换的节点</a></li>
+<li><a href="#裁剪">裁剪</a></li>
+<li><a href="#顶点缓冲">顶点缓冲</a></li>
+</ul>
+</li>
+<li><a href="#抗锯齿">抗锯齿</a><ul>
+<li><a href="#顶点抗锯齿">顶点抗锯齿</a></li>
+<li><a href="#多采样抗锯齿">多采样抗锯齿</a></li>
+</ul>
+</li>
+<li><a href="#性能">性能</a></li>
+<li><a href="#可视化">可视化</a><ul>
+<li><a href="#批次可视化">批次可视化</a></li>
+<li><a href="#裁剪可视化">裁剪可视化</a></li>
+<li><a href="#变更可视化">变更可视化</a></li>
+<li><a href="#overdraw-过渡绘制可视化">OverDraw 过渡绘制可视化</a></li>
+</ul>
+</li>
+<li><a href="#通过qtrhi硬件渲染接口-进行渲染">通过QtRHI(硬件渲染接口) 进行渲染</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>这是《玩转QtQuick》系列文章的第二篇，主要是介绍Qt Quick的默认渲染器。</p>
+<p><strong><strong>本文会涉及到一些图形学的基本概念，例如：材质、纹理、光栅化、图元等，建议参考相关资料，本文不做进一步的解释。</strong></strong></p>
+<p>因为Qt官方文档写的比较全面，所以本文主要是对官方文档的翻译，同时会补充一些个人理解。</p>
+<p>翻译主要参考Qt5.15的文档，适当做了一些调整，尽量信达雅，尽量说人话。</p>
+<p>下面翻译开始</p>
+<h1 id="Qt-Quick的默认渲染器"><a href="#Qt-Quick的默认渲染器" class="headerlink" title="Qt Quick的默认渲染器"></a>Qt Quick的默认渲染器</h1><p>本文介绍默认渲染器在内部的工作方式，以方便开发者们以最佳的方式</p>
+<p>使用它(编写代码)，包括性能和功能。</p>
+<p>通常无需了解渲染器的内部结构，就能够获得良好的性能。</p>
+<p>但是，在与场景图集成或弄清楚为什么无法从图形芯片中挤出最大效率时，这可能会有所帮助。</p>
+<p>(即使在每个帧都是唯一的并且所有内容都是从头开始上传的情况下，默认渲染器也将表现良好)</p>
+<p>Qml场景中的<code>Item</code>将填充<code>QSGNode</code>实例树。一旦实例树创建好之后，此树将完整描述如何渲染特定的帧。</p>
+<p>它不会包含对任何<code>Item</code>的反向引用，并且在大多数平台上将通过单独的线程进行处理和渲染。</p>
+<p>渲染器是“场景图”的自包含部分，它遍历<code>QSGNode</code>树，并使用<code>QSGGeometryNode</code>中定义</p>
+<p>的几何形状和<code>QSGMaterial</code>中定义的着色器状态来更新图形状态并生成DrawCall。</p>
+<p>如果有需要，可以使用内部的“场景图”后端API完全替换渲染器。</p>
+<p>对于希望利用非标准硬件功能的平台供应商来说，这最为有趣。</p>
+<p>对于大多数用例，默认渲染器就足够了。</p>
+<p>默认渲染器着重于优化渲染的两种主要策略：批量处理调用和在GPU上保留几何图元。</p>
+<h2 id="批次渲染"><a href="#批次渲染" class="headerlink" title="批次渲染"></a>批次渲染</h2><p>传统的2D API (例如QPainter，Cairo或者Context2D)被设计为每帧处理大量单独的DrawCall,而当DrawCall的次数</p>
+<p>非常少且状态更改保持在一定水平时，OpenGL和其它硬件加速的API表现最佳。</p>
+<p>考虑以下用例：</p>
+<p><img src="/images/QtQuick/batching.png" alt=""></p>
+<p>绘制此列表的最简单方法是逐行进行。</p>
+<p>首先，绘制背景。背景是特定颜色的矩形。在OpenGL术语中，这意味着使用一个着色器程序进行纯色填充，设置填充颜色，</p>
+<p>设置包含x和y偏移量的转换矩阵，然后使用例如<code>glDrawArrays</code>绘制组成矩形的两个三角形。</p>
+<p>接下来绘制图标。用OpenGL术语来说，这意味着使用一个着色器程序来绘制纹理，激活要使用的纹理，设置转换矩阵，启用alpha混合，</p>
+<p>然后使用例如<code>glDrawArrays</code>绘制组成图标边界矩形的两个三角形。</p>
+<p>行 之间的文本和分隔线遵循类似的模式。</p>
+<p>对于列表中的每一行都重复此过程，因此对于更长的列表，OpenGL状态变更和DrawCall所带来的</p>
+<p>开销完全超过了使用硬件加速API所能提供的好处。</p>
+<p>当每个图元都很大时，此开销可以忽略不计，但是在典型的UI环境中，有许多小项加起来会产生相当大的开销。</p>
+<p>默认的“场景图”渲染器也在这些限制内运行，并且会尝试将单个图元合并到批次中，同时保留完全相同的视觉效果。</p>
+<p>结果是更少的OpenGL状态变更和最少的DrawCall调用，从而实现了最佳性能。</p>
+<h3 id="不透明图元"><a href="#不透明图元" class="headerlink" title="不透明图元"></a>不透明图元</h3><p>渲染器将不透明图元和需要透明度的图元进行了分类。</p>
+<p>通过使用OpenGL的Z缓冲为每一个图元赋予唯一的z值，渲染器可以自由地对不透明图元进行重新排序，而无需考虑</p>
+<p>它们在屏幕上的位置以及与它们重叠的其它元素。通过查看每个图元的材质状态，渲染器将创建不透明的批次渲染。</p>
+<p>在QtQuick的主要Item中，属于不透明图元的包括<code>不透明颜色的Rectangle</code>和<code>完全不透明的Image</code>,主要是<code>JPEG</code>和<code>BMP</code>格式。</p>
+<p>使用不透明图元的另一个好处是，不透明图元不需要启用<code>GL_BLEND</code>，这个操作可能会非常耗性能，尤其是在移动端和嵌入式GPU上。</p>
+<p>不透明图元在启用<code>glDepthMask</code>和<code>GL_DEPTH_TEST</code>的情况下以从前到后的方式渲染。在内部进行<code>early-z</code>校验的GPU上，这意味着</p>
+<p>片元着色器不需要针对被遮盖的像素或像素块运行。</p>
+<p>请注意，渲染器仍需要考虑这些节点，并且顶点着色器仍将为这些图元的每个顶点运行，因此，如果应用程序知道某些东西被完全遮盖，则</p>
+<p>最好的办法是设置<code>Item::visible</code>或<code>Item::opacity</code>隐藏它。</p>
+<p><code>Item::z</code>用来控制Item相对于其同级元素的“堆叠顺序”，它与渲染器和OpenGL的z缓冲没有直接关系。</p>
+<h3 id="Alpha混合图元"><a href="#Alpha混合图元" class="headerlink" title="Alpha混合图元"></a>Alpha混合图元</h3><p>一旦绘制了不透明的图元，渲染器将禁用<code>glDepthMask</code>,启用<code>GL_BLEND</code>并以从后到前的方式渲染所有alpha混合图元。</p>
+<p>alpha混合图元的批次渲染在渲染器内需要更多的工作，因为重叠的元素需要以正确的顺序进行渲染，以使alpha看起来正确。</p>
+<p>仅仅依靠Z缓冲是不够的。渲染器在所有alpha混合图元上进行传递，除了其材质状态外，还将查询其边框，以确定哪些元素</p>
+<p>可以批次渲染，哪些元素不能批次。</p>
+<p><img src="/images/QtQuick/batching2.png" alt=""></p>
+<p>上图左边的情况，可以在一次DrawCall中渲染蓝色背景，而在另一次DrawCall中渲染两个文本元素，因为这些文本仅与其</p>
+<p>同一层的背景重叠。</p>
+<p>右边的情况，<code>Item 4</code>的背景覆盖了<code>Item 3</code>的背景，因此每一个背景和文本需要在不同的DrawCall中渲染。</p>
+<p>在Z方向上，alpha节点与不透明节点交错，且在可用时触发<code>early-z</code>。同样的，将<code>Item::visible</code>设置为false会快很多。</p>
+<h3 id="混合3D图元"><a href="#混合3D图元" class="headerlink" title="混合3D图元"></a>混合3D图元</h3><p>“场景图”支持伪3D和适当的3D图元。</p>
+<p>例如，可以用<code>ShaderEffect</code>来实现“页面卷曲”效果，或者可以使用<code>QSGGeometry</code>和自定义材质来实现凹凸贴图。实现这</p>
+<p>些功能时，开发者需要意识到默认渲染器已经使用了深度缓冲区。</p>
+<p>渲染器修改了<code>QSGMaterialShader::vertexShader()</code>返回的顶点着色器，并在应用了模型视图和投影矩阵之后压缩了</p>
+<p>顶点的z值，然后在z上添加了一个小平移以将其放置在正确的z位置。</p>
+<p>压缩时会假定z值在0到1的范围内。</p>
+<h3 id="纹理集"><a href="#纹理集" class="headerlink" title="纹理集"></a>纹理集</h3><p>激活的纹理在OpenGL中是个唯一的状态，这意味着使用不同纹理的多个图元无法批次渲染。因此，Qt Quick“场景图”允许</p>
+<p>将多个<code>QSGTexture</code>实例分配为较大纹理的较小子区域，也就是“纹理集”。</p>
+<p>纹理集的最大好处是多个<code>QSGTexture</code>实例引用同一个OpenGL纹理实例。这样还可以批量处理带纹理的DrawCall，例如</p>
+<p>Qml中的<code>Image</code>,<code>BorderImage</code>,<code>ShaderEffect</code>等，以及C++中的<code>QSGSimpleTextureNode</code>和自定义</p>
+<p>的<code>QSGGeometryNode</code>都使用了纹理。</p>
+<p>尺寸过大的纹理不会进入纹理集。</p>
+<p>纹理集使用带参数<code>QQuickWindow::TextureCanUseAtlas</code>的函数调用<code>QQuickWindow::createTextureFromImage()</code>创建。</p>
+<p>纹理集没有范围从0到1的坐标。使用<code>QSGTexture::normalizedTextureSubRect()</code>获取纹理坐标。</p>
+<p>“场景图”使用试探法来确定纹理集应该多大以及输入大小的阈值。如果需要不同的值，可以通过设置环境变量</p>
+<p><code>QSG_ATLAS_WIDTH=[width]</code>, <code>QSG_ATLAS_HEIGHT=[height]</code>和<code>QSG_ATLAS_SIZE_LIMIT=[size]</code>来覆盖试探法。</p>
+<p>对于平台供应商而言，更改这些数值通常是有趣的。</p>
+<h2 id="批次渲染的根节点"><a href="#批次渲染的根节点" class="headerlink" title="批次渲染的根节点"></a>批次渲染的根节点</h2><p>除了将兼容的图元合并到一个批次，默认渲染器还尝试将每帧需要发送到GPU的数据量减到最少。</p>
+<p>默认渲染器会标记在一起的子树，并尝试将它们放入单独的批次中。</p>
+<p>识别批次后，即可使用<code>顶点缓冲对象</code>将其合并，上传并存储在GPU内存中。</p>
+<h3 id="变换的节点"><a href="#变换的节点" class="headerlink" title="变换的节点"></a>变换的节点</h3><p>每个QtQuick中的<code>Item</code>会往场景树中插入一个<code>QSGTransformNode</code>来管理其x、y坐标、缩放比例。<code>子Item</code>会</p>
+<p>附加在此变换节点之下。默认渲染器会跟踪帧之间变换节点的状态，并将查看子树以确定：变换节点作为一个</p>
+<p>批次渲染的根节点是否良好。在帧之间变化且具有相当复杂的子树的变换节点可以成为批次渲染的根节点。</p>
+<p>批次渲染根节点的子树中<code>QSGGeometryNodes</code>相对于CPU上的根节点已经预先转换过了，然后讲它们上传</p>
+<p>并保留在GPU上。当变换发生时，渲染器仅需要更新根节点的矩阵，而无需更新每个单独的节点，从而使列表</p>
+<p>和网格滚动非常快。对于连续的帧，只要不添加或删除节点，就可以快速地、不增加消耗地渲染。当新内容</p>
+<p>进入子树时，将对其进行重建，但这仍然相当较快。</p>
+<p>在<code>Grid</code>或<code>List</code>中滚动时，会有节点添加或者删除，但也总会有一些帧是不变的。</p>
+<hr>
+<p>将变换节点 标记为 批次根节点的另一个好处是，它允许渲染器保留树中未更改的部分。</p>
+<p>例如：UI由一个<code>List</code>和一行按钮 组成。滚动<code>List</code>并添加或删除<code>Delegate</code>时，UI的其余</p>
+<p>部分(一行按钮)保持不变,可以使用存储在GPU上的几何图元进行绘制。</p>
+<p>可以使用环境变量<code>QSG_RENDERER_BATCH_NODE_THRESHOLD=[count]</code>和<code>QSG_RENDERER_BATCH_VERTEX_THRESHOLD=[count]</code>来</p>
+<p>覆盖要成为批次根节点的转换节点和顶点阈值。覆盖这些标志对平台供应商最有用。</p>
+<p>在批次渲染根节点之下，会为每个唯一的材质状态集和几何图元类型创建一个批次节点。</p>
+<h3 id="裁剪"><a href="#裁剪" class="headerlink" title="裁剪"></a>裁剪</h3><p>将<code>Item::clip</code>设置为true时，将创建一个<code>QSGClipNode</code>,其几何形状为矩形。</p>
+<p>默认渲染器将通过在OpenGL中使用<code>scissoring</code>来应用此裁剪操作。如果将<code>Item</code></p>
+<p>旋转了非90°角，则使用OpenGL的模版缓冲区。QtQuick的<code>Item</code>仅支持通过Qml启用</p>
+<p>矩形的裁剪，“场景图”API和渲染器则支持任何形状的裁剪。</p>
+<p>将裁剪应用于子树时，该子树需要使用唯一的OpenGL状态进行渲染。这意味着当<code>Item::clip</code></p>
+<p>为true时，该<code>Item</code>的批次渲染仅限于其<code>子Item</code>。当有许多子级(例如<code>ListView</code>或<code>GridView</code>)或</p>
+<p>复杂的子级(例如<code>TextArea</code>)时，这是好事。</p>
+<p>应该避免在较小的<code>Item</code>上使用裁剪，因为它会阻止批次渲染。这包括<code>Button</code>上面的<code>Label</code>，<code>TextField</code>和<code>Table</code>中的<code>Delegate</code>。</p>
+<h3 id="顶点缓冲"><a href="#顶点缓冲" class="headerlink" title="顶点缓冲"></a>顶点缓冲</h3><p>每个批次渲染都会使用顶点缓冲区对象(VBO)将其数据存储在GPU上。该顶点缓冲区保留在帧之间，并在“场景图”所</p>
+<p>表示的部分发生更改是更新。</p>
+<p>默认情况下，渲染器将使用<code>GL_STATIC_DRAW</code>将数据上传到VBO。</p>
+<p>通过环境变量<code>QSG_RENDERER_BUFFER_STRATEGY=[strategy]</code>可以选择其它上传策略，有效的策略还包括<code>stream</code>和<code>dynamic</code>。</p>
+<p>更改此值对平台供应商最有用。</p>
+<h2 id="抗锯齿"><a href="#抗锯齿" class="headerlink" title="抗锯齿"></a>抗锯齿</h2><p>“场景图”支持两种类型的抗锯齿。</p>
+<p>默认情况下，诸如<code>Rectangle</code>和<code>Image</code>之类的图元，将通过沿图元的边缘添加顶点的方式，使</p>
+<p>边缘淡化到透明，以实现抗锯齿。我们称此方法为顶点抗锯齿。</p>
+<p>如果用户通过<code>QQuickWindow::setFormat()</code>将<code>QSurfaceFormat</code>设置为大于0的值，请求OpenGL多重采样，“场景图”将首选</p>
+<p>基于多重采样的抗锯齿(MSAA)。</p>
+<p>这两种技术将影响渲染器的内部实现方式，并且具有不同的限制。</p>
+<p>通过设置环境变量<code>QSG_ANTIALIASING_METHOD</code>为<code>msaa</code>或者<code>vertex</code>也可以覆盖使用的抗锯齿方法。</p>
+<p>即使两个图元的边在数学上相同，顶点抗锯齿也会在相邻图元的边缘之间产生接缝。多重采样抗锯齿则不会如此。</p>
+<h3 id="顶点抗锯齿"><a href="#顶点抗锯齿" class="headerlink" title="顶点抗锯齿"></a>顶点抗锯齿</h3><p>可以使用<code>Item::antialiasing</code>属性启用和禁用单个<code>Item</code>的顶点抗锯齿。在硬件支持的前提下，无论是正常渲染的图元，还是捕获到</p>
+<p>帧缓冲区对象中的图元(例如使用<code>ShaderEffectSource</code>),顶点抗锯齿都可以正常运行并产生更高质量的抗锯齿功能。</p>
+<p>使用顶点抗锯齿的不利之处在于，每个启用了抗锯齿的图元都必须进行混合。在批次渲染方面，这意味着渲染器需要做更多的工作来确定</p>
+<p>图元是否可以进行批次渲染。如果和场景中其它元素重叠，也可能导致更少的批次渲染，从而影响性能。</p>
+<p>在低端硬件上，混合操作也可能会非常耗性能。对于覆盖屏幕大部分区域的图像或者圆角矩形，这些图元内部所需要的混合操作数量</p>
+<p>可能会导致严重的性能损耗，因为必须混合整个图元。</p>
+<h3 id="多采样抗锯齿"><a href="#多采样抗锯齿" class="headerlink" title="多采样抗锯齿"></a>多采样抗锯齿</h3><p>多采样抗锯齿是一项硬件功能，其中硬件会计算图元中每个像素的覆盖值。一部分硬件可以以非常低的成本进行多次采样，而另一些</p>
+<p>硬件需要更多的内存和GPU周期来渲染一帧，</p>
+<p>使用多采样可以对许多图元进行抗锯齿（例如圆角矩形和图片），并且在“场景图”中仍然是不透明的。这意味着在创建渲染批次时，</p>
+<p>渲染器的工作会更加轻松，并且可以依赖<code>early-z</code>来避免过渡渲染。</p>
+<p>使用多重采样抗锯齿时，渲染到帧缓冲区对象中的内容需要额外的扩展以支持帧缓冲区的多重采样。通常是<code>GL_EXT_framebuffer_multisample</code></p>
+<p>和<code>GL_EXT_framebuffer_blit</code>。大多数台式机芯片都具有这些扩展，但是在嵌入式芯片中却很少见。</p>
+<p>如果硬件中不提供帧缓冲区多采样，则不会进行多采样抗锯齿，包括<code>ShaderEffectSource</code>。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>如文章开头所说，不需要了解渲染器的详细信息就能够获得良好的性能。默认渲染器在设计时就针对常见用例进行了优化，</p>
+<p>并且在几乎任何情况下都将表现良好。</p>
+<ul>
+<li><p>有效的批次渲染可带来良好的性能，并尽可能少地上传几何图形。通过设置环境变量<code>QSG_RENDERER_DEBUG=render</code>，渲染</p>
+<p>器将输出相应的统计信息，包括：批次渲染进行的程度，使用的批次数量，保留的批次及不透明和透明的批次数量等。</p>
+<p>追求最佳性能时，应仅在真正需要时上传数据，批次数量应该少于10个，且至少3-4个不透明批次。</p>
+</li>
+<li><p>默认渲染器不执行任何CPU端的视口裁剪或遮挡检测。如果某些内容不可见，则不应该显示，使用<code>Item::visible</code>将其设置</p>
+<p>为false。不添加这样的逻辑的主要原因是，它增加了额外的成本，这也将损害那些表现良好的应用程序。</p>
+</li>
+<li><p>确保纹理集被使用。除非图像特别大，否则<code>Image</code>和<code>BorderImage</code>  将使用它。C++代码中想要创建纹理集，需在调用</p>
+<p><code>QQuickWindow::createTexture()</code>时传递<code>QQuickWindow::TextureCanUseAtlas</code>参数。通过设置环境变量</p>
+<p><code>QSG_ATLAS_OVERLAY</code>，所有纹理集将被着色,以便在应用程序中轻松识别它们。</p>
+</li>
+<li><p>尽可能使用不透明图元。不透明图元在渲染器中处理速度更快，在GPU上绘制速度更快。例如，即使每个像素都是不透明的，PNG</p>
+<p>文件也会经常具有alpha通道。JPG文件始终是不透明的。当图像提供给<code>QQuickImageProvider</code>或者使用</p>
+<p><code>QQuickWindow::createTextureFromImage()</code>创建图像时，请尽可能使用<code>QImage::Format_RGB32</code>格式。</p>
+</li>
+<li><p>如前文所示，重叠的<code>复合Item</code>无法批次渲染。</p>
+</li>
+<li><p>裁剪会中断批次渲染。切勿在表格内的单元格，<code>delegate</code>或者类似的元素中使用裁剪。使用<code>省略</code>代替文本裁剪。</p>
+</li>
+</ul>
+<p>创建一个返回裁剪后图像的<code>QQuickImageProvider</code>，代替图像裁剪。</p>
+<ul>
+<li><p>批次渲染仅适用于16位索引。所有QtQuick内置的<code>Item</code>都使用了16位索引，但是自定义几何图元也可以自由使用32位索引。</p>
+</li>
+<li><p>一些材质的标志会阻止批次渲染，其中最受限制的一个是<code>QSGMaterial::RequiresFullMatrix</code>,它阻止了所有批次渲染。</p>
+</li>
+<li><p>具有单色背景的应用程序应使用<code>QQuickWindow::setColor()</code>而不是顶级带颜色的<code>Rectangle</code>。</p>
+<p><code>QQuickWindow::setColor()</code>将在<code>glClear()</code>的调用中使用，这是比较快的。</p>
+</li>
+<li><p>生成<code>Mipmap</code>的<code>Image</code>不会放在纹理集中，也不会进行批次渲染。</p>
+</li>
+<li><p>存在一个OpenGL驱动程序相关的<code>Bug</code>：帧缓冲对象(FBO)回读时发生的一些错误会损坏渲染的字形。如果在环境变量</p>
+</li>
+</ul>
+<p>中设置<code>QML_USE_GLYPHCACHE_WORKAROUND</code>，则Qt会在<code>RAM</code>中保留该字形的其它副本。这意味着当渲染以前</p>
+<p>未渲染的字形时，性能会稍低，因为Qt通过CPU访问额外的副本。这也意味着字形缓存将使用两倍的内存。渲染质量不受影响。</p>
+<p>如果应用程序性能不佳，需要确认瓶颈是否在渲染。此时可以使用探查器<code>Profiler</code>! 设置环境变量<code>QSG_RENDER_TIMING=1</code></p>
+<p>将输出许多有用的时序参数，这些参数可以用来查明问题所在。</p>
+<h2 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h2><p>为了可视化“场景图”默认渲染器的各个方面，可以将<code>QSG_VISUALIZE</code>环境变量设置为下面每个部分中详细介绍的值其中之一。</p>
+<p>下面这段Qml代码提供了一些变量输出的示例：</p>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> QtQuick <span class="number">2.2</span></span><br><span class="line"></span><br><span class="line"><span class="title">Rectangle</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">200</span></span><br><span class="line">    <span class="attribute">height</span>: <span class="number">140</span></span><br><span class="line"></span><br><span class="line">    <span class="title">ListView</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> clippedList</span></span><br><span class="line">        <span class="attribute">x</span>: <span class="number">20</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="number">20</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">70</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100</span></span><br><span class="line">        <span class="attribute">clip</span>: <span class="literal">true</span></span><br><span class="line">        <span class="attribute">model</span>: [<span class="string">"Item A"</span>, <span class="string">"Item B"</span>, <span class="string">"Item C"</span>, <span class="string">"Item D"</span>]</span><br><span class="line"></span><br><span class="line">        <span class="attribute">delegate</span>: <span class="title">Rectangle</span> &#123;</span><br><span class="line">            <span class="attribute">color</span>: <span class="string">"lightblue"</span></span><br><span class="line">            <span class="attribute">width</span>: <span class="built_in">parent</span>.width</span><br><span class="line">            <span class="attribute">height</span>: <span class="number">25</span></span><br><span class="line"></span><br><span class="line">            <span class="title">Text</span> &#123;</span><br><span class="line">                <span class="attribute">text</span>: modelData</span><br><span class="line">                <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">                <span class="attribute">horizontalAlignment</span>: Text.AlignHCenter</span><br><span class="line">                <span class="attribute">verticalAlignment</span>: Text.AlignVCenter</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="title">ListView</span> &#123;</span><br><span class="line">        <span class="attribute">id:</span><span class="string"> clippedDelegateList</span></span><br><span class="line">        <span class="attribute">x</span>: clippedList.x + clippedList.width + <span class="number">20</span></span><br><span class="line">        <span class="attribute">y</span>: <span class="number">20</span></span><br><span class="line">        <span class="attribute">width</span>: <span class="number">70</span></span><br><span class="line">        <span class="attribute">height</span>: <span class="number">100</span></span><br><span class="line">        <span class="attribute">clip</span>: <span class="literal">true</span></span><br><span class="line">        <span class="attribute">model</span>: [<span class="string">"Item A"</span>, <span class="string">"Item B"</span>, <span class="string">"Item C"</span>, <span class="string">"Item D"</span>]</span><br><span class="line"></span><br><span class="line">        <span class="attribute">delegate</span>: <span class="title">Rectangle</span> &#123;</span><br><span class="line">            <span class="attribute">color</span>: <span class="string">"lightblue"</span></span><br><span class="line">            <span class="attribute">width</span>: <span class="built_in">parent</span>.width</span><br><span class="line">            <span class="attribute">height</span>: <span class="number">25</span></span><br><span class="line">            <span class="attribute">clip</span>: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">            <span class="title">Text</span> &#123;</span><br><span class="line">                <span class="attribute">text</span>: modelData</span><br><span class="line">                <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></span><br><span class="line">                <span class="attribute">horizontalAlignment</span>: Text.AlignHCenter</span><br><span class="line">                <span class="attribute">verticalAlignment</span>: Text.AlignVCenter</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>左侧的<code>ListView</code>,我们将其<code>clip</code>属性设置为true。右侧的<code>ListView</code>，我们将每个<code>delegate</code>的clip属性设置为true。</p>
+<p>以此来说明裁剪对批次渲染的影响。</p>
+<p>这是正常的运行结果</p>
+<p><img src="/images/QtQuick/batch1.png" alt=""></p>
+<p>可视化元素不考虑裁剪，并且渲染顺序是任意的。</p>
+<h3 id="批次可视化"><a href="#批次可视化" class="headerlink" title="批次可视化"></a>批次可视化</h3><p>设置环境变量<code>QSG_VISUALIZE</code>为<code>batches</code>可以在渲染器中可视化查看批次。</p>
+<p>合并过的批次以纯色渲染，未合并的批次以对角线图案渲染。独立的颜色越少意味着批次分配的越好。</p>
+<p>如果未合并的批次中包含许多单独的节点，则是比较糟糕的。</p>
+<p><img src="/images/QtQuick/batch2.png" alt=""></p>
+<p>QSG_VISUALIZE=batches</p>
+<h3 id="裁剪可视化"><a href="#裁剪可视化" class="headerlink" title="裁剪可视化"></a>裁剪可视化</h3><p>设置环境变量<code>QSG_VISUALIZE</code>为<code>clip</code>,渲染器会在“场景图”中渲染红色区域来指示裁剪区域。</p>
+<p>默认情况下<code>Item</code>不裁剪，因此不会显示裁剪区域。</p>
+<p><img src="/images/QtQuick/batch3.png" alt=""></p>
+<p>QSG_VISUALIZE=clip</p>
+<h3 id="变更可视化"><a href="#变更可视化" class="headerlink" title="变更可视化"></a>变更可视化</h3><p>设置环境变量<code>QSG_VISUALIZE</code>为<code>changes</code>,可以在“场景图”中看到变更。“场景图”中的变更以随机颜色的</p>
+<p>闪烁叠加显示。图元上的变更以纯色显示，而批次渲染根节点的变更以特定的<code>pattern</code>显示。</p>
+<h3 id="OverDraw-过渡绘制可视化"><a href="#OverDraw-过渡绘制可视化" class="headerlink" title="OverDraw 过渡绘制可视化"></a>OverDraw 过渡绘制可视化</h3><p>设置环境变量<code>QSG_VISUALIZE</code>为<code>overdraw</code>,可以在“场景图”中看到过渡绘制。可视化的3D视图中，</p>
+<p>所有过渡绘制的<code>Item</code>会高亮显示。此模式也可以用来检测视口之外的几何图元。不透明的<code>Item</code>以绿色显示，</p>
+<p>而半透明的<code>Item</code>以红色显示。视口的边框为蓝色显示。不透明的内容使“场景图”更易于处理，渲染速度更快。</p>
+<p>请注意，上面的代码中顶层矩形框<code>Rectangle</code>是多余的，因为窗口也是白色的，在这种情况下渲染矩形框会造成资源浪费。</p>
+<p>将其更改为<code>Item</code>会略微提高性能。</p>
+<p><img src="/images/QtQuick/batch4.png" alt=""></p>
+<p>QSG_VISUALIZE=overdraw</p>
+<h2 id="通过QtRHI-硬件渲染接口-进行渲染"><a href="#通过QtRHI-硬件渲染接口-进行渲染" class="headerlink" title="通过QtRHI(硬件渲染接口) 进行渲染"></a>通过QtRHI(硬件渲染接口) 进行渲染</h2><p>从Qt5.14开始，默认适配层增加了一个选项，可以使用 QtGui模块提供的图形抽象层Qt Rendering Hardware Interface (RHI)</p>
+<p>进行渲染。启用后，将不进行OpenGL调用，而是使用抽象层提供的API来渲染“场景图”，然后将其转换为OpenGL,</p>
+<p>Vulkan,Metal或者Direct3D调用。</p>
+<p>通过一次编写着色器代码，编译为SPIR-V,然后转换为适用于各种图形API的语法，实现着色器的统一处理。</p>
+<p>要启用此功能，代替直接OpenGL调用，可以通过下面的变量:</p>
+<table>
+<thead>
+<tr>
+<th>环境变量</th>
+<th>有效值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QSG_RHI</td>
+<td>1</td>
+<td>启用通过RHI的渲染。除非被<code>QSG_RHI_BACKEND</code>覆盖，否则将根据平台选择目标图像API。默认值为window平台使用Direct3D 11, MacOS平台使用metal，其它平台使用OpenGL</td>
+</tr>
+<tr>
+<td>QSG_RHI_BACKEND</td>
+<td>vulkan,metal,opengl,d2d11</td>
+<td>请求使用指定的图形API</td>
+</tr>
+<tr>
+<td>QSG_INFO</td>
+<td>1</td>
+<td>与基于OpenGL的渲染路径一样，设置此选项将在初始化Qt Quick“场景图”时启用打印信息。 这对于故障排除非常有用。</td>
+</tr>
+<tr>
+<td>QSG_RHI_DEBUG_LAYER</td>
+<td>1</td>
+<td>在适用的情况下（Vulkan，Direct3D），启用图形API实现的调试或验证层（如果有）。</td>
+</tr>
+<tr>
+<td>QSG_RHI_PREFER_SOFTWARE_RENDERER</td>
+<td>1</td>
+<td>请求使用软光栅化的适配器或物理设备。仅在API支持枚举适配器(Direct3D或Vulkan)时适用，否则会被忽略</td>
+</tr>
+</tbody></table>
+<p>希望始终使用单个指定的图形API运行应用程序，也可以通过C++代码来设置。</p>
+<p>例如，在构造任何<code>QQuickWindow</code>之前，在main函数的早期进行以下调用将强制使用vulkan</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QQuickWindow::setSceneGraphBackend(QSGRendererInterface::VulkanRhi);</span><br></pre></td></tr></table></figure>
+
+<p>可以查看<code>QSGRendererInterface::GraphicsApi</code>文档。以Rhi结尾的枚举值等价于设置<code>QSG_RHI</code>和<code>QSG_RHI_BACKEND</code>。</p>
+<p>除非被<code>QSG_RHI_PREFER_SOFTWARE_RENDERER</code>或特定后端的变量（例如<code>QT_D3D_ADAPTER_INDEX</code> 或者 <code>QT_VK_PHYSICAL_DEVICE_INDEX</code>）覆盖，</p>
+<p>否则所有QRhi后端都会选择系统默认的GPU适配器或物理设备。目前没有进一步的适配器相关配置项。</p>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+    <a href="/2021/01/20/%E7%8E%A9%E8%BD%ACQtQuick(1)-SceneGraph%E5%9C%BA%E6%99%AF%E5%9B%BE%E7%AE%80%E4%BB%8B/" class="next-post btn btn-default" title='玩转QtQuick(1)-SceneGraph场景图简介'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            玩转QtQuick(1)-SceneGraph场景图简介</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Qt-Quick的默认渲染器"><span class="toc-text">Qt Quick的默认渲染器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#批次渲染"><span class="toc-text">批次渲染</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不透明图元"><span class="toc-text">不透明图元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Alpha混合图元"><span class="toc-text">Alpha混合图元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#混合3D图元"><span class="toc-text">混合3D图元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#纹理集"><span class="toc-text">纹理集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#批次渲染的根节点"><span class="toc-text">批次渲染的根节点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#变换的节点"><span class="toc-text">变换的节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#裁剪"><span class="toc-text">裁剪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#顶点缓冲"><span class="toc-text">顶点缓冲</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#抗锯齿"><span class="toc-text">抗锯齿</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#顶点抗锯齿"><span class="toc-text">顶点抗锯齿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多采样抗锯齿"><span class="toc-text">多采样抗锯齿</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#性能"><span class="toc-text">性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可视化"><span class="toc-text">可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#批次可视化"><span class="toc-text">批次可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#裁剪可视化"><span class="toc-text">裁剪可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变更可视化"><span class="toc-text">变更可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OverDraw-过渡绘制可视化"><span class="toc-text">OverDraw 过渡绘制可视化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过QtRHI-硬件渲染接口-进行渲染"><span class="toc-text">通过QtRHI(硬件渲染接口) 进行渲染</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

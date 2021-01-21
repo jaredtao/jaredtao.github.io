@@ -257,14 +257,14 @@ Scene Graph API / “场景图”接口
 <p>渲染的完整图元集。这为许多优化打开了大门，例如：通过批量渲染最大程度减少状态变化、丢弃被遮挡的图元。</p>
 <hr>
 <p>再举个具体的例子，假设用户界面包含一个列表，列表有10个节点，其中每个节点都有背景色、图标和文本。</p>
-<p>使用传统的绘图技术，这将导致30次绘图调用和30次状态更改。</p>
-<p>而“场景图”可以重组原始图元进行渲染，以便在一次调用中绘制所有背景，然后绘制所有图标，最后绘制所有文本，</p>
-<p>从而将绘制调用的总数减少到3次。这样可以显著提高硬件的性能。</p>
+<p>使用传统的绘图技术，这将导致30次DrawCall和30次状态更改。</p>
+<p>而“场景图”可以重组原始图元进行渲染，以便在第一次DrawCall中渲染所有背景，第二次DrawCall渲染所有图标，第三次DrawCall渲染所有文本，</p>
+<p>从而将DrawCall的总数减少到3次。这样可以显著提高硬件的性能。</p>
 <hr>
 <p>“场景图”与Qt Quick 2.0 紧密相关，不能单独使用。“场景图”由<code>QQuickWindow</code>类管理和渲染，自定义Item类型</p>
 <p>可以通过调用<code>QQuickItem::updatePaintNode()</code>将其图元添加到“场景图”中。</p>
 <p>“场景图”是Item场景的图形表示，它是一个独立的结构，其中包含足以渲染所有节点的信息。</p>
-<p>设置完成后，就可以独立于项目状态对其进行操作和渲染。</p>
+<p>设置完成后，就可以独立于Item状态对其进行操作和渲染。</p>
 <p>在许多平台上，“场景图”会在GUI线程准备下一帧状态时，在专用渲染线程上进行渲染。</p>
 <p><strong><strong>注意：本文列出的许多信息特定于 Qt “场景图”的内置默认行为。如果使用替代的方案时，并非所有概念都适用。</strong></strong></p>
 <h2 id="Qt-Quick-“场景图”的结构"><a href="#Qt-Quick-“场景图”的结构" class="headerlink" title="Qt Quick “场景图”的结构"></a>Qt Quick “场景图”的结构</h2><p>“场景图” 由许多预定义的节点类型组成，每种类型都有专门的用途。</p>
@@ -600,6 +600,12 @@ Scene Graph API / “场景图”接口
     </div>
 </article>
 <div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2021/01/21/%E7%8E%A9%E8%BD%ACQtQuick(2)-%E9%BB%98%E8%AE%A4%E6%B8%B2%E6%9F%93%E5%99%A8/" class="pre-post btn btn-default" title='玩转QtQuick(2)-默认渲染器'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            玩转QtQuick(2)-默认渲染器</span>
+    </a>
     
     
     <a href="/2020/11/30/QQuickWidget%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E9%97%AE%E9%A2%98%E7%9A%84%E6%AD%A3%E7%A1%AE%E8%A7%A3%E6%B3%95/" class="next-post btn btn-default" title='QQuickWidget中文输入法问题的正确解法'>
