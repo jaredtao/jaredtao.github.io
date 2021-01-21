@@ -1,0 +1,733 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="涛哥的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://jaredtao.github.io">
+    <!--SEO-->
+
+<meta name="keywords" content="Qt,Qml,QtQuick" />
+
+
+<meta name="description" content="
+简介
+Qt Quick 中的“场景图”
+Qt Quick “场景图”的结构
+Scene Graph API / “场景图”接口
+节点
+预处理
+节点所有权
+材质
+便捷的节点
+
+
+“场景图”和渲染..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    玩转QtQuick(1)-SceneGraph场景图简介 |
+    
+    涛哥的博客
+</title>
+
+<link rel="alternate" href="/atom.xml" title="涛哥的博客" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='JaredTao'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                单枪匹马亦对饮，历经磨难记初心
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://jaredtao.github.io">
+                        涛哥的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qt/"><i class="fa "></i>
+                                玩转Qt</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转Qml/"><i class="fa "></i>
+                                玩转Qml</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/玩转QtQuick/"><i class="fa "></i>
+                                玩转QtQuick</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/涛哥的博客/"><i class="fa "></i>
+                                涛哥的博客</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转QtQuick(1)-SceneGraph场景图简介">
+            
+            玩转QtQuick(1)-SceneGraph场景图简介
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E7%8E%A9%E8%BD%ACQtQuick/">玩转QtQuick</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Qml/" rel="tag">Qml</a> <a class="tag-link" href="/tags/Qt/" rel="tag">Qt</a> <a class="tag-link" href="/tags/QtQuick/" rel="tag">QtQuick</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2021/01/20</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+<div id="post-gallery">
+    
+    <img src="/images/qt_extended_48x48.png" alt="gallery-img" class="gallery">
+    
+</div>
+
+    <div class="post-body post-content">
+        <ul>
+<li><a href="#简介">简介</a></li>
+<li><a href="#qt-quick-中的场景图">Qt Quick 中的“场景图”</a></li>
+<li><a href="#qt-quick-场景图的结构">Qt Quick “场景图”的结构</a><ul>
+<li><a href="#scene-graph-api--场景图接口">Scene Graph API / “场景图”接口</a></li>
+<li><a href="#节点">节点</a></li>
+<li><a href="#预处理">预处理</a></li>
+<li><a href="#节点所有权">节点所有权</a></li>
+<li><a href="#材质">材质</a></li>
+<li><a href="#便捷的节点">便捷的节点</a></li>
+</ul>
+</li>
+<li><a href="#场景图和渲染">“场景图”和渲染</a></li>
+<li><a href="#渲染循环">渲染循环</a><ul>
+<li><a href="#线程渲染循环">线程渲染循环</a></li>
+<li><a href="#非线程渲染循环-基本渲染循环和窗口渲染循环">非线程渲染循环 (基本渲染循环和窗口渲染循环)</a></li>
+<li><a href="#使用qquickrendercontrol自定义渲染控制">使用QQuickRenderControl自定义渲染控制</a></li>
+<li><a href="#场景图和原生图形api的混合使用">“场景图”和原生图形API的混合使用</a></li>
+<li><a href="#自定义item使用qpainter">自定义Item使用QPainter</a></li>
+<li><a href="#日志支持">日志支持</a></li>
+<li><a href="#场景图后端">“场景图”后端</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>这是《玩转QtQuick》系列文章的第一篇，主要是介绍Qt Quick Scene Graph “场景图”的关键特性、主要架构及实现原理等等。</p>
+<p>(不是QWidget 框架中那个 QGraphicsView哦，是Qt Quick的Scene Graph，不一样)</p>
+<p>Scene Graph 是QtQuick/Qml所依赖的渲染框架。</p>
+<p><strong><strong>本文会涉及到一些图形学的基本概念，例如：材质、纹理、光栅化、图元等，建议参考相关资料，本文不做进一步的解释。</strong></strong></p>
+<p>因为Qt官方文档写的比较全面，所以本文主要是对官方文档的翻译，同时会补充一些个人理解。</p>
+<p>翻译主要参考Qt5.15的文档，适当做了一些调整，尽量信达雅，尽量说人话。</p>
+<p>下面翻译开始</p>
+<h2 id="Qt-Quick-中的“场景图”"><a href="#Qt-Quick-中的“场景图”" class="headerlink" title="Qt Quick 中的“场景图”"></a>Qt Quick 中的“场景图”</h2><p>Qt Quick 2 使用了专用的“场景图”，然后遍历并通过图形API(例如OpenGL、OpenGL ES、Vulkan、Metal 或Direct 3D)渲染该“场景图”。</p>
+<p>将“场景图”用于图形渲染而不是传统的命令式绘图系统(QPainter之类的)，意味着可以在帧之间保留要渲染的场景，并且在渲染开始之前就知道要</p>
+<p>渲染的完整图元集。这为许多优化打开了大门，例如：通过批量渲染最大程度减少状态变化、丢弃被遮挡的图元。</p>
+<hr>
+<p>再举个具体的例子，假设用户界面包含一个列表，列表有10个节点，其中每个节点都有背景色、图标和文本。</p>
+<p>使用传统的绘图技术，这将导致30次绘图调用和30次状态更改。</p>
+<p>而“场景图”可以重组原始图元进行渲染，以便在一次调用中绘制所有背景，然后绘制所有图标，最后绘制所有文本，</p>
+<p>从而将绘制调用的总数减少到3次。这样可以显著提高硬件的性能。</p>
+<hr>
+<p>“场景图”与Qt Quick 2.0 紧密相关，不能单独使用。“场景图”由<code>QQuickWindow</code>类管理和渲染，自定义Item类型</p>
+<p>可以通过调用<code>QQuickItem::updatePaintNode()</code>将其图元添加到“场景图”中。</p>
+<p>“场景图”是Item场景的图形表示，它是一个独立的结构，其中包含足以渲染所有节点的信息。</p>
+<p>设置完成后，就可以独立于项目状态对其进行操作和渲染。</p>
+<p>在许多平台上，“场景图”会在GUI线程准备下一帧状态时，在专用渲染线程上进行渲染。</p>
+<p><strong><strong>注意：本文列出的许多信息特定于 Qt “场景图”的内置默认行为。如果使用替代的方案时，并非所有概念都适用。</strong></strong></p>
+<h2 id="Qt-Quick-“场景图”的结构"><a href="#Qt-Quick-“场景图”的结构" class="headerlink" title="Qt Quick “场景图”的结构"></a>Qt Quick “场景图”的结构</h2><p>“场景图” 由许多预定义的节点类型组成，每种类型都有专门的用途。</p>
+<p>尽管我们将其称为“场景图”，但更精确的定义是“节点树”。</p>
+<p>该树根据Qml场景中的<code>QQuickItem</code>类型构建，然后在内部对该场景进行渲染，最终呈现该场景。</p>
+<p>“节点” 本身不包含任何 绘制 或者 paint() 虚函数。</p>
+<p>“节点树”主要由内建的预定义类型组成，用户也可以添加具有自定义内容的完整子树，包括表示3D模型的子树。</p>
+<h3 id="Scene-Graph-API-“场景图”接口"><a href="#Scene-Graph-API-“场景图”接口" class="headerlink" title="Scene Graph API / “场景图”接口"></a>Scene Graph API / “场景图”接口</h3><p>一般是指Qt Quick中 <code>QSG</code>开头的所有类。</p>
+<h3 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h3><p>对用户而言,最重要的节点是<code>QSGGeometryNode</code>。它用来实现自定义图形中的几何形状和材质。</p>
+<p>使用<code>QSGGeometry</code>可以定义几何坐标，并描述形状或者图元网格。它可以是直线，矩形，多边形，许多</p>
+<p>不连续的矩形或者复杂的3D网格。材质定义如何填充此图形的每个像素。</p>
+<p>一个节点可以有任意数量的子节点，并且几何节点将被渲染，以便它们以子顺序出现，且父级位于其子级之后。</p>
+<p><strong><strong>注意：这并未说明渲染器中的实际渲染顺序，仅保证视觉顺序。</strong></strong></p>
+<p>有效的节点如下:</p>
+<table>
+<thead>
+<tr>
+<th>节点名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QSGNode</td>
+<td>“场景图”中所有节点的基类</td>
+</tr>
+<tr>
+<td>QSGGeometryNode</td>
+<td>用于“场景图”中所有可渲染的内容</td>
+</tr>
+<tr>
+<td>QSGClipNode</td>
+<td>“场景图”中实现“切割”功能</td>
+</tr>
+<tr>
+<td>QSGOpacityNode</td>
+<td>用来改变透明度</td>
+</tr>
+<tr>
+<td>QSGTransformNode</td>
+<td>实现旋转、平移、缩放等几何变换</td>
+</tr>
+</tbody></table>
+<p>自定义节点通过继承<code>QQuickItem</code>类，重写<code>QQuickItem::updatePaintNode()</code>，并且设置 <code>QQuickItem::ItemHasContents</code> 标志的方式，添加到“场景图”。</p>
+<p><strong><strong><em>警告：至关重要的是, 原生图形（OpenGL，Vulkan，Metal等）操作以及与“场景图”的交互只能在渲染线程中进行，主要</em></strong></strong></p>
+<p><strong><strong><em>在<code>updatePaintNode()</code>调用期间进行。经验法则是仅在<code>QQuickItem::updatePaintNode()</code>函数内使用带有“QSG”前缀的类。</em></strong></strong></p>
+<p>更多详细的信息，可以参考Qt文档： Scene Graph - Custom Geometry</p>
+<h3 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h3><p>节点具有虚函数<code>QSGNode::preprocess()</code>,该函数将在渲染“场景图”之前被调用。</p>
+<p>节点子类可以设置标志<code>QSGNode::UsePreprocess</code>并重写<code>QSGNode::preprocess()</code>函数以对其节点进行预处理。</p>
+<p>例如, 更新纹理的一部分, 或者将贝塞尔曲线划分为当前比例因子的正确细节级别。</p>
+<h3 id="节点所有权"><a href="#节点所有权" class="headerlink" title="节点所有权"></a>节点所有权</h3><p>节点的所有权归创建者，或者设置标志<code>QSGNode::OwnedByParent</code>后归“场景图”。</p>
+<p>通常将所有权分配给“场景图”是可取的，因为这样可以简化“场景图”位于GUI线程之外时的清理操作。</p>
+<h3 id="材质"><a href="#材质" class="headerlink" title="材质"></a>材质</h3><p>材质描述如何填充<code>QSGGeometryNode</code>中几何图形的内部。它封装了图形管线中顶点和片元阶段的着色器，并提供了足够的灵活性，</p>
+<p>尽管大多数Qt Quick 项目本身仅使用了非常基本的材质，例如纯色和纹理填充。</p>
+<p>想要对Qml中Item使用自定义着色的用户，可以直接在Qml中使用<code>ShaderEffect</code>。</p>
+<p>下面是一个完整的材质类列表：</p>
+<table>
+<thead>
+<tr>
+<th>材质名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QSGMaterial</td>
+<td>封装了“着色器程序”的渲染状态</td>
+</tr>
+<tr>
+<td>QSGMaterialRhiShader</td>
+<td>表示独立于图形API的“着色器程序”</td>
+</tr>
+<tr>
+<td>QSGMaterialShader</td>
+<td>表示渲染器中的OpenGL“着色器程序”</td>
+</tr>
+<tr>
+<td>QSGMaterialType</td>
+<td>与<code>QSGMaterial</code>结合用作唯一类型标记</td>
+</tr>
+<tr>
+<td>QSGFlatColorMaterial</td>
+<td>“场景图”中渲染纯色图元的便捷方法</td>
+</tr>
+<tr>
+<td>QSGOpaqueTextureMaterial</td>
+<td>“场景图”中渲染不透明纹理图元的便捷方法</td>
+</tr>
+<tr>
+<td>QSGTextureMaterial</td>
+<td>“场景图”中渲染纹理图元的便捷方法</td>
+</tr>
+<tr>
+<td>QSGVertexColorMaterial</td>
+<td>“场景图”中渲染 逐顶点彩色图元的便捷方法</td>
+</tr>
+</tbody></table>
+<p>更多详细的信息，可以参考Qt文档： Scene Graph - Simple Material </p>
+<h3 id="便捷的节点"><a href="#便捷的节点" class="headerlink" title="便捷的节点"></a>便捷的节点</h3><p>“场景图”API是一套 偏底层的接口，专注于性能而不是易用性。</p>
+<p>从头开始编写自定义的几何图形和材质，即使是最基本的几何图形和材质，也需要大量的代码。</p>
+<p>因此，“场景图”API包含了一些节点类，以使最常用自定义节点的开发更便捷。</p>
+<table>
+<thead>
+<tr>
+<th>节点名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QSGSimpleRectNode</td>
+<td><code>QSGGeometryNode</code>的子类，定义了矩形图元和纯色材质</td>
+</tr>
+<tr>
+<td>QSGSimpleTextureNode</td>
+<td><code>QSGGeometryNode</code>的子类，定义了矩形图元和纹理材质</td>
+</tr>
+</tbody></table>
+<h2 id="“场景图”和渲染"><a href="#“场景图”和渲染" class="headerlink" title="“场景图”和渲染"></a>“场景图”和渲染</h2><p>“场景图”的渲染发生在<code>QQuickWindow</code>类的内部，并且没有公共API可以访问它。</p>
+<p>但是，渲染管线中有一些地方可以让用户附加应用程序代码。</p>
+<p>可通过直接调用“场景图”使用的图形API(OpenGL、Vulkan、Metal等)来添加自定义“场景图”内容，或插入</p>
+<p>任意渲染命令。插入点由“渲染循环”定义。</p>
+<p>有关“场景图”渲染器如何工作的详细说明，可以参考Qt文档: Qt Quick Scene Graph Default Renderer。</p>
+<h2 id="渲染循环"><a href="#渲染循环" class="headerlink" title="渲染循环"></a>渲染循环</h2><p>共有三种渲染循环变体: 基本渲染循环(basic)，窗口渲染循环(windows)和线程渲染循环(threaded)。</p>
+<p>其中，基本渲染循环和窗口渲染循环是单线程的，线程渲染循环在专用线程上执行“场景图”渲染。</p>
+<p>Qt尝试根据平台及可能使用的图形驱动程序选择合适的渲染循环。如果这不能满足你的需求，或者处于测试的目的，可以使用环境变量</p>
+<p><code>QSG_RENDER_LOOP</code>强制使用指定的渲染循环。要验证使用哪个渲染循环，请启用<code>qt.scenegraph.general</code>日志类别。</p>
+<hr>
+<p>注意：线程渲染循环和窗口渲染循环 依赖于图形API实现来进行节流，例如，在OpenGL环境下，“请求交换间隔”为1。</p>
+<p>一些图形驱动程序允许用户忽略此设置并将其关闭，而忽略Qt的请求。</p>
+<p>在不阻塞“交换缓冲区”操作(或其它位置)的情况下，渲染循环将以尽快的速度运行动画并使CPU 100%运转。</p>
+<p>如果已知系统无法提供基于<code>vsync</code>的限制,请通过设置环境变量<code>QSG_RENDER_LOOP = basic</code>使用 基本渲染循环。</p>
+<h3 id="线程渲染循环"><a href="#线程渲染循环" class="headerlink" title="线程渲染循环"></a>线程渲染循环</h3><p>在许多环境中，“场景图”将在专用渲染线程上进行。这样做是为了增加多核处理器的并行度，并更好地利用停顿时间。</p>
+<p>这可以显著提高性能，但是与“场景图”进行交互的位置和时间加了一些限制。</p>
+<p>以下是关于OpenGL环境下如何使用线程渲染循环的简单概述。除了OpenGL上下文的特定要求外，其它图形API的步骤也是相同的。</p>
+<p><img src="/images/QtQuick/threadRenderLoop.png" alt=""></p>
+<ol>
+<li><p>Qml场景中发生变化，触发调用<code>QQuickItem::update()</code>， 这可能是动画或者用户操作的结果。</p>
+<p>一个 <code>事件</code>会被<code>post</code>到渲染线程来启动新的一帧。</p>
+</li>
+<li><p>渲染线程准备渲染新的一帧，GUI线程会启动阻塞。</p>
+</li>
+<li><p>当渲染线程准备新的一帧时，GUI线程调用<code>QQuickItem::updatePolish()</code> 对场景中节点进行最终的“润色”,再渲染它们。</p>
+</li>
+<li><p>GUI 线程阻塞。</p>
+</li>
+<li><p><code>QQuickWindow::beforeSynchronizing()</code>信号发出。应用程序可以对此信号进行直连(<code>Qt::DirectConnection</code>),</p>
+<p>以进行<code>QQuickItem::updatePaintNode()</code>之前所需的任何准备工作。</p>
+</li>
+<li><p>将Qml状态同步到“场景图”中。自上一帧以来，所有已更改的节点上调用<code>QQuickItem::updatePaintNode()</code>函数完成同步。</p>
+<p>这是Qml与“场景图”中的节点唯一的交互时机。</p>
+</li>
+<li><p>GUI线程不再阻塞。</p>
+</li>
+<li><p>渲染“场景图”：</p>
+<p> a. <code>QQuickWindow::beforeRendering()</code> 信号发出。应用程序可以直连(<code>Qt::DirectConnection</code>)此信号,来</p>
+<p>  调用自定义图形API，然后将其可视化渲染在Qml场景之下。</p>
+<p> b. 指定了<code>QSGNode::UsePreprocess</code>标志的节点将调用其<code>QSGNode::preprocess()</code>函数。</p>
+<p> c. 渲染器处理节点。</p>
+<p> d. 渲染器生成状态并记录使用中的图形API的绘制调用。</p>
+<p> e. <code>QQuickWindow::afterRendering</code> 信号发出。应用程序可以直连(<code>Qt::DirectConnection</code>)此信号,来</p>
+<p> 调用自定义图形API，然后将其可视化渲染在Qml场景之上。</p>
+<p> f. 新的一帧准备就绪。交换缓冲区(OpenGL)，或者记录当前命令，然后将命令缓冲区提交到图形队列(Vulkan,Metal)。</p>
+<p> <code>QQuickWindow::frameSwapped()</code>信号发出。</p>
+</li>
+<li><p>渲染线程正在渲染时，GUI可以自由地进行动画、处理事件等。</p>
+</li>
+</ol>
+<p>当前默认情况下，线程渲染循环工作在 带opengl32.dll的Windows平台,具有Metal的MacOS平台，移动平台，</p>
+<p>具有EGLFS的嵌入式Linux,以及平台无关的Vulkan环境，但这可能会有所改变。</p>
+<p>通过在环境变量中设置<code>QSG_RENDER_LOOP=threaded</code>,可以强制使用线程渲染器。</p>
+<h3 id="非线程渲染循环-基本渲染循环和窗口渲染循环"><a href="#非线程渲染循环-基本渲染循环和窗口渲染循环" class="headerlink" title="非线程渲染循环 (基本渲染循环和窗口渲染循环)"></a>非线程渲染循环 (基本渲染循环和窗口渲染循环)</h3><p>当前默认在使用非线程渲染循环的环境，包括使用ANGLE及非默认opengl32实现的windows平台，使用OpenGL的MacOS，</p>
+<p>以及一些特殊驱动的linux环境。</p>
+<p>这主要是一种预防措施，因为并非所有的OpenGL驱动和窗口系统的组合都经过测试。同时，诸如ANGLE  或 </p>
+<p>Mesa llvmpipe之类的实现根本无法在线程渲染中正常运行。因此，对于这些环境，不能使用线程渲染。</p>
+<hr>
+<p>在MacOS OpenGL环境下，使用XCode 10 (10.14 SDK) 或更高版本进行构建时不支持线程渲染循环，因为这会选择在</p>
+<p>MacOS 10.14上使用“基于图层的视图”。你可以使用XCode 9 (10.13 SDK)进行构建，以避开“基于图层的视图”,这种</p>
+<p>情况下，线程渲染循环可以用并且默认会启用。</p>
+<p>Metal没有这样的限制。</p>
+<hr>
+<p>非线程渲染循环默认在使用ANGLE的windows平台，而“基本渲染循环”用于其它需要非线程渲染循环的平台。</p>
+<p>即使使用非线程渲染循环，也应像使用线程渲染循环一样编写代码，否则将使代码不可移植。</p>
+<p>以下是非线程渲染循环中帧渲染序列的简化图示。</p>
+<p><img src="/images/QtQuick/non-threadRenderLoop.png" alt=""></p>
+<h3 id="使用QQuickRenderControl自定义渲染控制"><a href="#使用QQuickRenderControl自定义渲染控制" class="headerlink" title="使用QQuickRenderControl自定义渲染控制"></a>使用QQuickRenderControl自定义渲染控制</h3><p>使用QQuickRenderControl时，驱动渲染循环的责任将转移到应用程序中。</p>
+<p>在这种情况下，不使用内置的渲染循环。 </p>
+<p>取而代之的是，由应用程序在适当的时候调用 <code>polish</code> <code>synchronize</code> <code>rendering</code>等渲染步骤,实现类似于上述</p>
+<p>行为的线程渲染循环或非线程渲染循环。</p>
+<h3 id="“场景图”和原生图形API的混合使用"><a href="#“场景图”和原生图形API的混合使用" class="headerlink" title="“场景图”和原生图形API的混合使用"></a>“场景图”和原生图形API的混合使用</h3><p>“场景图”提供了两种方法，来集成应用程序提供的图形命令：</p>
+<p>直接发出OpenGL、Vulkan、Metal等命令，以及在“场景图”中创建纹理化节点。</p>
+<hr>
+<p>通过连接到<code>QQuickWindow::beforeRendering</code> 和 <code>QQuickWindow::afterRendering()</code>信号，应用程序可以直接在“场景图”</p>
+<p>渲染的同一上下文中进行OpenGL调用。</p>
+<p>使用Vulkan或者Metal之类的API，应用程序可以通过<code>QSGRendererInterface</code>来查询本机对象，例如“场景图”的命令缓冲区，</p>
+<p>并在认为合适的情况下，向其记录命令。</p>
+<p>如信号的名称所示，用户随后可以在Qt Quick “场景图”下方或者上方渲染内容。</p>
+<p>以这种方式集成的好处是不需要额外的帧缓冲区或者内存来执行渲染，并且消除了可能昂贵的纹理化步骤。</p>
+<p>缺点是Qt Quick 决定何时调用信号，这也是唯一允许OpenGL应用程序绘制的时间点。</p>
+<hr>
+<p>Qt提供了一些 “场景图”相关的示例，可在<code>examples</code>中找到:</p>
+<table>
+<thead>
+<tr>
+<th>例子名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scene Graph - OpenGL Under QML</td>
+<td>示例通过“场景图”的信号使用OpenGL</td>
+</tr>
+<tr>
+<td>Scene Graph - Direct3D 11 Under QML</td>
+<td>示例通过“场景图”的信号使用Direct3D</td>
+</tr>
+<tr>
+<td>Scene Graph - Metal Under QML</td>
+<td>示例通过“场景图”的信号使用Metal</td>
+</tr>
+<tr>
+<td>Scene Graph - Vulkan Under QML</td>
+<td>示例通过“场景图”的信号使用Vulkan</td>
+</tr>
+</tbody></table>
+<hr>
+<p>另一个替代方式，是创建一个 <code>QQuickFrameBufferObject</code> (当前仅适用OpenGL)，在这个FBO内部渲染，然后将其</p>
+<p>作为纹理显示在“场景图”中。</p>
+<p>“Scene Graph - Rendering FBOs” 示例如何完成此操作。</p>
+<hr>
+<p>还可以组合多个渲染上下文和多个线程以创建要在“场景图”中显示的内容。</p>
+<p>“The Scene Graph - Rendering FBOs in a thread” 示例如何完成此操作。</p>
+<hr>
+<p>“Scene Graph - Metal Texture Import”示例直接使用基础API创建和渲染纹理，然后在自定义<code>QQuickItem</code>中的</p>
+<p>“场景图”中包装和使用此资源。该示例适用了Metal，但是概念也适用于所有其它图形API。</p>
+<p>尽管<code>QQuickFrameBufferObject</code>当前不支持，除OpenGL之外的其它图形API也可以采用这种方法。</p>
+<hr>
+<p>警告：当在“场景图”中混合渲染OpenGL内容时，重要的一个点是应用程序不要使OpenGL上下文</p>
+<p>处在缓冲区绑定状态，“属性启用”，特殊值处在z缓冲区或模板缓冲区等。这样做会导致无法预测的行为。</p>
+<p>警告：自定义渲染代码必须具有多线程意识，它不应该假设应用程序在GUI线程中运行。</p>
+<h3 id="自定义Item使用QPainter"><a href="#自定义Item使用QPainter" class="headerlink" title="自定义Item使用QPainter"></a>自定义Item使用QPainter</h3><p><code>QQuickItem</code>提供一个子类<code>QQuickPaintedItem</code>,它允许用户使用QPainter渲染内容。</p>
+<p>警告: <code>QQuickPaintedItem</code>通过“间接2D 表面”渲染它的内容，“间接2D 表面”可以是软件光栅化，也可以是</p>
+<p>“OpenGL帧缓冲对象(FBO)”。这种渲染包含2步操作。第一步是光栅化表面，第二步是渲染表面。</p>
+<p>因此，直接使用“场景图” 接口渲染，速度比QQuickPaintedItem快。</p>
+<h3 id="日志支持"><a href="#日志支持" class="headerlink" title="日志支持"></a>日志支持</h3><p>“场景图”支持很多种日志类别。这些日志除了对Qt贡献者有帮助之外，还可用于追踪性能问题和缺陷。</p>
+<table>
+<thead>
+<tr>
+<th>日志类别</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>qt.scenegraph.time.texture</td>
+<td>纹理上传的耗时</td>
+</tr>
+<tr>
+<td>qt.scenegraph.time.compilation</td>
+<td>编译着色器耗时</td>
+</tr>
+<tr>
+<td>qt.scenegraph.time.renderer</td>
+<td>渲染器不同步骤耗时</td>
+</tr>
+<tr>
+<td>qt.scenegraph.time.renderloop</td>
+<td>渲染循环不同阶段耗时</td>
+</tr>
+<tr>
+<td>qt.scenegraph.time.glyph</td>
+<td>准备字形的距离场耗时</td>
+</tr>
+<tr>
+<td>qt.scenegraph.general</td>
+<td>“场景图”和图形栈中的常规信息</td>
+</tr>
+<tr>
+<td>qt.scenegraph.renderloop</td>
+<td>渲染循环相关的信息。这个日志模式是Qt开发者主要使用的</td>
+</tr>
+</tbody></table>
+<p>旧版<code>QSG_INFO</code>环境变量也可以用。将其设置为非零值将启用<code>qt.scengraph.general</code>类别。</p>
+<p>注意：遇到图形问题时，或不确定正在使用哪个渲染循环或图形API时，请至少启用<code>qt.scenegraph.general</code>和<code>qt.rhi</code>,或者</p>
+<p>设置<code>QSG_INFO=1</code>的情况下启动应用程序。然后这将在初始化期间将一些基本信息打印到调试输出。</p>
+<h3 id="“场景图”后端"><a href="#“场景图”后端" class="headerlink" title="“场景图”后端"></a>“场景图”后端</h3><p>除了公共API外，“场景图”还具有适配层，该适配层用以实现特定硬件的适配。这是一个未公开的、内部的、私有实现的插件，</p>
+<p>可以让硬件适配团队充分利用其硬件。这包括：</p>
+<ul>
+<li><p>自定义纹理； 特别是<code>QQuickWindow::createTextureFromImage</code>的实现以及Image和BorderImage类型使用的纹理的内部表示。</p>
+</li>
+<li><p>自定义渲染器；适配层使插件可以决定如何遍历和渲染“场景图”，从而有可能针对特定硬件优化渲染</p>
+</li>
+</ul>
+<p>算法或 使用可提高性能的扩展。</p>
+<ul>
+<li><p>许多默认Qml类型的自定义“场景图”实现，包括其文本和字体渲染。</p>
+</li>
+<li><p>自定义动画驱动程序；允许动画系统连接到低级“垂直同步”的显示设备，以获得平滑的渲染。</p>
+</li>
+<li><p>自定义渲染循环；可以更好地控制Qml如果处理多个窗口。</p>
+</li>
+</ul>
+
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/img/zhifubao.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        为众人抱薪者,不可使其冻毙于霜雪
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            文章采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可, 转载请注明出处 © <a href="https://jaredtao.github.io" target="_blank">武威的涛哥</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+    <a href="/2020/11/30/QQuickWidget%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E9%97%AE%E9%A2%98%E7%9A%84%E6%AD%A3%E7%A1%AE%E8%A7%A3%E6%B3%95/" class="next-post btn btn-default" title='QQuickWidget中文输入法问题的正确解法'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            QQuickWidget中文输入法问题的正确解法</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'qegD4552u6FU9HoNDvRsonko-gzGzoHsz',
+    appKey: 'eitB2FV5n2qyMHcDM7x6EQpt',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt-Quick-中的“场景图”"><span class="toc-text">Qt Quick 中的“场景图”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Qt-Quick-“场景图”的结构"><span class="toc-text">Qt Quick “场景图”的结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Scene-Graph-API-“场景图”接口"><span class="toc-text">Scene Graph API &#x2F; “场景图”接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点"><span class="toc-text">节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预处理"><span class="toc-text">预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#节点所有权"><span class="toc-text">节点所有权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#材质"><span class="toc-text">材质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#便捷的节点"><span class="toc-text">便捷的节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#“场景图”和渲染"><span class="toc-text">“场景图”和渲染</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#渲染循环"><span class="toc-text">渲染循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#线程渲染循环"><span class="toc-text">线程渲染循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非线程渲染循环-基本渲染循环和窗口渲染循环"><span class="toc-text">非线程渲染循环 (基本渲染循环和窗口渲染循环)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用QQuickRenderControl自定义渲染控制"><span class="toc-text">使用QQuickRenderControl自定义渲染控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#“场景图”和原生图形API的混合使用"><span class="toc-text">“场景图”和原生图形API的混合使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义Item使用QPainter"><span class="toc-text">自定义Item使用QPainter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日志支持"><span class="toc-text">日志支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#“场景图”后端"><span class="toc-text">“场景图”后端</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2019
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/assets/tagcanvas.min.js?rev=2.9.js"></script>
+
+<script>
+var tagOption = {
+    textColour: '#444', // 字体颜色
+    outlineMethod: 'block', // 选中模式
+    outlineColour: '#FFDAB9', // 选中模式的颜色
+    interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+    textHeight: 13,
+    outlineRadius: 3,
+    freezeActive: true || '', // 选中的标签是否继续滚动
+    frontSelect: true || '', // 不选标签云后部的标签
+    initial: [0.1, -0.1],
+    depth: 0.5,
+    decel: 0.95,
+    maxSpeed: 0.03,
+    reverse: true || '', // 是否反向触发
+    fadeIn: 500, // 进入动画时间
+    wheelZoom: false || '' // 是否启用鼠标滚轮
+}
+TagCanvas.Start('tag-cloud-3d', '', tagOption);
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>
