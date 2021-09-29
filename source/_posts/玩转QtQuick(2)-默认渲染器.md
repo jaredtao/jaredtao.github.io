@@ -5,7 +5,7 @@ tags:
   - Qt
   - Qml
   - QtQuick
-categories: 玩转Qml
+categories: 玩转QtQuick
 abbrlink: 18621
 date: 2021-01-21 13:44:23
 ---
